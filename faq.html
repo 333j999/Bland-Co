@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | Bland & Co Jewellers</title>
+  <meta name="description" content="Frequently asked questions about buying, selling, and authenticating luxury watches and jewellery with Bland & Co Jewellers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{background:var(--bg);scroll-behavior:smooth;}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-bottom:1px solid var(--border);}
+    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
+    .nav-link:hover,.nav-link.active{color:var(--cream);}
+    .nav-link:hover::after,.nav-link.active::after{width:100%;}
+    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
+    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
+    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
+    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
+    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
+    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
+    .fi{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+    .fi.v{opacity:1;transform:none;}
+    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
+    .fl:hover{color:var(--cream);}
+    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
+    #mmenu.open{display:flex;}
+
+    /* FAQ Accordion */
+    .faq-category{margin-bottom:56px;}
+    .faq-cat-title{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .faq-item{border-bottom:1px solid var(--border);}
+    .faq-item:last-child{border-bottom:none;}
+    .faq-question{width:100%;background:none;border:none;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;text-align:left;transition:color .2s;}
+    .faq-question-text{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:400;color:var(--cream);line-height:1.3;}
+    .faq-question:hover .faq-question-text{color:var(--cream);}
+    .faq-icon{flex-shrink:0;width:28px;height:28px;border:1px solid rgba(232,223,200,.15);display:flex;align-items:center;justify-content:center;transition:border-color .2s,transform .3s,background .2s;}
+    .faq-item.open .faq-icon{transform:rotate(45deg);border-color:var(--green-mid);background:rgba(12,69,53,.2);}
+    .faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;}
+    .faq-answer-inner{padding:0 0 24px;}
+    .faq-answer-inner p{font-size:14.5px;line-height:1.8;color:var(--cream-dim);}
+    .faq-answer-inner p+p{margin-top:12px;}
+    .faq-answer-inner a{color:var(--green-mid);text-decoration:none;}
+    .faq-answer-inner a:hover{color:var(--cream);}
+    .faq-item.open .faq-answer{max-height:600px;}
+
+    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split{grid-template-columns:1fr!important;}}
+    @media(min-width:901px){.mbtn{display:none!important;}}
+    @media(max-width:600px){.fg{grid-template-columns:1fr 1fr!important;gap:28px!important;}}
+    @media(max-width:480px){.fg{grid-template-columns:1fr!important;}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
+  <div class="dnav" style="display:flex;align-items:center;gap:36px;">
+    <a href="index.html" class="nav-link">Home</a><a href="inventory.html" class="nav-link">Inventory</a><a href="sell.html" class="nav-link">Sell / Value</a><a href="about.html" class="nav-link">About</a><a href="testimonials.html" class="nav-link">Testimonials</a><a href="faq.html" class="nav-link active">FAQ</a><a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="contact.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
+  </div>
+</nav>
+
+<div id="mmenu" role="dialog" aria-modal="true">
+  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
+  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a><a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a><a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a><a href="about.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">About</a><a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a><a href="faq.html" class="nav-link active" style="font-size:14px;" onclick="toggleMenu()">FAQ</a><a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <a href="contact.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
+</div>
+
+<!-- HERO -->
+<section style="padding:140px 48px 80px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 80% 50%,rgba(12,69,53,.2) 0%,transparent 60%);"></div>
+  <div class="noise"></div>
+  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
+    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Common Questions</span></div>
+    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:680px;">Frequently Asked <span class="display-i">Questions</span></h1>
+    <p class="fi" style="font-size:16px;line-height:1.8;color:var(--cream-dim);max-width:500px;margin-top:18px;font-weight:300;">Everything you need to know about buying, selling, and authenticating with Bland &amp; Co Jewellers.</p>
+  </div>
+</section>
+
+<!-- FAQ CONTENT -->
+<section style="padding:80px 0 112px;background:var(--bg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="split" style="display:grid;grid-template-columns:280px 1fr;gap:64px;align-items:start;">
+
+      <!-- Sidebar nav -->
+      <div style="position:sticky;top:96px;" class="fi">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:28px;">
+          <p style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:16px;">Jump to Section</p>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <a href="#authentication" style="font-size:13px;color:var(--cream-dim);text-decoration:none;padding:8px 12px;transition:background .2s,color .2s;display:block;" onmouseover="this.style.background='var(--card)';this.style.color='var(--cream)'" onmouseout="this.style.background='transparent';this.style.color='var(--cream-dim)'">Authentication</a>
+            <a href="#buying" style="font-size:13px;color:var(--cream-dim);text-decoration:none;padding:8px 12px;transition:background .2s,color .2s;display:block;" onmouseover="this.style.background='var(--card)';this.style.color='var(--cream)'" onmouseout="this.style.background='transparent';this.style.color='var(--cream-dim)'">Buying</a>
+            <a href="#selling" style="font-size:13px;color:var(--cream-dim);text-decoration:none;padding:8px 12px;transition:background .2s,color .2s;display:block;" onmouseover="this.style.background='var(--card)';this.style.color='var(--cream)'" onmouseout="this.style.background='transparent';this.style.color='var(--cream-dim)'">Selling &amp; Valuations</a>
+            <a href="#pricing" style="font-size:13px;color:var(--cream-dim);text-decoration:none;padding:8px 12px;transition:background .2s,color .2s;display:block;" onmouseover="this.style.background='var(--card)';this.style.color='var(--cream)'" onmouseout="this.style.background='transparent';this.style.color='var(--cream-dim)'">Pricing</a>
+            <a href="#safety" style="font-size:13px;color:var(--cream-dim);text-decoration:none;padding:8px 12px;transition:background .2s,color .2s;display:block;" onmouseover="this.style.background='var(--card)';this.style.color='var(--cream)'" onmouseout="this.style.background='transparent';this.style.color='var(--cream-dim)'">Safety &amp; Security</a>
+          </div>
+        </div>
+        <div style="margin-top:20px;background:var(--green-dark);border:1px solid rgba(232,223,200,.08);padding:28px;">
+          <p style="font-size:13px;color:rgba(232,223,200,.65);line-height:1.7;margin-bottom:16px;">Still have questions? We're happy to help.</p>
+          <a href="contact.html" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='6px'">Contact Us <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- FAQ Items -->
+      <div class="fi">
+
+        <!-- AUTHENTICATION -->
+        <div class="faq-category" id="authentication">
+          <div class="faq-cat-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 1L10.2 5.5 15 6.3 11.5 9.7 12.4 14.5 8 12.2 3.6 14.5 4.5 9.7 1 6.3 5.8 5.5Z"/></svg>
+            Authentication
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">How do you verify that a watch is authentic?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Every watch that passes through our hands is subject to a rigorous multi-point authentication process conducted by our in-house specialists. We inspect the movement, case, dial, crown, caseback, and all finishing using professional-grade tools and reference materials.</p>
+              <p>For high-value timepieces, we also verify serial numbers against manufacturer records and, where appropriate, cross-reference with known databases. We never sell a piece we cannot authenticate with complete confidence.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Do you provide authenticity certificates?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Yes. Every piece we sell comes with our written authenticity confirmation. Where original manufacturer papers are available, we include those too. For gemstone pieces, we can provide or facilitate independent GIA or other laboratory reports.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">What if a piece I buy turns out not to be genuine?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>This is an extremely unlikely scenario given our authentication process, but if it were ever to occur, we would offer a full refund — no questions asked. Our reputation is built on trust and we stand behind every piece we sell.</p>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- BUYING -->
+        <div class="faq-category" id="buying">
+          <div class="faq-cat-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="9" rx="1"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>
+            Buying
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Why are prices not shown on the inventory?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>The luxury resale market moves quickly and prices fluctuate with demand, availability, and market conditions. We prefer to provide current, accurate pricing directly rather than display a fixed figure that may be out of date.</p>
+              <p>Simply enquire on any piece and we'll provide our best current price without delay. There is no obligation to purchase.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Can you source a specific piece I'm looking for?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Absolutely. We have an extensive network of dealers, collectors, and private sellers across London and beyond. If you're looking for a specific reference, configuration, or piece type, <a href="contact.html">contact us</a> with the details and we'll put the word out on your behalf.</p>
+              <p>Many of our clients come to us precisely for this sourcing capability — particularly for hard-to-find or discontinued references.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Do you offer payment plans or financing?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>For significant purchases, we can discuss payment arrangements on a case-by-case basis. Please <a href="contact.html">speak with our team</a> and we'll explore what options are available to you.</p>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- SELLING -->
+        <div class="faq-category" id="selling">
+          <div class="faq-cat-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 1.5"/></svg>
+            Selling &amp; Valuations
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">How does the valuation process work?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Submit your details using our <a href="sell.html">online valuation form</a> or bring your piece to us in Hatton Garden. We'll assess the item in person — checking condition, authenticity, box and papers — and provide a written offer within the same visit or within 24 hours for online submissions.</p>
+              <p>There is absolutely no obligation to accept our offer. The valuation is entirely free.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">How quickly will I be paid?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>If you accept our offer in person, we can arrange same-day payment via bank transfer. We do not pay in cash for higher-value items for security and compliance reasons, but transfers are typically completed within a few hours.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Does having the original box and papers affect the price?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Yes — a full set (box, papers, and accessories) can add meaningful value, particularly for popular references from brands like Rolex and Patek Philippe. That said, we buy watches without papers too, and will always give you our best price regardless of accessories.</p>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- PRICING -->
+        <div class="faq-category" id="pricing">
+          <div class="faq-cat-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M2 8h12M5 4V2M11 4V2"/></svg>
+            Pricing
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">How do you determine your prices?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Our prices are based on current market data from multiple sources — including recent auction results, dealer listings, and live grey-market pricing. We aim to be competitive with what you would find elsewhere, but with the added assurance of full authentication and expert support.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Are there any hidden fees or commissions?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>No. The price we quote is the price you pay. The valuation we provide for your item is the amount we pay — no hidden deductions or processing fees. We are transparent from start to finish.</p>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- SAFETY -->
+        <div class="faq-category" id="safety">
+          <div class="faq-cat-title">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 1l7 3v5c0 4-3.5 6-7 7-3.5-1-7-3-7-7V4z"/></svg>
+            Safety &amp; Security
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Is it safe to bring a valuable watch in person?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Yes. Hatton Garden is a secure, established professional environment and we operate from a private office setting. We recommend contacting us in advance to arrange a private appointment, ensuring a discreet, comfortable experience at a time that suits you.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">What are your data and privacy practices?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>We collect only the information necessary to complete your transaction and never share client details with third parties. All data is stored securely and handled in accordance with UK GDPR. You can request deletion of your data at any time by contacting us.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
+              <span class="faq-question-text">Are you a regulated business?</span>
+              <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">
+              <p>Yes. We operate as a registered business in England and Wales, in full compliance with all applicable trading standards, consumer rights, and anti-money laundering regulations. We are required by law to conduct due diligence on high-value transactions, which we carry out discreetly and professionally.</p>
+            </div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Still have questions CTA -->
+    <div class="fi" style="margin-top:48px;padding:48px;background:var(--surface);border:1px solid var(--border);text-align:center;">
+      <h3 class="display" style="font-size:30px;color:var(--cream);margin-bottom:10px;">Still have a question?</h3>
+      <p style="font-size:14px;color:var(--cream-dim);max-width:400px;margin:0 auto 28px;line-height:1.7;">Our team is happy to answer any question directly. No question is too simple or too complex.</p>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .15s;" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='var(--cream)';this.style.transform='none'">
+        Get in Touch
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
+      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">London's trusted luxury reseller. Based in Hatton Garden.</p></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Contact</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a></div></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2024 Bland &amp; Co Jewellers. All rights reserved.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media(max-width:900px){.split{grid-template-columns:1fr!important;}.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}}
+  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
+  /* Hide sidebar on mobile */
+  @media(max-width:900px){.split>div:first-child{display:none;}}
+</style>
+
+<script>
+  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+  function toggleFAQ(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    document.querySelectorAll('.faq-question').forEach(b => b.setAttribute('aria-expanded','false'));
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+    }
+  }
+
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+  setTimeout(()=>{document.querySelectorAll('.fi').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('v');});},80);
+</script>
+</body>
+</html>

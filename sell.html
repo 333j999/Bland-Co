@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sell or Value Your Watch | Bland & Co Jewellers</title>
+  <meta name="description" content="Get a free, expert valuation for your luxury watch or jewellery. Same-day response. Based in Hatton Garden, London.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--green-hi:#1E8560;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{background:var(--bg);scroll-behavior:smooth;}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-color:var(--border);}
+    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
+    .nav-link:hover,.nav-link.active{color:var(--cream);}
+    .nav-link:hover::after,.nav-link.active::after{width:100%;}
+    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
+    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
+    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
+    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
+    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
+    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
+    .fi{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+    .fi.v{opacity:1;transform:none;}
+    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;letter-spacing:.02em;}
+    .fl:hover{color:var(--cream);}
+    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
+    #mmenu.open{display:flex;}
+
+    /* Form */
+    .form-group{display:flex;flex-direction:column;gap:7px;}
+    .form-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);font-weight:500;}
+    .form-input{background:var(--elevated);border:1px solid rgba(232,223,200,.1);color:var(--cream);padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,background .2s;width:100%;-webkit-appearance:none;}
+    .form-input::placeholder{color:var(--cream-dim);opacity:.45;}
+    .form-input:focus{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
+    textarea.form-input{resize:vertical;min-height:110px;line-height:1.6;}
+    select.form-input option{background:var(--elevated);color:var(--cream);}
+
+    /* File upload */
+    .file-zone{border:1px dashed rgba(232,223,200,.2);padding:40px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+    .file-zone:hover{border-color:var(--green-mid);background:rgba(12,69,53,.08);}
+    .file-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+
+    /* Submit btn */
+    .btn-submit{width:100%;padding:16px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;}
+    .btn-submit:hover{background:#fff;transform:translateY(-1px);box-shadow:0 8px 32px rgba(232,223,200,.15);}
+
+    /* Trust items */
+    .trust-item{display:flex;align-items:flex-start;gap:14px;padding:20px 24px;background:var(--card);border:1px solid var(--border);}
+
+    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split-layout{grid-template-columns:1fr!important;}.form-row{grid-template-columns:1fr!important;}}
+    @media(min-width:901px){.mbtn{display:none!important;}}
+    @media(max-width:640px){.fg{grid-template-columns:1fr 1fr!important;gap:28px!important;}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
+  <div class="dnav" style="display:flex;align-items:center;gap:36px;">
+    <a href="index.html" class="nav-link">Home</a><a href="inventory.html" class="nav-link">Inventory</a><a href="sell.html" class="nav-link active">Sell / Value</a><a href="about.html" class="nav-link">About</a><a href="testimonials.html" class="nav-link">Testimonials</a><a href="faq.html" class="nav-link">FAQ</a><a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="contact.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu">
+      <svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div id="mmenu" role="dialog" aria-modal="true">
+  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
+  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a><a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a><a href="sell.html" class="nav-link active" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a><a href="about.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">About</a><a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a><a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a><a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <a href="contact.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
+</div>
+
+<!-- HERO -->
+<section style="padding:140px 48px 80px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 25% 50%,rgba(12,69,53,.28) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 85% 30%,rgba(7,61,42,.18) 0%,transparent 50%);"></div>
+  <div class="noise"></div>
+  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
+    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+      <div class="divider"></div>
+      <span class="eyebrow">Free Valuation Service</span>
+    </div>
+    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:680px;">
+      Sell or Value Your<br><span class="display-i">Watch or Jewellery</span>
+    </h1>
+    <p class="fi" style="font-size:17px;line-height:1.8;color:var(--cream-dim);max-width:520px;margin-top:20px;font-weight:300;">
+      Get an honest, expert valuation — no pressure, no obligation. We respond within 24 hours and offer some of London's most competitive prices.
+    </p>
+
+    <!-- Trust points -->
+    <div class="fi" style="display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:6px;height:6px;background:var(--green-mid);border-radius:50%;flex-shrink:0;"></div>
+        <span style="font-size:13px;color:var(--cream-dim);">No obligation valuation</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:6px;height:6px;background:var(--green-mid);border-radius:50%;flex-shrink:0;"></div>
+        <span style="font-size:13px;color:var(--cream-dim);">Same-day payment on acceptance</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:6px;height:6px;background:var(--green-mid);border-radius:50%;flex-shrink:0;"></div>
+        <span style="font-size:13px;color:var(--cream-dim);">Competitive market rates</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM + SIDEBAR SPLIT -->
+<section style="padding:80px 0 112px;background:var(--bg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="split-layout" style="display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start;">
+
+      <!-- VALUATION FORM -->
+      <div>
+        <div style="background:var(--card);border:1px solid var(--border);padding:52px;" class="fi">
+          <h2 class="display" style="font-size:36px;color:var(--cream);margin-bottom:8px;">Valuation Request</h2>
+          <p style="font-size:14px;color:var(--cream-dim);margin-bottom:44px;line-height:1.7;">Fill in the details below and one of our specialists will be in touch with a competitive offer.</p>
+
+          <form id="valuationForm" onsubmit="handleSubmit(event)" novalidate>
+            <!-- Personal details -->
+            <div style="margin-bottom:32px;">
+              <h3 style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Your Details</h3>
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="fullName">Full Name *</label>
+                  <input type="text" id="fullName" name="fullName" class="form-input" placeholder="James Harrison" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="phone">Phone Number *</label>
+                  <input type="tel" id="phone" name="phone" class="form-input" placeholder="+44 7700 900000" required>
+                </div>
+              </div>
+              <div style="margin-top:16px;" class="form-group">
+                <label class="form-label" for="email">Email Address *</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="james@example.com" required>
+              </div>
+            </div>
+
+            <!-- Watch / Item details -->
+            <div style="margin-bottom:32px;">
+              <h3 style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Item Details</h3>
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="itemType">Item Type *</label>
+                  <select id="itemType" name="itemType" class="form-input" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option>Watch</option>
+                    <option>Ring</option>
+                    <option>Necklace / Chain</option>
+                    <option>Bracelet</option>
+                    <option>Earrings</option>
+                    <option>Precious Metal / Bullion</option>
+                    <option>Other Jewellery</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="brand">Brand / Make</label>
+                  <input type="text" id="brand" name="brand" class="form-input" placeholder="Rolex, Patek Philippe…">
+                </div>
+              </div>
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="model">Model / Reference</label>
+                  <input type="text" id="model" name="model" class="form-input" placeholder="Submariner 126610LN">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="year">Approximate Year</label>
+                  <input type="text" id="year" name="year" class="form-input" placeholder="2019">
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" for="condition">Condition</label>
+                <select id="condition" name="condition" class="form-input">
+                  <option value="" disabled selected>Select condition</option>
+                  <option>Unworn / New</option>
+                  <option>Excellent</option>
+                  <option>Very Good</option>
+                  <option>Good</option>
+                  <option>Fair</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" for="accessories">Box, Papers &amp; Accessories</label>
+                <select id="accessories" name="accessories" class="form-input">
+                  <option value="" disabled selected>Select</option>
+                  <option>Full Set (Box + Papers)</option>
+                  <option>Box Only</option>
+                  <option>Papers Only</option>
+                  <option>No Box or Papers</option>
+                  <option>Unknown</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="description">Additional Information</label>
+                <textarea id="description" name="description" class="form-input" placeholder="Any further details, service history, known issues, modifications, or anything else that may help us value your item…"></textarea>
+              </div>
+            </div>
+
+            <!-- Image upload -->
+            <div style="margin-bottom:40px;">
+              <h3 style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Upload Images</h3>
+              <div class="file-zone" id="fileZone">
+                <input type="file" id="images" name="images" accept="image/*" multiple onchange="updateFileLabel(this)">
+                <svg width="32" height="32" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 12px;display:block;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p id="fileLabel" style="font-size:13px;color:var(--cream-dim);line-height:1.6;">Drag &amp; drop images here, or <span style="color:var(--green-mid);">click to browse</span></p>
+                <p style="font-size:11px;color:rgba(158,149,131,.5);margin-top:6px;">JPEG, PNG, HEIC accepted · Max 10MB per file</p>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-submit">
+              Submit Valuation Request
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:8px;vertical-align:middle;"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </button>
+            <p style="font-size:12px;color:var(--cream-dim);margin-top:16px;text-align:center;line-height:1.6;">By submitting you agree to our <a href="#" style="color:var(--green-mid);text-decoration:none;">Privacy Policy</a>. We never share your details.</p>
+
+            <!-- Success message -->
+            <div id="successMsg" style="display:none;padding:20px;background:rgba(12,69,53,.25);border:1px solid var(--green-mid);margin-top:24px;text-align:center;">
+              <p style="font-size:15px;color:var(--cream);">Thank you — we'll be in touch within 24 hours.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div style="display:flex;flex-direction:column;gap:20px;" class="fi">
+
+        <!-- Why sell with us -->
+        <div style="background:var(--surface);border:1px solid var(--border);padding:36px;">
+          <h3 class="display" style="font-size:26px;color:var(--cream);margin-bottom:20px;">Why Sell with Us?</h3>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div class="trust-item" style="background:var(--elevated);">
+              <svg width="18" height="18" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2Z"/></svg>
+              <div>
+                <div style="font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px;">Market-Leading Prices</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">We offer competitive rates based on current market data and real buyer demand.</div>
+              </div>
+            </div>
+            <div class="trust-item" style="background:var(--elevated);">
+              <svg width="18" height="18" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <div>
+                <div style="font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px;">Same-Day Payment</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Accept our offer and receive payment on the same day — no delays, no waiting.</div>
+              </div>
+            </div>
+            <div class="trust-item" style="background:var(--elevated);">
+              <svg width="18" height="18" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <div>
+                <div style="font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px;">Fully Discreet</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Your transaction is handled with complete confidentiality at all times.</div>
+              </div>
+            </div>
+            <div class="trust-item" style="background:var(--elevated);">
+              <svg width="18" height="18" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.49.9 6.08 2.38"/></svg>
+              <div>
+                <div style="font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px;">No Obligation</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Our valuation is completely free. You're under no pressure to accept our offer.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact alternative -->
+        <div style="background:var(--green-dark);border:1px solid rgba(232,223,200,.08);padding:36px;position:relative;overflow:hidden;">
+          <div class="noise"></div>
+          <div style="position:relative;z-index:1;">
+            <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Prefer to talk first?</h3>
+            <p style="font-size:13px;color:rgba(232,223,200,.6);line-height:1.7;margin-bottom:24px;">Visit us in Hatton Garden or send a WhatsApp message for an instant response.</p>
+            <a href="contact.html" style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;transition:gap .2s;" onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
+              Get in Touch <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
+      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">London's trusted luxury reseller. Specialising in fine watches, precious metals, and bespoke jewellery.</p></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="inventory.html" class="fl">Custom Jewellery</a><a href="sell.html" class="fl">Free Valuation</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Contact</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a></div></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2024 Bland &amp; Co Jewellers. All rights reserved.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media(max-width:900px){.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}}
+  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
+</style>
+
+<script>
+  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+  function updateFileLabel(input) {
+    const label = document.getElementById('fileLabel');
+    if (input.files.length > 0) {
+      label.textContent = input.files.length === 1
+        ? input.files[0].name
+        : `${input.files.length} files selected`;
+      label.style.color = 'var(--cream)';
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const required = form.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(field => {
+      field.style.borderColor = field.value.trim() ? 'rgba(232,223,200,.1)' : 'rgba(196,150,46,.6)';
+      if (!field.value.trim()) valid = false;
+    });
+    if (valid) {
+      document.getElementById('successMsg').style.display = 'block';
+      form.querySelector('.btn-submit').disabled = true;
+      form.querySelector('.btn-submit').textContent = 'Request Submitted';
+      form.querySelector('.btn-submit').style.opacity = '0.6';
+      document.getElementById('successMsg').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  }
+
+  const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}}), {threshold:.08});
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+  setTimeout(()=>{document.querySelectorAll('.fi').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('v');});},80);
+</script>
+</body>
+</html>

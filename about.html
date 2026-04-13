@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Bland & Co Jewellers</title>
+  <meta name="description" content="London's trusted luxury reseller. Based in Hatton Garden since day one — discover our story, values, and expertise.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{background:var(--bg);scroll-behavior:smooth;}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-bottom:1px solid var(--border);}
+    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
+    .nav-link:hover,.nav-link.active{color:var(--cream);}
+    .nav-link:hover::after,.nav-link.active::after{width:100%;}
+    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
+    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
+    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
+    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
+    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
+    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
+    .fi{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+    .fi.v{opacity:1;transform:none;}
+    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
+    .fl:hover{color:var(--cream);}
+    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
+    #mmenu.open{display:flex;}
+    .value-card{background:var(--card);border:1px solid var(--border);padding:36px;transition:border-color .3s,transform .3s;}
+    .value-card:hover{border-color:rgba(232,223,200,.14);transform:translateY(-3px);}
+    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split{grid-template-columns:1fr!important;}.val-grid{grid-template-columns:1fr 1fr!important;}}
+    @media(min-width:901px){.mbtn{display:none!important;}}
+    @media(max-width:600px){.val-grid{grid-template-columns:1fr!important;}.fg{grid-template-columns:1fr 1fr!important;gap:28px!important;}}
+    @media(max-width:480px){.fg{grid-template-columns:1fr!important;}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
+  <div class="dnav" style="display:flex;align-items:center;gap:36px;">
+    <a href="index.html" class="nav-link">Home</a><a href="inventory.html" class="nav-link">Inventory</a><a href="sell.html" class="nav-link">Sell / Value</a><a href="about.html" class="nav-link active">About</a><a href="testimonials.html" class="nav-link">Testimonials</a><a href="faq.html" class="nav-link">FAQ</a><a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="contact.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
+  </div>
+</nav>
+
+<div id="mmenu" role="dialog" aria-modal="true">
+  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
+  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a><a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a><a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a><a href="about.html" class="nav-link active" style="font-size:14px;" onclick="toggleMenu()">About</a><a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a><a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a><a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <a href="contact.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
+</div>
+
+<!-- HERO -->
+<section style="padding:140px 48px 96px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(12,69,53,.22) 0%,transparent 60%);"></div>
+  <div class="noise"></div>
+  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
+    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Our Story</span></div>
+    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:680px;">Built on Trust,<br><span class="display-i">Driven by Excellence</span></h1>
+    <p class="fi" style="font-size:17px;line-height:1.8;color:var(--cream-dim);max-width:540px;margin-top:20px;font-weight:300;">From our home in Hatton Garden — London's legendary jewellery quarter — we've built a reputation for integrity, expertise, and the finest pieces.</p>
+  </div>
+</section>
+
+<!-- BRAND STORY -->
+<section style="padding:96px 0;background:var(--bg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+      <div class="fi">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Who We Are</span></div>
+        <h2 class="display" style="font-size:clamp(34px,4vw,52px);color:var(--cream);margin-bottom:28px;">London's Premier<br><span class="display-i">Luxury Reseller</span></h2>
+        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">Bland &amp; Co Jewellers was founded on a simple principle: that buying and selling luxury assets should be transparent, trustworthy, and genuinely rewarding. We are specialists in pre-owned luxury watches, precious metals, and bespoke jewellery.</p>
+        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">Operating from Hatton Garden — the heart of London's fine jewellery trade for over three centuries — we combine deep market knowledge with a personal approach that larger dealers simply cannot offer.</p>
+        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);">Every piece we handle is rigorously authenticated. Every transaction is conducted with complete discretion. And every client leaves knowing they've received honest counsel from experts who genuinely care.</p>
+      </div>
+      <div class="fi">
+        <div style="position:relative;">
+          <img src="https://placehold.co/560x680/111917/166649?text=Hatton+Garden" alt="Hatton Garden London" style="width:100%;height:480px;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(6,10,8,.6) 100%);"></div>
+          <!-- Stat overlay -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:rgba(6,10,8,.85);border:1px solid rgba(232,223,200,.1);padding:20px;backdrop-filter:blur(10px);">
+              <div class="display" style="font-size:36px;color:var(--cream);">15+</div>
+              <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--cream-dim);margin-top:4px;">Years Combined Experience</div>
+            </div>
+            <div style="background:rgba(6,10,8,.85);border:1px solid rgba(232,223,200,.1);padding:20px;backdrop-filter:blur(10px);">
+              <div class="display" style="font-size:36px;color:var(--cream);">500+</div>
+              <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--cream-dim);margin-top:4px;">Verified Transactions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HATTON GARDEN SECTION -->
+<section style="padding:96px 0;background:var(--surface);border-top:1px solid var(--border);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+      <div class="fi" style="order:2;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Our Location</span></div>
+        <h2 class="display" style="font-size:clamp(34px,4vw,52px);color:var(--cream);margin-bottom:28px;">The Heart of<br><span class="display-i">Hatton Garden</span></h2>
+        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">Hatton Garden has been London's jewellery quarter for over three hundred years. Home to more diamond dealers per square mile than anywhere outside of Antwerp, it is a place built entirely on craft, trust, and expertise.</p>
+        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:32px;">It is where we belong. Our presence here is not incidental — it is a statement of intent. When you work with Bland &amp; Co, you are dealing with specialists embedded in the trade, with access to networks and knowledge that others simply don't have.</p>
+        <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;transition:gap .2s;" onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
+          Visit Us <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="fi" style="order:1;">
+        <img src="https://placehold.co/560x480/0D1511/C4962E?text=Hatton+Garden+EC1N" alt="Hatton Garden Location" style="width:100%;height:420px;object-fit:cover;display:block;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES GRID -->
+<section style="padding:96px 0;background:var(--bg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="fi" style="text-align:center;margin-bottom:64px;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">What We Stand For</span><div class="divider"></div></div>
+      <h2 class="display" style="font-size:clamp(34px,4vw,52px);color:var(--cream);">Our <span class="display-i">Values</span></h2>
+    </div>
+
+    <div class="val-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Authenticity</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">Every piece we acquire is authenticated in-house using industry-standard tools and methods. We never sell anything we cannot verify with complete confidence.</p>
+      </div>
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Transparency</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">We explain our valuation process, our reasoning, and our pricing openly. You will never feel pressured or kept in the dark when dealing with us.</p>
+      </div>
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Relationships</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">We build lasting relationships with our clients. Many return to us for every transaction because they know they can trust our judgement and our integrity.</p>
+      </div>
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Discretion</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">Your privacy is paramount. All transactions are handled with the utmost confidentiality. We do not share client details with third parties — ever.</p>
+      </div>
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Efficiency</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">We respect your time. From initial enquiry to completed transaction, we work quickly and decisively — without compromising on diligence or quality.</p>
+      </div>
+
+      <div class="value-card fi">
+        <div style="width:48px;height:48px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        </div>
+        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">Expertise</h3>
+        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">With decades of combined experience across watchmaking, precious metals, and gemstones, our team brings genuine knowledge to every single transaction.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section style="padding:80px 48px;background:var(--green-dark);border-top:1px solid rgba(232,223,200,.07);position:relative;overflow:hidden;">
+  <div class="noise"></div>
+  <div style="position:relative;z-index:1;max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;align-items:center;justify-content:space-between;">
+    <div>
+      <h2 class="display fi" style="font-size:clamp(30px,3.5vw,44px);color:var(--cream);margin-bottom:12px;">Ready to work with us?</h2>
+      <p class="fi" style="font-size:15px;color:rgba(232,223,200,.6);max-width:400px;line-height:1.7;">Visit us in Hatton Garden or book a consultation with one of our specialists today.</p>
+    </div>
+    <div class="fi" style="display:flex;flex-wrap:wrap;gap:12px;">
+      <a href="sell.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .15s;" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='var(--cream)';this.style.transform='none'">Get a Valuation</a>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:transparent;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(232,223,200,.25);text-decoration:none;transition:border-color .2s,background .2s,transform .15s;" onmouseover="this.style.borderColor='var(--cream)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(232,223,200,.25)';this.style.transform='none'">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
+      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">London's trusted luxury reseller. Based in Hatton Garden.</p></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Contact</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a></div></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2024 Bland &amp; Co Jewellers. All rights reserved.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media(max-width:900px){.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}.split{order:unset!important;}[style*="order:1"]{order:unset!important;}[style*="order:2"]{order:unset!important;}}
+  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
+</style>
+
+<script>
+  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+  setTimeout(()=>{document.querySelectorAll('.fi').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('v');});},80);
+</script>
+</body>
+</html>
