@@ -3,8 +3,8 @@
 // (Auto-provided by Vercel when you add Upstash from the Storage marketplace)
 
 async function kvExec(...command) {
-  const url   = process.env.UPSTASH_REDIS_REST_URL   || process.env.KV_REST_API_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  const url   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   const r = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: {
