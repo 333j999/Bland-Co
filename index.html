@@ -188,7 +188,7 @@
     <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;">
   </a>
 
-  <div class="dnav" style="display:flex;align-items:center;gap:36px;">
+  <div class="dnav" style="display:flex;align-items:center;gap:36px;position:absolute;left:50%;transform:translateX(-50%);">
     <a href="index.html" class="nav-link active">Home</a>
     <a href="inventory.html" class="nav-link">Inventory</a>
     <a href="sell.html" class="nav-link">Sell / Value</a>
@@ -293,34 +293,169 @@
 </section>
 
 <!-- ===== TRUST BAR ===== -->
-<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 48px;overflow:hidden;">
-  <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:0;justify-content:space-between;align-items:center;">
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;">
+<style>
+  .tbar-item {
+    display: flex; align-items: center; gap: 8px; padding: 20px 12px;
+    cursor: pointer; transition: opacity 0.2s;
+    position: relative; white-space: nowrap;
+  }
+  .tbar-item:hover { opacity: 0.75; }
+  .tbar-item.active .tbar-label { color: var(--green-hi); }
+  .tbar-item.active .tbar-chevron { transform: rotate(180deg); }
+  .tbar-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); transition: color 0.2s; }
+  .tbar-chevron { transition: transform 0.25s ease; opacity: 0.4; flex-shrink: 0; }
+
+  .tbar-panel {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.18s ease, opacity 0.15s ease;
+    opacity: 0;
+    background: var(--elevated);
+    border-bottom: 1px solid var(--border);
+  }
+  .tbar-panel.open {
+    max-height: 420px; opacity: 1;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+  }
+  .tbar-panel-inner { max-width: 1200px; margin: 0 auto; padding: 32px 48px; }
+  .tbar-panel-inner p { font-size: 14px; line-height: 1.8; color: var(--cream-dim); max-width: 600px; }
+  .tbar-panel-inner a.tbar-cta {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green-hi); text-decoration: none; transition: gap 0.2s;
+  }
+  .tbar-panel-inner a.tbar-cta:hover { gap: 12px; }
+
+  #map-frame { width: 100%; height: 280px; border: none; filter: invert(0.88) hue-rotate(140deg) brightness(0.85) saturate(0.7); display: block; }
+</style>
+
+<section style="background:var(--surface);border-top:1px solid var(--border);overflow-x:auto;">
+  <div style="min-width:700px;max-width:1200px;margin:0 auto;padding:0 48px;display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;">
+
+    <div class="tbar-item" onclick="togglePanel('auth')" id="tb-auth">
       <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 1L10.2 5.5 15 6.3 11.5 9.7 12.4 14.5 8 12.2 3.6 14.5 4.5 9.7 1 6.3 5.8 5.5Z"/></svg>
-      <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);">Authenticity Guaranteed</span>
+      <span class="tbar-label">Authenticity Guaranteed</span>
+      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--border);"></div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;">
+
+    <div class="tbar-item" onclick="togglePanel('val')" id="tb-val">
       <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 2"/></svg>
-      <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);">Expert Valuations</span>
+      <span class="tbar-label">Expert Valuations</span>
+      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--border);"></div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;">
+
+    <div class="tbar-item" onclick="togglePanel('loc')" id="tb-loc">
       <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
-      <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);">Hatton Garden, London</span>
+      <span class="tbar-label">Hatton Garden, London</span>
+      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--border);"></div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;">
+
+    <div class="tbar-item" onclick="togglePanel('disc')" id="tb-disc">
       <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="9" rx="1"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>
-      <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);">Discreet &amp; Secure</span>
+      <span class="tbar-label">Discreet &amp; Secure</span>
+      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--border);"></div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;">
+
+    <div class="tbar-item" onclick="togglePanel('resp')" id="tb-resp">
       <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 4l6 5 6-5"/><rect x="2" y="4" width="12" height="9" rx="1"/></svg>
-      <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);">Same-Day Response</span>
+      <span class="tbar-label">Same-Day Response</span>
+      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
+
   </div>
 </section>
+
+<!-- Panel: Authenticity -->
+<div class="tbar-panel" id="panel-auth">
+  <div class="tbar-panel-inner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Our Process</span></div>
+    <p>Every piece that passes through Bland & Co undergoes a rigorous authentication process conducted by our in-house specialists. We cross-reference serial numbers, inspect movement signatures, verify hallmarks, and where applicable review original documentation. No item is listed or purchased without a signed-off authentication report.</p>
+    <a href="about.html" class="tbar-cta">Learn about our team <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</div>
+
+<!-- Panel: Expert Valuations -->
+<div class="tbar-panel" id="panel-val">
+  <div class="tbar-panel-inner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Valuations</span></div>
+    <p>Our valuations are grounded in live market data, recent auction results, and decades of specialist knowledge across watches, jewellery, and precious metals. We provide honest, transparent assessments — whether you intend to sell or simply want to know what you hold. All valuations are completely free and carry no obligation.</p>
+    <a href="sell.html" class="tbar-cta">Get a free valuation <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</div>
+
+<!-- Panel: Location / Map -->
+<div class="tbar-panel" id="panel-loc">
+  <div class="tbar-panel-inner" style="padding-bottom:0;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Find Us</span></div>
+    <p style="margin-bottom:20px;">We are based in Hatton Garden — London's historic jewellery quarter. Appointments are preferred; walk-ins are welcome during opening hours. <strong style="color:var(--cream);">Mon–Sat, 10am–6pm.</strong></p>
+  </div>
+  <iframe id="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.4!2d-0.1094!3d51.5194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b4f0a4e4c4b%3A0x0!2sHatton+Garden%2C+London+EC1N!5e0!3m2!1sen!2suk!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+<!-- Panel: Discreet & Secure -->
+<div class="tbar-panel" id="panel-disc">
+  <div class="tbar-panel-inner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Privacy & Security</span></div>
+    <p>We understand that buying and selling high-value items requires absolute discretion. Client identities and transaction details are never shared with third parties. All communications are confidential, valuations are conducted privately, and payments are handled securely. We deal with many clients who value privacy above all else — and that trust is something we take seriously.</p>
+    <a href="contact.html" class="tbar-cta">Speak with us confidentially <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</div>
+
+<!-- Panel: Same-Day Response -->
+<div class="tbar-panel" id="panel-resp">
+  <div class="tbar-panel-inner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Response Time</span></div>
+    <p>Every enquiry submitted before 5pm on a business day receives a response the same day — guaranteed. Whether you reach out by email, phone, or WhatsApp, you will hear from a specialist directly. We don't use automated replies or outsourced teams. When you contact us, you speak to someone who knows the market.</p>
+    <a href="contact.html" class="tbar-cta">Contact us now <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</div>
+
+<script>
+  const PANELS  = { auth:'panel-auth', val:'panel-val', loc:'panel-loc', disc:'panel-disc', resp:'panel-resp' };
+  const BUTTONS = { auth:'tb-auth',    val:'tb-val',    loc:'tb-loc',    disc:'tb-disc',    resp:'tb-resp'    };
+  let activePanel = null;
+  let transitioning = false;
+
+  function togglePanel(key) {
+    if (transitioning) return;
+
+    if (activePanel === key) {
+      // Just close the open one
+      closePanel(activePanel);
+      activePanel = null;
+      return;
+    }
+
+    if (activePanel) {
+      // Close current first, then open next after transition finishes
+      transitioning = true;
+      const prev = activePanel;
+      activePanel = null;
+      closePanel(prev);
+      setTimeout(() => {
+        transitioning = false;
+        openPanel(key);
+      }, 190);
+    } else {
+      openPanel(key);
+    }
+  }
+
+  function openPanel(key) {
+    document.getElementById(PANELS[key]).classList.add('open');
+    document.getElementById(BUTTONS[key]).classList.add('active');
+    activePanel = key;
+    setTimeout(() => document.getElementById(PANELS[key]).scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+
+  function closePanel(key) {
+    document.getElementById(PANELS[key]).classList.remove('open');
+    document.getElementById(BUTTONS[key]).classList.remove('active');
+  }
+</script>
 
 <!-- ===== CATEGORIES ===== -->
 <section style="padding:112px 0;background:var(--bg);">

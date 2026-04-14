@@ -1,0 +1,53 @@
+[
+  {
+    "id": "val_001",
+    "name": "Thomas Hargreaves",
+    "email": "t.hargreaves@gmail.com",
+    "phone": "+44 7700 901111",
+    "itemType": "watches",
+    "brand": "Omega",
+    "model": "Speedmaster Professional Moonwatch",
+    "reference": "311.30.42.30.01.005",
+    "condition": "Good",
+    "paperwork": "Box Only",
+    "description": "My late father's watch. Has been serviced once in 2018. Minor scratches on bracelet but case is good. Original dial.",
+    "status": "pending",
+    "valuationAmount": null,
+    "notes": "",
+    "createdAt": "2026-04-12T09:30:00Z"
+  },
+  {
+    "id": "val_002",
+    "name": "Priya Patel",
+    "email": "priya.patel@business.com",
+    "phone": "+44 7700 902222",
+    "itemType": "jewellery",
+    "brand": "Cartier",
+    "model": "Love Bracelet",
+    "reference": "B6035517",
+    "condition": "Excellent",
+    "paperwork": "Full Set",
+    "description": "18ct yellow gold Love bracelet, size 17. Purchased 2022 from Cartier Bond Street. Full set with all screwdrivers and original receipt.",
+    "status": "valuated",
+    "valuationAmount": 4800,
+    "notes": "Current retail is £7,500. Offering £4,800 based on secondary market.",
+    "createdAt": "2026-04-11T11:00:00Z"
+  },
+  {
+    "id": "val_003",
+    "name": "Marcus Webb",
+    "email": "m.webb@icloud.com",
+    "phone": "+44 7700 903333",
+    "itemType": "metals",
+    "brand": "Royal Mint",
+    "model": "Gold Britannia Coins",
+    "reference": "1oz x 10",
+    "condition": "Mint",
+    "paperwork": "Full Set",
+    "description": "10x 1oz Gold Britannia coins, 2021 issue. Still in original sealed tubes from Royal Mint. Never been opened.",
+    "status": "offered",
+    "valuationAmount": 19500,
+    "notes": "Offered £19,500 for the lot. Client is considering.",
+    "createdAt": "2026-04-10T15:20:00Z"
+  }
+]

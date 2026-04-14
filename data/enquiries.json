@@ -1,0 +1,35 @@
+[
+  {
+    "id": "enq_001",
+    "name": "James Whitmore",
+    "email": "j.whitmore@email.com",
+    "phone": "+44 7700 900123",
+    "subject": "Interested in Rolex Daytona",
+    "message": "Hello, I saw the Rolex Daytona 116500LN listed and I'm very interested. Is it still available? I'd like to arrange a viewing at your Hatton Garden location.",
+    "status": "new",
+    "notes": "",
+    "createdAt": "2026-04-10T14:23:00Z"
+  },
+  {
+    "id": "enq_002",
+    "name": "Sarah Chen",
+    "email": "sarah.chen@outlook.com",
+    "phone": "+44 7700 900456",
+    "subject": "Gold bar purchase enquiry",
+    "message": "I'm looking to purchase 5oz gold bars as part of a portfolio diversification. Could you provide current pricing and availability?",
+    "status": "contacted",
+    "notes": "Called back on 11 Apr. Sent pricing sheet. Awaiting response.",
+    "createdAt": "2026-04-09T10:05:00Z"
+  },
+  {
+    "id": "enq_003",
+    "name": "Robert Ashby",
+    "email": "r.ashby@privateemail.co.uk",
+    "phone": "+44 7700 900789",
+    "subject": "Diamond ring for engagement",
+    "message": "Looking for a diamond engagement ring, around 1.5-2ct, preferably D-F colour and VS or better. Budget circa £15,000. Do you have anything suitable?",
+    "status": "closed",
+    "notes": "Sold him the 2.1ct ring (inv_004). Transaction completed 12 Apr.",
+    "createdAt": "2026-04-08T16:45:00Z"
+  }
+]

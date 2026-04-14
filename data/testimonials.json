@@ -1,0 +1,38 @@
+[
+  {
+    "id": "tes_001",
+    "name": "Edward Blackwell",
+    "role": "Private Collector, Surrey",
+    "content": "I've been dealing in luxury watches for over twenty years and Bland & Co stand apart. Their knowledge of the market is exceptional, and the transaction was handled with complete discretion. The Patek they sourced for me was authenticated to the highest standard.",
+    "rating": 5,
+    "visible": true,
+    "createdAt": "2026-03-01T10:00:00Z"
+  },
+  {
+    "id": "tes_002",
+    "name": "Amelia Forsythe",
+    "role": "Interior Designer, Mayfair",
+    "content": "I inherited a collection of pieces and had no idea of their value. The team at Bland & Co were patient, incredibly knowledgeable, and offered a price well above what I'd expected. The whole process took less than an hour.",
+    "rating": 5,
+    "visible": true,
+    "createdAt": "2026-03-10T10:00:00Z"
+  },
+  {
+    "id": "tes_003",
+    "name": "Daniel Osei",
+    "role": "Investment Manager, City of London",
+    "content": "I approach precious metals the same way I approach any asset class — with rigour. Bland & Co provided LBMA certified bars with full documentation and their pricing was competitive. I'll be returning for further purchases.",
+    "rating": 5,
+    "visible": true,
+    "createdAt": "2026-03-18T10:00:00Z"
+  },
+  {
+    "id": "tes_004",
+    "name": "Victoria Lam",
+    "role": "Entrepreneur, London",
+    "content": "Sold my Rolex through Bland & Co after getting quotes elsewhere. They beat every offer by a meaningful margin and the payment was same-day as promised. No drama, no delays — exactly as described.",
+    "rating": 5,
+    "visible": true,
+    "createdAt": "2026-03-25T10:00:00Z"
+  }
+]

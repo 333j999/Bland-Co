@@ -1,0 +1,80 @@
+[
+  {
+    "id": "inv_001",
+    "name": "Rolex Daytona",
+    "category": "watches",
+    "description": "Ref. 116500LN · White panda dial · 2020 · Box & papers. Investment grade piece.",
+    "price": 28500,
+    "reference": "116500LN",
+    "condition": "Excellent",
+    "paperwork": "Full Set",
+    "status": "available",
+    "imageUrl": "https://placehold.co/500x375/111917/166649?text=Rolex+Daytona",
+    "createdAt": "2026-01-10T10:00:00Z"
+  },
+  {
+    "id": "inv_002",
+    "name": "999.9 Gold Bars",
+    "category": "metals",
+    "description": "LBMA certified. 1oz, 5oz & 1kg denominations available. Accompanied by full certification.",
+    "price": 2100,
+    "reference": "LBMA-AU-999",
+    "condition": "Mint",
+    "paperwork": "Full Set",
+    "status": "available",
+    "imageUrl": "https://placehold.co/500x375/111917/C4962E?text=Gold+Bars+999",
+    "createdAt": "2026-01-12T09:00:00Z"
+  },
+  {
+    "id": "inv_003",
+    "name": "Silver Bullion Coins",
+    "category": "metals",
+    "description": "1oz silver Britannia & Maple Leaf coins. Available in tubes of 25. Competitive pricing.",
+    "price": 680,
+    "reference": "SLV-BRIT-1OZ",
+    "condition": "Mint",
+    "paperwork": "Full Set",
+    "status": "available",
+    "imageUrl": "https://placehold.co/500x375/111917/9E9583?text=Silver+Coins",
+    "createdAt": "2026-01-14T11:00:00Z"
+  },
+  {
+    "id": "inv_004",
+    "name": "Diamond Solitaire Ring",
+    "category": "jewellery",
+    "description": "2.1ct round brilliant, VVS1 clarity, D colour. Platinum setting. GIA certified.",
+    "price": 18900,
+    "reference": "GIA-2458123",
+    "condition": "Excellent",
+    "paperwork": "Full Set",
+    "status": "reserved",
+    "imageUrl": "https://placehold.co/500x375/111917/C4962E?text=Diamond+Ring",
+    "createdAt": "2026-01-16T14:00:00Z"
+  },
+  {
+    "id": "inv_005",
+    "name": "18ct Cuban Link Chain",
+    "category": "jewellery",
+    "description": "Yellow gold, 10mm width, 22 inches. Hallmarked and certified. Classic investment piece.",
+    "price": 4200,
+    "reference": "YG-CUBAN-22",
+    "condition": "Excellent",
+    "paperwork": "No Box or Papers",
+    "status": "available",
+    "imageUrl": "https://placehold.co/500x375/111917/E8DFC8?text=Gold+Chain",
+    "createdAt": "2026-01-18T10:30:00Z"
+  },
+  {
+    "id": "inv_006",
+    "name": "Patek Philippe Nautilus",
+    "category": "watches",
+    "description": "Ref. 5711/1A-010 · Stainless steel · Blue dial · 2019 · Full set. Highly sought after.",
+    "price": 115000,
+    "reference": "5711/1A-010",
+    "condition": "Mint",
+    "paperwork": "Full Set",
+    "status": "sold",
+    "imageUrl": "https://placehold.co/500x375/111917/166649?text=Patek+Nautilus",
+    "createdAt": "2026-02-01T09:00:00Z"
+  }
+]

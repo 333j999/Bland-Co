@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bland & Co — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #060A08;
+      --surface:   #0D1511;
+      --card:      #111917;
+      --elevated:  #162019;
+      --green:     #0C4535;
+      --green-dark:#073D2A;
+      --green-mid: #166649;
+      --green-hi:  #1E8560;
+      --cream:     #E8DFC8;
+      --cream-dim: #9E9583;
+      --gold:      #C4962E;
+      --border:    rgba(232,223,200,0.07);
+      --red:       #8B2020;
+      --red-hi:    #C0392B;
+      --sidebar-w: 244px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg); color: var(--cream); font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+    /* ── Layout ── */
+    #app { display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    #sidebar { width: var(--sidebar-w); flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
+    .sb-brand { padding: 26px 22px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .sb-brand img { width: 34px; height: 34px; object-fit: cover; border-radius: 2px; }
+    .sb-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 0.04em; color: var(--cream); line-height: 1.2; }
+    .sb-brand-text { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); }
+    .sb-section { padding: 18px 0 6px; }
+    .sb-label { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); padding: 0 22px 8px; opacity: 0.45; }
+    .sb-link { display: flex; align-items: center; gap: 11px; padding: 9px 22px; font-size: 13px; color: var(--cream-dim); cursor: pointer; border-left: 2px solid transparent; transition: color 0.15s, background 0.15s, border-color 0.15s; text-decoration: none; }
+    .sb-link:hover { color: var(--cream); background: rgba(232,223,200,0.03); }
+    .sb-link.active { color: var(--cream); background: rgba(12,69,53,0.22); border-left-color: var(--green-mid); }
+    .sb-link svg { flex-shrink: 0; opacity: 0.65; }
+    .sb-link.active svg { opacity: 1; }
+    .sb-badge { margin-left: auto; min-width: 18px; height: 18px; border-radius: 9px; background: var(--green); color: var(--cream); font-size: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+    .sb-badge.urgent { background: var(--red); }
+    .sb-badge.gold { background: rgba(196,150,46,0.3); color: var(--gold); }
+    .sb-footer { margin-top: auto; padding: 18px 22px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+    .sb-footer a { font-size: 11.5px; color: var(--cream-dim); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.15s; }
+    .sb-footer a:hover { color: var(--cream); }
+
+    /* ── Main ── */
+    #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    #topbar { height: 58px; flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; gap: 14px; }
+    #topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--cream); }
+    .topbar-spacer { flex: 1; }
+    .search-trigger { display: flex; align-items: center; gap: 8px; padding: 7px 14px; background: var(--card); border: 1px solid var(--border); color: var(--cream-dim); font-size: 12px; cursor: pointer; transition: border-color 0.15s, color 0.15s; white-space: nowrap; }
+    .search-trigger:hover { border-color: rgba(232,223,200,0.2); color: var(--cream); }
+    .search-trigger kbd { font-size: 10px; background: var(--elevated); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; font-family: inherit; color: var(--cream-dim); }
+    .topbar-btn { display: flex; align-items: center; gap: 7px; padding: 8px 16px; background: var(--green); color: var(--cream); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
+    .topbar-btn:hover { background: var(--green-mid); }
+
+    #content { flex: 1; overflow-y: auto; padding: 28px; }
+
+    /* ── Sections ── */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ── Stat Cards ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 28px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); padding: 22px; position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--green-mid); }
+    .stat-card.gold::before { background: var(--gold); }
+    .stat-card.urgent::before { background: var(--red-hi); }
+    .stat-card.teal::before { background: #1AB8A0; }
+    .stat-label { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 10px; }
+    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--cream); line-height: 1; }
+    .stat-sub { font-size: 11px; color: var(--cream-dim); margin-top: 8px; line-height: 1.5; }
+
+    /* ── Tables ── */
+    .table-wrap { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+    .table-header { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .table-title { font-size: 13px; font-weight: 500; color: var(--cream); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { text-align: left; padding: 11px 16px; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dim); background: var(--surface); border-bottom: 1px solid var(--border); font-weight: 400; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(232,223,200,0.018); }
+    td { padding: 13px 16px; font-size: 13px; color: var(--cream); vertical-align: middle; }
+    td.dim { color: var(--cream-dim); }
+    .td-actions { display: flex; gap: 6px; align-items: center; }
+
+    /* ── Filter Tabs ── */
+    .filter-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 22px; background: var(--surface); overflow-x: auto; }
+    .filter-tab { padding: 11px 14px; font-size: 11.5px; letter-spacing: 0.05em; color: var(--cream-dim); cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+    .filter-tab:hover { color: var(--cream); }
+    .filter-tab.active { color: var(--cream); border-bottom-color: var(--green-mid); }
+    .filter-tab .ct { display: inline-block; margin-left: 5px; font-size: 10px; color: var(--cream-dim); opacity: 0.7; }
+
+    /* ── Badges ── */
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 500; }
+    .badge-available { background: rgba(22,102,73,0.25); color: #4DB892; border: 1px solid rgba(22,102,73,0.4); }
+    .badge-reserved  { background: rgba(196,150,46,0.2);  color: var(--gold); border: 1px solid rgba(196,150,46,0.35); }
+    .badge-sold      { background: rgba(158,149,131,0.15); color: var(--cream-dim); border: 1px solid rgba(158,149,131,0.2); }
+    .badge-new       { background: rgba(192,57,43,0.2);    color: #E74C3C; border: 1px solid rgba(192,57,43,0.35); }
+    .badge-contacted { background: rgba(196,150,46,0.2);   color: var(--gold); border: 1px solid rgba(196,150,46,0.3); }
+    .badge-closed    { background: rgba(158,149,131,0.15); color: var(--cream-dim); border: 1px solid rgba(158,149,131,0.2); }
+    .badge-pending   { background: rgba(192,57,43,0.2);    color: #E74C3C; border: 1px solid rgba(192,57,43,0.35); }
+    .badge-valuated  { background: rgba(22,102,73,0.25);   color: #4DB892; border: 1px solid rgba(22,102,73,0.4); }
+    .badge-offered   { background: rgba(196,150,46,0.2);   color: var(--gold); border: 1px solid rgba(196,150,46,0.3); }
+    .badge-accepted  { background: rgba(22,102,73,0.35);   color: #6FCF97; border: 1px solid rgba(22,102,73,0.5); }
+    .badge-declined  { background: rgba(158,149,131,0.15); color: var(--cream-dim); border: 1px solid rgba(158,149,131,0.2); }
+    .badge-confirmed { background: rgba(22,102,73,0.25);   color: #4DB892; border: 1px solid rgba(22,102,73,0.4); }
+    .badge-completed { background: rgba(158,149,131,0.15); color: var(--cream-dim); border: 1px solid rgba(158,149,131,0.2); }
+    .badge-cancelled { background: rgba(139,32,32,0.2);    color: #E74C3C; border: 1px solid rgba(139,32,32,0.3); }
+    .badge-buying    { background: rgba(22,102,73,0.18);   color: #4DB892; border: 1px solid rgba(22,102,73,0.3); }
+    .badge-selling   { background: rgba(196,150,46,0.18);  color: var(--gold); border: 1px solid rgba(196,150,46,0.28); }
+    .badge-valuation { background: rgba(26,184,160,0.18);  color: #1AB8A0; border: 1px solid rgba(26,184,160,0.28); }
+    .badge-general   { background: rgba(158,149,131,0.15); color: var(--cream-dim); border: 1px solid rgba(158,149,131,0.2); }
+
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid transparent; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+    .btn-sm { padding: 5px 10px; font-size: 10.5px; }
+    .btn-green { background: var(--green); color: var(--cream); border-color: var(--green); }
+    .btn-green:hover { background: var(--green-mid); border-color: var(--green-mid); }
+    .btn-gold { background: rgba(196,150,46,0.2); color: var(--gold); border-color: rgba(196,150,46,0.4); }
+    .btn-gold:hover { background: rgba(196,150,46,0.3); }
+    .btn-outline { background: transparent; color: var(--cream-dim); border-color: var(--border); }
+    .btn-outline:hover { color: var(--cream); border-color: rgba(232,223,200,0.25); }
+    .btn-danger { background: transparent; color: #E74C3C; border-color: rgba(192,57,43,0.3); }
+    .btn-danger:hover { background: rgba(192,57,43,0.1); }
+    .btn-ghost { background: transparent; color: var(--cream-dim); border-color: transparent; padding: 5px 8px; }
+    .btn-ghost:hover { color: var(--cream); }
+
+    /* ── Modal ── */
+    #modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(6,10,8,0.88); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    #modal-backdrop.open { display: flex; }
+    #modal { background: var(--card); border: 1px solid rgba(232,223,200,0.1); width: 620px; max-width: 96vw; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
+    .modal-header { padding: 22px 26px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--card); z-index: 1; }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; color: var(--cream); }
+    .modal-body { padding: 26px; flex: 1; }
+    .modal-footer { padding: 18px 26px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* ── Forms ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-span { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); }
+    .form-control { background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 10px 13px; font-size: 13.5px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
+    .form-control:focus { border-color: var(--green-mid); }
+    .form-control::placeholder { color: rgba(158,149,131,0.45); }
+    textarea.form-control { resize: vertical; min-height: 78px; }
+    select.form-control { cursor: pointer; }
+    select.form-control option { background: var(--surface); }
+
+    /* ── Toggle ── */
+    .toggle { position: relative; width: 36px; height: 20px; cursor: pointer; display: inline-block; }
+    .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-track { position: absolute; inset: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: 0.2s; }
+    .toggle input:checked ~ .toggle-track { background: var(--green); border-color: var(--green); }
+    .toggle-thumb { position: absolute; left: 3px; top: 3px; width: 12px; height: 12px; background: var(--cream-dim); border-radius: 50%; transition: 0.2s; pointer-events: none; }
+    .toggle input:checked ~ .toggle-thumb { left: 19px; background: var(--cream); }
+
+    /* ── Toast ── */
+    #toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .toast-item { padding: 11px 18px; font-size: 13px; border-left: 3px solid; background: var(--elevated); min-width: 240px; animation: toastIn 0.22s ease; }
+    .toast-item.success { border-color: var(--green-mid); color: var(--cream); }
+    .toast-item.error   { border-color: var(--red-hi); color: #E74C3C; }
+    @keyframes toastIn { from { opacity:0; transform: translateX(14px); } to { opacity:1; transform: none; } }
+
+    /* ── Detail panel ── */
+    .detail-panel { background: var(--surface); border: 1px solid var(--border); padding: 18px; }
+    .detail-row { display: flex; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key { color: var(--cream-dim); min-width: 140px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; padding-top: 1px; }
+    .detail-val { color: var(--cream); flex: 1; line-height: 1.6; }
+
+    /* ── Inventory grid ── */
+    .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .inv-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; }
+    .inv-card:hover { border-color: rgba(232,223,200,0.14); }
+    .inv-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; filter: brightness(0.8); display: block; }
+    .inv-body { padding: 18px; }
+    .inv-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .inv-cat { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+    .inv-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--cream); margin-bottom: 4px; }
+    .inv-ref { font-size: 11px; color: var(--cream-dim); letter-spacing: 0.05em; margin-bottom: 8px; }
+    .inv-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--cream); }
+    .inv-actions { display: flex; gap: 7px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+    /* ── Search overlay ── */
+    #search-overlay { display: none; position: fixed; inset: 0; background: rgba(6,10,8,0.9); z-index: 2000; align-items: flex-start; justify-content: center; padding-top: 100px; backdrop-filter: blur(6px); }
+    #search-overlay.open { display: flex; }
+    #search-box { background: var(--card); border: 1px solid rgba(232,223,200,0.15); width: 620px; max-width: 96vw; max-height: 70vh; display: flex; flex-direction: column; overflow: hidden; }
+    #search-input-wrap { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    #search-input { flex: 1; background: none; border: none; outline: none; font-size: 16px; color: var(--cream); font-family: 'DM Sans', sans-serif; }
+    #search-input::placeholder { color: rgba(158,149,131,0.5); }
+    #search-results { overflow-y: auto; }
+    .search-group-label { padding: 10px 20px 6px; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); opacity: 0.6; border-top: 1px solid var(--border); }
+    .search-group-label:first-child { border-top: none; }
+    .search-result { display: flex; align-items: center; gap: 14px; padding: 11px 20px; cursor: pointer; transition: background 0.1s; }
+    .search-result:hover, .search-result.focused { background: rgba(12,69,53,0.25); }
+    .search-result-icon { width: 32px; height: 32px; background: var(--elevated); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .search-result-name { font-size: 13.5px; color: var(--cream); }
+    .search-result-sub { font-size: 11.5px; color: var(--cream-dim); margin-top: 1px; }
+    .search-empty { padding: 40px 20px; text-align: center; color: var(--cream-dim); font-size: 13px; }
+    .search-hint { padding: 10px 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--cream-dim); display: flex; gap: 16px; }
+    .search-hint span { display: flex; align-items: center; gap: 4px; }
+    .search-hint kbd { font-size: 9.5px; background: var(--elevated); border: 1px solid var(--border); padding: 1px 5px; border-radius: 2px; font-family: inherit; }
+
+    /* ── Calendar strip ── */
+    .cal-strip { display: flex; gap: 8px; padding: 18px 22px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+    .cal-day { flex-shrink: 0; width: 58px; text-align: center; padding: 10px 6px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+    .cal-day:hover { border-color: rgba(232,223,200,0.2); }
+    .cal-day.active { background: var(--green-dark); border-color: var(--green-mid); }
+    .cal-day.has-booking { position: relative; }
+    .cal-day.has-booking::after { content: ''; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+    .cal-weekday { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); }
+    .cal-date { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--cream); margin-top: 2px; }
+
+    /* ── Misc ── */
+    .empty { text-align: center; padding: 50px 20px; color: var(--cream-dim); }
+    .empty svg { margin: 0 auto 14px; display: block; opacity: 0.2; }
+    .empty p { font-size: 13px; }
+    .stars { color: var(--gold); letter-spacing: 2px; }
+    .section-gap { margin-bottom: 20px; }
+    .convert-banner { background: rgba(196,150,46,0.08); border: 1px solid rgba(196,150,46,0.2); padding: 14px 18px; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .convert-banner p { font-size: 12.5px; color: var(--cream-dim); line-height: 1.5; }
+
+    @media (max-width: 1200px) { .stat-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 900px)  { .stat-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px)  { #sidebar { display: none; } .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+  <aside id="sidebar">
+    <div class="sb-brand">
+      <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co">
+      <div>
+        <div class="sb-brand-name">Bland & Co</div>
+        <div class="sb-brand-text">Admin Panel</div>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-label">Overview</div>
+      <a class="sb-link active" data-section="dashboard" onclick="nav('dashboard')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-label">Manage</div>
+      <a class="sb-link" data-section="inventory" onclick="nav('inventory')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 5l6-3 6 3v7l-6 3-6-3V5z"/><path d="M8 2v13M2 5l6 3 6-3"/></svg>
+        Inventory
+        <span class="sb-badge" id="sb-inv">—</span>
+      </a>
+      <a class="sb-link" data-section="enquiries" onclick="nav('enquiries')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M14 2H2a1 1 0 00-1 1v9a1 1 0 001 1h2v2l3-2h7a1 1 0 001-1V3a1 1 0 00-1-1z"/></svg>
+        Enquiries
+        <span class="sb-badge urgent" id="sb-enq">—</span>
+      </a>
+      <a class="sb-link" data-section="valuations" onclick="nav('valuations')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+        Valuations
+        <span class="sb-badge urgent" id="sb-val">—</span>
+      </a>
+      <a class="sb-link" data-section="consultations" onclick="nav('consultations')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 1v2M11 1v2M2 6h12"/></svg>
+        Consultations
+        <span class="sb-badge gold" id="sb-con">—</span>
+      </a>
+      <a class="sb-link" data-section="testimonials" onclick="nav('testimonials')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 1L10.2 5.5 15 6.3 11.5 9.7 12.4 14.5 8 12.2 3.6 14.5 4.5 9.7 1 6.3 5.8 5.5Z"/></svg>
+        Testimonials
+      </a>
+    </div>
+
+    <div class="sb-footer">
+      <a href="index.html" target="_blank">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M7 2H2v12h12V9"/><path d="M10 1h5v5M15 1L8 8"/></svg>
+        View Live Site
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════ MAIN ═══════════════════════ -->
+  <div id="main">
+    <div id="topbar">
+      <div id="topbar-title" style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);">Dashboard</div>
+      <div class="topbar-spacer"></div>
+      <button class="search-trigger" onclick="openSearch()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3.5 3.5"/></svg>
+        Search everything
+        <kbd>⌘K</kbd>
+      </button>
+      <button class="topbar-btn" id="topbar-add-btn" style="display:none" onclick="openAddModal()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+        <span id="topbar-add-label">Add</span>
+      </button>
+    </div>
+
+    <div id="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div id="sec-dashboard" class="section active">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Inventory</div><div class="stat-value" id="s-inv">—</div><div class="stat-sub" id="s-inv-sub">—</div></div>
+          <div class="stat-card gold"><div class="stat-label">New Enquiries</div><div class="stat-value" id="s-enq">—</div><div class="stat-sub" id="s-enq-sub">—</div></div>
+          <div class="stat-card urgent"><div class="stat-label">Pending Valuations</div><div class="stat-value" id="s-val">—</div><div class="stat-sub" id="s-val-sub">—</div></div>
+          <div class="stat-card teal"><div class="stat-label">Consultations</div><div class="stat-value" id="s-con">—</div><div class="stat-sub" id="s-con-sub">—</div></div>
+          <div class="stat-card"><div class="stat-label">Testimonials Live</div><div class="stat-value" id="s-tes">—</div><div class="stat-sub" id="s-tes-sub">—</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><span class="table-title">Recent Enquiries</span></div>
+          <table><thead><tr><th>Name</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+          <tbody id="dash-enq-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── INVENTORY ── -->
+      <div id="sec-inventory" class="section">
+        <div class="table-wrap">
+          <div class="filter-tabs" id="inv-cat-tabs">
+            <div class="filter-tab active" onclick="setInvFilter('cat','all',this)">All <span class="ct" id="ict-all"></span></div>
+            <div class="filter-tab" onclick="setInvFilter('cat','watches',this)">Watches <span class="ct" id="ict-watches"></span></div>
+            <div class="filter-tab" onclick="setInvFilter('cat','metals',this)">Metals <span class="ct" id="ict-metals"></span></div>
+            <div class="filter-tab" onclick="setInvFilter('cat','jewellery',this)">Jewellery <span class="ct" id="ict-jewellery"></span></div>
+          </div>
+          <div class="filter-tabs" id="inv-status-tabs">
+            <div class="filter-tab active" onclick="setInvFilter('status','all',this)">All Statuses</div>
+            <div class="filter-tab" onclick="setInvFilter('status','available',this)">Available</div>
+            <div class="filter-tab" onclick="setInvFilter('status','reserved',this)">Reserved</div>
+            <div class="filter-tab" onclick="setInvFilter('status','sold',this)">Sold</div>
+          </div>
+          <div id="inv-grid" style="padding:18px;"></div>
+        </div>
+      </div>
+
+      <!-- ── ENQUIRIES ── -->
+      <div id="sec-enquiries" class="section">
+        <div class="table-wrap">
+          <div class="filter-tabs" id="enq-tabs">
+            <div class="filter-tab active" onclick="setFilter('enq','all',this)">All</div>
+            <div class="filter-tab" onclick="setFilter('enq','new',this)">New</div>
+            <div class="filter-tab" onclick="setFilter('enq','contacted',this)">Contacted</div>
+            <div class="filter-tab" onclick="setFilter('enq','closed',this)">Closed</div>
+          </div>
+          <table><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="enq-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── VALUATIONS ── -->
+      <div id="sec-valuations" class="section">
+        <div class="table-wrap">
+          <div class="filter-tabs" id="val-tabs">
+            <div class="filter-tab active" onclick="setFilter('val','all',this)">All</div>
+            <div class="filter-tab" onclick="setFilter('val','pending',this)">Pending</div>
+            <div class="filter-tab" onclick="setFilter('val','valuated',this)">Valuated</div>
+            <div class="filter-tab" onclick="setFilter('val','offered',this)">Offered</div>
+            <div class="filter-tab" onclick="setFilter('val','accepted',this)">Accepted</div>
+            <div class="filter-tab" onclick="setFilter('val','declined',this)">Declined</div>
+          </div>
+          <table><thead><tr><th>Name</th><th>Item Type</th><th>Brand / Model</th><th>Date</th><th>Status</th><th>Offer</th><th>Actions</th></tr></thead>
+          <tbody id="val-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── CONSULTATIONS ── -->
+      <div id="sec-consultations" class="section">
+        <div class="table-wrap">
+          <div id="cal-strip-wrap"></div>
+          <div class="filter-tabs" id="con-tabs">
+            <div class="filter-tab active" onclick="setFilter('con','all',this)">All</div>
+            <div class="filter-tab" onclick="setFilter('con','pending',this)">Pending</div>
+            <div class="filter-tab" onclick="setFilter('con','confirmed',this)">Confirmed</div>
+            <div class="filter-tab" onclick="setFilter('con','completed',this)">Completed</div>
+            <div class="filter-tab" onclick="setFilter('con','cancelled',this)">Cancelled</div>
+          </div>
+          <table><thead><tr><th>Name</th><th>Purpose</th><th>Date & Time</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="con-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── TESTIMONIALS ── -->
+      <div id="sec-testimonials" class="section">
+        <div class="table-wrap">
+          <div class="table-header"><span class="table-title">All Testimonials</span></div>
+          <table><thead><tr><th>Name</th><th>Role</th><th>Rating</th><th>Preview</th><th>Visible</th><th>Actions</th></tr></thead>
+          <tbody id="tes-tbody"></tbody></table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MODAL ═══════════════════════ -->
+<div id="modal-backdrop" onclick="closeMaybe(event)">
+  <div id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title"></span>
+      <button class="btn btn-ghost" onclick="closeModal()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SEARCH OVERLAY ═══════════════════════ -->
+<div id="search-overlay" onclick="closeSearchMaybe(event)">
+  <div id="search-box">
+    <div id="search-input-wrap">
+      <svg width="16" height="16" fill="none" stroke="var(--cream-dim)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3.5 3.5"/></svg>
+      <input id="search-input" placeholder="Search inventory, enquiries, valuations, consultations…" oninput="onSearch(this.value)" onkeydown="searchKeyNav(event)" autocomplete="off">
+      <kbd style="font-size:10px;background:var(--elevated);border:1px solid var(--border);padding:2px 7px;border-radius:2px;color:var(--cream-dim);font-family:inherit;cursor:pointer" onclick="closeSearch()">ESC</kbd>
+    </div>
+    <div id="search-results"></div>
+    <div class="search-hint">
+      <span><kbd>↑↓</kbd> Navigate</span>
+      <span><kbd>↵</kbd> Open</span>
+      <span><kbd>ESC</kbd> Close</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// State
+// ══════════════════════════════════════════════════════════════════════
+const S = {
+  section: 'dashboard',
+  inventory: [], enquiries: [], valuations: [], testimonials: [], consultations: [],
+  invCat: 'all', invStatus: 'all',
+  enqFilter: 'all', valFilter: 'all', conFilter: 'all',
+  searchIdx: -1,
+};
+
+// ══════════════════════════════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════════════════════════════
+const api = {
+  get:   r      => fetch(`/api/${r}`).then(r=>r.json()),
+  post:  (r,d)  => fetch(`/api/${r}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json()),
+  put:   (r,id,d)=>fetch(`/api/${r}/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json()),
+  del:   (r,id) => fetch(`/api/${r}/${id}`,{method:'DELETE'}).then(r=>r.json()),
+  stats: ()     => fetch('/api/stats').then(r=>r.json()),
+};
+
+// ══════════════════════════════════════════════════════════════════════
+// Utilities
+// ══════════════════════════════════════════════════════════════════════
+const esc   = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const cap   = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+const fmtDate = iso => new Date(iso).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const fmtPrice= n  => n!=null ? `£${Number(n).toLocaleString('en-GB')}` : '—';
+const stars   = n  => '★'.repeat(n)+'☆'.repeat(5-n);
+const badge   = s  => `<span class="badge badge-${s}">${cap(s)}</span>`;
+
+function toast(msg, type='success') {
+  const t = document.createElement('div');
+  t.className = `toast-item ${type}`;
+  t.textContent = msg;
+  document.getElementById('toast').appendChild(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Navigation
+// ══════════════════════════════════════════════════════════════════════
+const TITLES = { dashboard:'Dashboard', inventory:'Inventory', enquiries:'Enquiries', valuations:'Valuations', consultations:'Consultations', testimonials:'Testimonials' };
+const ADD_LABELS = { inventory:'Add Item', consultations:'Add Booking', testimonials:'Add Testimonial' };
+
+function nav(section) {
+  S.section = section;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`sec-${section}`).classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.dataset.section === section));
+  document.getElementById('topbar-title').textContent = TITLES[section];
+  const btn = document.getElementById('topbar-add-btn');
+  btn.style.display = ADD_LABELS[section] ? 'flex' : 'none';
+  if (ADD_LABELS[section]) document.getElementById('topbar-add-label').textContent = ADD_LABELS[section];
+  renderSection(section);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Data loading
+// ══════════════════════════════════════════════════════════════════════
+async function loadAll() {
+  const [inv, enq, val, tes, con, stats] = await Promise.all([
+    api.get('inventory'), api.get('enquiries'), api.get('valuations'),
+    api.get('testimonials'), api.get('consultations'), api.stats(),
+  ]);
+  S.inventory=inv; S.enquiries=enq; S.valuations=val; S.testimonials=tes; S.consultations=con;
+  updateSidebar(stats);
+  renderSection(S.section);
+}
+
+async function reload(resource) {
+  S[resource] = await api.get(resource);
+  const stats = await api.stats();
+  updateSidebar(stats);
+  renderSection(S.section);
+}
+
+function updateSidebar(s) {
+  document.getElementById('sb-inv').textContent  = s.inventory.available;
+  document.getElementById('sb-enq').textContent  = s.enquiries.new;
+  document.getElementById('sb-val').textContent  = s.valuations.pending;
+  document.getElementById('sb-con').textContent  = s.consultations.pending + s.consultations.confirmed;
+
+  document.getElementById('s-inv').textContent     = s.inventory.total;
+  document.getElementById('s-inv-sub').textContent = `${s.inventory.available} available · ${s.inventory.reserved} reserved · ${s.inventory.sold} sold`;
+  document.getElementById('s-enq').textContent     = s.enquiries.new;
+  document.getElementById('s-enq-sub').textContent = `${s.enquiries.total} total · ${s.enquiries.contacted} in progress`;
+  document.getElementById('s-val').textContent     = s.valuations.pending;
+  document.getElementById('s-val-sub').textContent = `${s.valuations.total} total · ${s.valuations.offered} with offer`;
+  document.getElementById('s-con').textContent     = s.consultations.confirmed;
+  document.getElementById('s-con-sub').textContent = `${s.consultations.total} total · ${s.consultations.pending} pending confirmation`;
+  document.getElementById('s-tes').textContent     = s.testimonials.visible;
+  document.getElementById('s-tes-sub').textContent = `${s.testimonials.total} total testimonials`;
+}
+
+function renderSection(s) {
+  if (s==='dashboard')    renderDashboard();
+  if (s==='inventory')    renderInventory();
+  if (s==='enquiries')    renderEnquiries();
+  if (s==='valuations')   renderValuations();
+  if (s==='consultations')renderConsultations();
+  if (s==='testimonials') renderTestimonials();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Dashboard
+// ══════════════════════════════════════════════════════════════════════
+function renderDashboard() {
+  const tbody = document.getElementById('dash-enq-tbody');
+  const recent = [...S.enquiries].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,6);
+  if (!recent.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty"><p>No enquiries yet.</p></td></tr>`; return; }
+  tbody.innerHTML = recent.map(e => `
+    <tr>
+      <td><strong>${esc(e.name)}</strong></td>
+      <td class="dim">${esc(e.subject)}</td>
+      <td class="dim">${fmtDate(e.createdAt)}</td>
+      <td>${badge(e.status)}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="nav('enquiries')">View all</button></td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Inventory
+// ══════════════════════════════════════════════════════════════════════
+function setInvFilter(type, value, el) {
+  if (type==='cat')    { S.invCat=value;    document.querySelectorAll('#inv-cat-tabs .filter-tab').forEach(t=>t.classList.remove('active')); }
+  if (type==='status') { S.invStatus=value; document.querySelectorAll('#inv-status-tabs .filter-tab').forEach(t=>t.classList.remove('active')); }
+  el.classList.add('active');
+  renderInventory();
+}
+
+function renderInventory() {
+  ['all','watches','metals','jewellery'].forEach(c => {
+    const el = document.getElementById(`ict-${c}`);
+    if (el) el.textContent = c==='all' ? S.inventory.length : S.inventory.filter(i=>i.category===c).length;
+  });
+  let items = S.inventory;
+  if (S.invCat !== 'all')    items = items.filter(i => i.category === S.invCat);
+  if (S.invStatus !== 'all') items = items.filter(i => i.status   === S.invStatus);
+  const grid = document.getElementById('inv-grid');
+  if (!items.length) { grid.innerHTML = `<div class="empty"><p>No items match this filter.</p></div>`; return; }
+  grid.innerHTML = `<div class="inv-grid">${items.map(item => `
+    <div class="inv-card">
+      <img src="${esc(item.imageUrl)}" class="inv-img" alt="${esc(item.name)}" onerror="this.src='https://placehold.co/500x375/111917/166649?text=No+Image'">
+      <div class="inv-body">
+        <div class="inv-meta"><span class="inv-cat">${cap(item.category)}</span>${badge(item.status)}</div>
+        <div class="inv-name">${esc(item.name)}</div>
+        <div class="inv-ref">Ref: ${esc(item.reference||'—')}</div>
+        <div class="inv-price">${fmtPrice(item.price)}</div>
+        <div class="inv-actions">
+          <button class="btn btn-sm btn-outline" style="flex:1" onclick="editInventory('${item.id}')">Edit</button>
+          <button class="btn btn-sm btn-outline" onclick="quickStatus('${item.id}')">Status ↻</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteItem('inventory','${item.id}','${esc(item.name)}')">✕</button>
+        </div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function quickStatus(id) {
+  const item = S.inventory.find(i=>i.id===id);
+  const next = {available:'reserved',reserved:'sold',sold:'available'}[item.status];
+  openConfirm(`Change status to "${next}"?`,
+    `Update <strong>${esc(item.name)}</strong> from <em>${item.status}</em> → <em>${next}</em>.`,
+    async () => { await api.put('inventory',id,{status:next}); toast(`Status → ${next}`); await reload('inventory'); });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Enquiries
+// ══════════════════════════════════════════════════════════════════════
+function setFilter(section, value, el) {
+  if (section==='enq') { S.enqFilter=value; document.querySelectorAll('#enq-tabs .filter-tab').forEach(t=>t.classList.remove('active')); }
+  if (section==='val') { S.valFilter=value; document.querySelectorAll('#val-tabs .filter-tab').forEach(t=>t.classList.remove('active')); }
+  if (section==='con') { S.conFilter=value; document.querySelectorAll('#con-tabs .filter-tab').forEach(t=>t.classList.remove('active')); }
+  el.classList.add('active');
+  renderSection(S.section);
+}
+
+function renderEnquiries() {
+  let items = [...S.enquiries].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if (S.enqFilter!=='all') items = items.filter(e=>e.status===S.enqFilter);
+  const tbody = document.getElementById('enq-tbody');
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty"><p>No enquiries match.</p></td></tr>`; return; }
+  tbody.innerHTML = items.map(e => `
+    <tr>
+      <td><strong>${esc(e.name)}</strong></td>
+      <td class="dim">${esc(e.email)}</td>
+      <td>${esc(e.subject)}</td>
+      <td class="dim">${fmtDate(e.createdAt)}</td>
+      <td>${badge(e.status)}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-outline" onclick="viewEnquiry('${e.id}')">View</button>
+        <a class="btn btn-sm btn-ghost" href="mailto:${esc(e.email)}" title="Email">✉</a>
+      </div></td>
+    </tr>`).join('');
+}
+
+function viewEnquiry(id) {
+  const e = S.enquiries.find(x=>x.id===id);
+  setModal(`Enquiry — ${e.name}`, `
+    <div class="detail-panel" style="margin-top:0">
+      <div class="detail-row"><span class="detail-key">Name</span><span class="detail-val">${esc(e.name)}</span></div>
+      <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val"><a href="mailto:${esc(e.email)}" style="color:var(--green-mid)">${esc(e.email)}</a></span></div>
+      <div class="detail-row"><span class="detail-key">Phone</span><span class="detail-val">${esc(e.phone||'—')}</span></div>
+      <div class="detail-row"><span class="detail-key">Subject</span><span class="detail-val">${esc(e.subject)}</span></div>
+      <div class="detail-row"><span class="detail-key">Received</span><span class="detail-val">${fmtDate(e.createdAt)}</span></div>
+      <div class="detail-row"><span class="detail-key">Status</span><span class="detail-val">${badge(e.status)}</span></div>
+      <div class="detail-row"><span class="detail-key">Message</span><span class="detail-val">${esc(e.message)}</span></div>
+      <div class="detail-row"><span class="detail-key">Notes</span><span class="detail-val">${esc(e.notes)||'<em style="opacity:.4">None</em>'}</span></div>
+    </div>
+    <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" id="enq-st">${['new','contacted','closed'].map(s=>`<option value="${s}"${e.status===s?' selected':''}>${cap(s)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Notes</label>
+        <textarea class="form-control" id="enq-nt" rows="3">${esc(e.notes||'')}</textarea>
+      </div>
+    </div>`,
+    `<a class="btn btn-outline" href="mailto:${esc(e.email)}">Reply by Email</a>
+     <button class="btn btn-green" onclick="saveEnquiry('${id}')">Save</button>`
+  );
+}
+
+async function saveEnquiry(id) {
+  await api.put('enquiries', id, { status: document.getElementById('enq-st').value, notes: document.getElementById('enq-nt').value });
+  toast('Enquiry updated'); closeModal(); await reload('enquiries');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Valuations
+// ══════════════════════════════════════════════════════════════════════
+function renderValuations() {
+  let items = [...S.valuations].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if (S.valFilter!=='all') items = items.filter(v=>v.status===S.valFilter);
+  const tbody = document.getElementById('val-tbody');
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="7" class="empty"><p>No valuations match.</p></td></tr>`; return; }
+  tbody.innerHTML = items.map(v => `
+    <tr>
+      <td><strong>${esc(v.name)}</strong></td>
+      <td class="dim">${cap(v.itemType)}</td>
+      <td>${esc(v.brand)} ${esc(v.model)}</td>
+      <td class="dim">${fmtDate(v.createdAt)}</td>
+      <td>${badge(v.status)}</td>
+      <td>${v.valuationAmount ? fmtPrice(v.valuationAmount) : '<span style="color:var(--cream-dim)">—</span>'}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-outline" onclick="viewValuation('${v.id}')">View</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteItem('valuations','${v.id}','valuation request')">✕</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function viewValuation(id) {
+  const v = S.valuations.find(x=>x.id===id);
+  const canConvert = ['accepted','offered','valuated'].includes(v.status);
+  setModal(`Valuation — ${v.name}`, `
+    <div class="detail-panel" style="margin-top:0">
+      <div class="detail-row"><span class="detail-key">Name</span><span class="detail-val">${esc(v.name)}</span></div>
+      <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val"><a href="mailto:${esc(v.email)}" style="color:var(--green-mid)">${esc(v.email)}</a></span></div>
+      <div class="detail-row"><span class="detail-key">Phone</span><span class="detail-val">${esc(v.phone||'—')}</span></div>
+      <div class="detail-row"><span class="detail-key">Item Type</span><span class="detail-val">${cap(v.itemType)}</span></div>
+      <div class="detail-row"><span class="detail-key">Brand</span><span class="detail-val">${esc(v.brand)}</span></div>
+      <div class="detail-row"><span class="detail-key">Model / Ref</span><span class="detail-val">${esc(v.model)} · ${esc(v.reference||'—')}</span></div>
+      <div class="detail-row"><span class="detail-key">Condition</span><span class="detail-val">${esc(v.condition)}</span></div>
+      <div class="detail-row"><span class="detail-key">Paperwork</span><span class="detail-val">${esc(v.paperwork)}</span></div>
+      <div class="detail-row"><span class="detail-key">Description</span><span class="detail-val">${esc(v.description)}</span></div>
+      <div class="detail-row"><span class="detail-key">Status</span><span class="detail-val">${badge(v.status)}</span></div>
+    </div>
+    ${canConvert ? `
+    <div class="convert-banner">
+      <p><strong style="color:var(--gold)">Convert to Inventory</strong><br>Bought from this client? Add directly to your inventory pre-filled with these details.</p>
+      <button class="btn btn-gold btn-sm" onclick="convertToInventory('${v.id}')">Convert →</button>
+    </div>` : ''}
+    <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" id="val-st">${['pending','valuated','offered','accepted','declined'].map(s=>`<option value="${s}"${v.status===s?' selected':''}>${cap(s)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Offer Amount (£)</label>
+        <input type="number" class="form-control" id="val-amt" placeholder="0" value="${v.valuationAmount||''}">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Notes</label>
+        <textarea class="form-control" id="val-nt" rows="3">${esc(v.notes||'')}</textarea>
+      </div>
+    </div>`,
+    `<a class="btn btn-outline" href="mailto:${esc(v.email)}">Reply by Email</a>
+     <button class="btn btn-green" onclick="saveValuation('${id}')">Save</button>`
+  );
+}
+
+async function saveValuation(id) {
+  const amt = document.getElementById('val-amt').value;
+  await api.put('valuations', id, { status: document.getElementById('val-st').value, valuationAmount: amt ? Number(amt) : null, notes: document.getElementById('val-nt').value });
+  toast('Valuation updated'); closeModal(); await reload('valuations');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Convert Valuation → Inventory
+// ══════════════════════════════════════════════════════════════════════
+function convertToInventory(valId) {
+  const v = S.valuations.find(x=>x.id===valId);
+  closeModal();
+  // Map valuation fields to inventory fields
+  const prefill = {
+    name:        `${v.brand} ${v.model}`.trim(),
+    category:    v.itemType,
+    reference:   v.reference || '',
+    condition:   v.condition || 'Excellent',
+    paperwork:   v.paperwork || 'Unknown',
+    description: v.description || '',
+    price:       v.valuationAmount || '',
+    status:      'available',
+    imageUrl:    '',
+  };
+  // After save, also mark valuation as accepted
+  openInventoryModal(prefill, async (newItem) => {
+    await api.put('valuations', valId, { status: 'accepted' });
+    S.valuations = await api.get('valuations');
+    toast(`Added to inventory & valuation marked accepted`);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Consultations
+// ══════════════════════════════════════════════════════════════════════
+function renderConsultations() {
+  // Calendar strip — next 14 days
+  const days = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(); d.setDate(d.getDate() + i);
+    days.push(d);
+  }
+  const bookingDates = new Set(S.consultations.map(c=>c.preferredDate));
+  const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  document.getElementById('cal-strip-wrap').innerHTML = `
+    <div class="cal-strip">${days.map(d => {
+      const iso = d.toISOString().slice(0,10);
+      const has = bookingDates.has(iso);
+      return `<div class="cal-day ${has?'has-booking':''}" title="${iso}">
+        <div class="cal-weekday">${weekdays[d.getDay()]}</div>
+        <div class="cal-date">${d.getDate()}</div>
+      </div>`;
+    }).join('')}</div>`;
+
+  let items = [...S.consultations].sort((a,b)=>a.preferredDate.localeCompare(b.preferredDate)||a.preferredTime.localeCompare(b.preferredTime));
+  if (S.conFilter!=='all') items = items.filter(c=>c.status===S.conFilter);
+  const tbody = document.getElementById('con-tbody');
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty"><p>No consultations match.</p></td></tr>`; return; }
+  tbody.innerHTML = items.map(c => `
+    <tr>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td>${badge(c.purpose)}</td>
+      <td>${esc(c.preferredDate)} at ${esc(c.preferredTime)}</td>
+      <td class="dim">${esc(c.email)}</td>
+      <td>${badge(c.status)}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-outline" onclick="viewConsultation('${c.id}')">View</button>
+        <a class="btn btn-sm btn-ghost" href="mailto:${esc(c.email)}" title="Email">✉</a>
+        <button class="btn btn-sm btn-danger" onclick="deleteItem('consultations','${c.id}','booking for ${esc(c.name)}')">✕</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function viewConsultation(id) {
+  const c = S.consultations.find(x=>x.id===id);
+  setModal(`Consultation — ${c.name}`, `
+    <div class="detail-panel" style="margin-top:0">
+      <div class="detail-row"><span class="detail-key">Name</span><span class="detail-val">${esc(c.name)}</span></div>
+      <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val"><a href="mailto:${esc(c.email)}" style="color:var(--green-mid)">${esc(c.email)}</a></span></div>
+      <div class="detail-row"><span class="detail-key">Phone</span><span class="detail-val">${esc(c.phone||'—')}</span></div>
+      <div class="detail-row"><span class="detail-key">Purpose</span><span class="detail-val">${badge(c.purpose)}</span></div>
+      <div class="detail-row"><span class="detail-key">Preferred Date</span><span class="detail-val">${esc(c.preferredDate)} at ${esc(c.preferredTime)}</span></div>
+      <div class="detail-row"><span class="detail-key">Status</span><span class="detail-val">${badge(c.status)}</span></div>
+      <div class="detail-row"><span class="detail-key">Message</span><span class="detail-val">${esc(c.message||'—')}</span></div>
+      <div class="detail-row"><span class="detail-key">Notes</span><span class="detail-val">${esc(c.notes)||'<em style="opacity:.4">None</em>'}</span></div>
+    </div>
+    <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" id="con-st">${['pending','confirmed','completed','cancelled'].map(s=>`<option value="${s}"${c.status===s?' selected':''}>${cap(s)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirmed Date</label>
+        <input type="date" class="form-control" id="con-dt" value="${c.preferredDate||''}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirmed Time</label>
+        <input type="time" class="form-control" id="con-tm" value="${c.preferredTime||''}">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Internal Notes</label>
+        <textarea class="form-control" id="con-nt" rows="3">${esc(c.notes||'')}</textarea>
+      </div>
+    </div>`,
+    `<a class="btn btn-outline" href="mailto:${esc(c.email)}">Email Client</a>
+     <button class="btn btn-green" onclick="saveConsultation('${id}')">Save</button>`
+  );
+}
+
+async function saveConsultation(id) {
+  await api.put('consultations', id, {
+    status: document.getElementById('con-st').value,
+    preferredDate: document.getElementById('con-dt').value,
+    preferredTime: document.getElementById('con-tm').value,
+    notes: document.getElementById('con-nt').value,
+  });
+  toast('Booking updated'); closeModal(); await reload('consultations');
+}
+
+function openConsultationModal(item) {
+  const isEdit = !!item;
+  setModal(isEdit ? `Edit — ${item.name}` : 'Add Booking', `
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Name *</label><input class="form-control" id="cn-name" value="${esc(item?.name||'')}"></div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-control" id="cn-email" value="${esc(item?.email||'')}"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="cn-phone" value="${esc(item?.phone||'')}"></div>
+      <div class="form-group"><label class="form-label">Purpose</label>
+        <select class="form-control" id="cn-purpose">${['buying','selling','valuation','general'].map(p=>`<option value="${p}"${item?.purpose===p?' selected':''}>${cap(p)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label class="form-label">Preferred Date</label><input type="date" class="form-control" id="cn-date" value="${item?.preferredDate||''}"></div>
+      <div class="form-group"><label class="form-label">Preferred Time</label><input type="time" class="form-control" id="cn-time" value="${item?.preferredTime||''}"></div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-control" id="cn-status">${['pending','confirmed','completed','cancelled'].map(s=>`<option value="${s}"${item?.status===s?' selected':''}>${cap(s)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group form-span"><label class="form-label">Message / Notes</label><textarea class="form-control" id="cn-msg" rows="3">${esc(item?.message||'')}</textarea></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+     <button class="btn btn-green" onclick="saveNewConsultation(${isEdit?`'${item.id}'`:'null'})">${isEdit?'Save':'Add Booking'}</button>`
+  );
+}
+
+async function saveNewConsultation(id) {
+  const name  = document.getElementById('cn-name').value.trim();
+  const email = document.getElementById('cn-email').value.trim();
+  if (!name || !email) { toast('Name and email are required', 'error'); return; }
+  const payload = { name, email, phone: document.getElementById('cn-phone').value.trim(), purpose: document.getElementById('cn-purpose').value, preferredDate: document.getElementById('cn-date').value, preferredTime: document.getElementById('cn-time').value, status: document.getElementById('cn-status').value, message: document.getElementById('cn-msg').value.trim() };
+  if (id) { await api.put('consultations', id, payload); toast('Booking updated'); }
+  else    { await api.post('consultations', payload);   toast('Booking added'); }
+  closeModal(); await reload('consultations');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Testimonials
+// ══════════════════════════════════════════════════════════════════════
+function renderTestimonials() {
+  const tbody = document.getElementById('tes-tbody');
+  const items = [...S.testimonials].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty"><p>No testimonials yet.</p></td></tr>`; return; }
+  tbody.innerHTML = items.map(t => `
+    <tr>
+      <td><strong>${esc(t.name)}</strong></td>
+      <td class="dim">${esc(t.role)}</td>
+      <td><span class="stars">${stars(t.rating)}</span></td>
+      <td class="dim" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.content.substring(0,75))}…</td>
+      <td><label class="toggle"><input type="checkbox" ${t.visible?'checked':''} onchange="toggleTestimonial('${t.id}',this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-outline" onclick="editTestimonial('${t.id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteItem('testimonials','${t.id}','${esc(t.name)}'s testimonial')">✕</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+async function toggleTestimonial(id, visible) {
+  await api.put('testimonials', id, { visible });
+  toast(visible ? 'Testimonial visible' : 'Testimonial hidden'); await reload('testimonials');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Add / Edit modals
+// ══════════════════════════════════════════════════════════════════════
+function openAddModal() {
+  if (S.section==='inventory')    openInventoryModal(null);
+  if (S.section==='consultations') openConsultationModal(null);
+  if (S.section==='testimonials') openTestimonialModal(null);
+}
+function editInventory(id) { openInventoryModal(S.inventory.find(i=>i.id===id)); }
+function editTestimonial(id) { openTestimonialModal(S.testimonials.find(t=>t.id===id)); }
+
+// onSaveCallback allows post-save side effects (e.g. convert flow)
+let _onInventorySave = null;
+
+function openInventoryModal(item, onSaveCallback) {
+  _onInventorySave = onSaveCallback || null;
+  const isEdit = item && item.id;
+  setModal(isEdit ? `Edit — ${item.name}` : 'Add Inventory Item', `
+    <div class="form-grid">
+      <div class="form-group form-span"><label class="form-label">Name *</label><input class="form-control" id="f-name" placeholder="e.g. Rolex Submariner" value="${esc(item?.name||'')}"></div>
+      <div class="form-group"><label class="form-label">Category *</label>
+        <select class="form-control" id="f-cat">${['watches','metals','jewellery'].map(c=>`<option value="${c}"${item?.category===c?' selected':''}>${cap(c)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-control" id="f-status">${['available','reserved','sold'].map(s=>`<option value="${s}"${item?.status===s?' selected':''}>${cap(s)}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label class="form-label">Price (£) *</label><input type="number" class="form-control" id="f-price" placeholder="0" value="${item?.price||''}"></div>
+      <div class="form-group"><label class="form-label">Reference / Model No.</label><input class="form-control" id="f-ref" placeholder="e.g. 116500LN" value="${esc(item?.reference||'')}"></div>
+      <div class="form-group"><label class="form-label">Condition</label>
+        <select class="form-control" id="f-cond">${['Mint','Excellent','Good','Fair'].map(c=>`<option${item?.condition===c?' selected':''}>${c}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label class="form-label">Paperwork</label>
+        <select class="form-control" id="f-paper">${['Full Set','Box Only','Papers Only','No Box or Papers','Unknown'].map(p=>`<option${item?.paperwork===p?' selected':''}>${p}</option>`).join('')}</select>
+      </div>
+      <div class="form-group form-span"><label class="form-label">Image URL</label><input class="form-control" id="f-img" placeholder="https://…" value="${esc(item?.imageUrl||'')}"></div>
+      <div class="form-group form-span"><label class="form-label">Description</label><textarea class="form-control" id="f-desc" rows="3">${esc(item?.description||'')}</textarea></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+     <button class="btn btn-green" onclick="saveInventory(${isEdit?`'${item.id}'`:'null'})">${isEdit?'Save Changes':'Add Item'}</button>`
+  );
+}
+
+async function saveInventory(id) {
+  const name  = document.getElementById('f-name').value.trim();
+  const price = document.getElementById('f-price').value;
+  if (!name || !price) { toast('Name and price are required', 'error'); return; }
+  const payload = { name, category: document.getElementById('f-cat').value, status: document.getElementById('f-status').value, price: Number(price), reference: document.getElementById('f-ref').value.trim(), condition: document.getElementById('f-cond').value, paperwork: document.getElementById('f-paper').value, imageUrl: document.getElementById('f-img').value.trim(), description: document.getElementById('f-desc').value.trim() };
+  let newItem;
+  if (id) { newItem = await api.put('inventory', id, payload); toast('Item updated'); }
+  else    { newItem = await api.post('inventory', payload);    toast('Item added'); }
+  closeModal();
+  if (_onInventorySave) { await _onInventorySave(newItem); _onInventorySave = null; }
+  await reload('inventory');
+}
+
+function openTestimonialModal(item) {
+  const isEdit = !!item;
+  setModal(isEdit ? `Edit — ${item.name}` : 'Add Testimonial', `
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Name *</label><input class="form-control" id="t-name" value="${esc(item?.name||'')}"></div>
+      <div class="form-group"><label class="form-label">Role / Location</label><input class="form-control" id="t-role" placeholder="e.g. Collector, Surrey" value="${esc(item?.role||'')}"></div>
+      <div class="form-group"><label class="form-label">Rating</label>
+        <select class="form-control" id="t-rating">${[5,4,3,2,1].map(n=>`<option value="${n}"${item?.rating===n?' selected':''}>${n} Star${n!==1?'s':''}</option>`).join('')}</select>
+      </div>
+      <div class="form-group" style="display:flex;flex-direction:column;gap:8px;justify-content:flex-end;">
+        <label class="form-label">Visible on Site</label>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <label class="toggle"><input type="checkbox" id="t-vis" ${item?.visible!==false?'checked':''}><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          <span style="font-size:13px;color:var(--cream-dim)">Show publicly</span>
+        </div>
+      </div>
+      <div class="form-group form-span"><label class="form-label">Testimonial *</label><textarea class="form-control" id="t-content" rows="5">${esc(item?.content||'')}</textarea></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+     <button class="btn btn-green" onclick="saveTestimonial(${isEdit?`'${item.id}'`:'null'})">${isEdit?'Save':'Add'}</button>`
+  );
+}
+
+async function saveTestimonial(id) {
+  const name    = document.getElementById('t-name').value.trim();
+  const content = document.getElementById('t-content').value.trim();
+  if (!name||!content) { toast('Name and text required','error'); return; }
+  const payload = { name, content, role: document.getElementById('t-role').value.trim(), rating: Number(document.getElementById('t-rating').value), visible: document.getElementById('t-vis').checked };
+  if (id) { await api.put('testimonials',id,payload); toast('Updated'); }
+  else    { await api.post('testimonials',payload);   toast('Added'); }
+  closeModal(); await reload('testimonials');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Global Search
+// ══════════════════════════════════════════════════════════════════════
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('open');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '';
+  S.searchIdx = -1;
+  setTimeout(() => document.getElementById('search-input').focus(), 50);
+}
+function closeSearch() { document.getElementById('search-overlay').classList.remove('open'); }
+function closeSearchMaybe(e) { if (e.target === document.getElementById('search-overlay')) closeSearch(); }
+
+function onSearch(q) {
+  S.searchIdx = -1;
+  if (!q.trim()) { document.getElementById('search-results').innerHTML = ''; return; }
+  const lq = q.toLowerCase();
+  const results = [
+    { section:'inventory',     label:'Inventory',    icon:'📦', items: S.inventory.filter(i => [i.name,i.reference,i.description].some(f=>f?.toLowerCase().includes(lq))).map(i => ({ id:i.id, name:i.name, sub:`${cap(i.category)} · ${fmtPrice(i.price)} · ${i.status}` })) },
+    { section:'enquiries',     label:'Enquiries',    icon:'💬', items: S.enquiries.filter(e => [e.name,e.email,e.subject,e.message].some(f=>f?.toLowerCase().includes(lq))).map(e => ({ id:e.id, name:e.name, sub:`${e.subject} · ${e.status}` })) },
+    { section:'valuations',    label:'Valuations',   icon:'🕐', items: S.valuations.filter(v => [v.name,v.brand,v.model,v.email].some(f=>f?.toLowerCase().includes(lq))).map(v => ({ id:v.id, name:v.name, sub:`${v.brand} ${v.model} · ${v.status}` })) },
+    { section:'consultations', label:'Consultations',icon:'📅', items: S.consultations.filter(c => [c.name,c.email,c.purpose,c.message].some(f=>f?.toLowerCase().includes(lq))).map(c => ({ id:c.id, name:c.name, sub:`${cap(c.purpose)} · ${c.preferredDate} · ${c.status}` })) },
+  ].filter(g => g.items.length);
+
+  if (!results.length) { document.getElementById('search-results').innerHTML = `<div class="search-empty">No results for "<strong>${esc(q)}</strong>"</div>`; return; }
+
+  document.getElementById('search-results').innerHTML = results.map(g => `
+    <div class="search-group-label">${g.label}</div>
+    ${g.items.map(item => `
+      <div class="search-result" data-section="${g.section}" data-id="${item.id}" onclick="searchGo('${g.section}','${item.id}')">
+        <div class="search-result-icon">${g.icon}</div>
+        <div><div class="search-result-name">${esc(item.name)}</div><div class="search-result-sub">${esc(item.sub)}</div></div>
+      </div>`).join('')}`).join('');
+}
+
+function searchKeyNav(e) {
+  const results = document.querySelectorAll('.search-result');
+  if (!results.length) return;
+  if (e.key==='ArrowDown') { e.preventDefault(); S.searchIdx = Math.min(S.searchIdx+1, results.length-1); }
+  if (e.key==='ArrowUp')   { e.preventDefault(); S.searchIdx = Math.max(S.searchIdx-1, 0); }
+  if (e.key==='Enter' && S.searchIdx >= 0) { e.preventDefault(); results[S.searchIdx].click(); return; }
+  results.forEach((r,i) => r.classList.toggle('focused', i===S.searchIdx));
+}
+
+const OPEN_FNS = { inventory: viewInventorySearch, enquiries: viewEnquiry, valuations: viewValuation, consultations: viewConsultation };
+function viewInventorySearch(id) { editInventory(id); }
+
+function searchGo(section, id) {
+  closeSearch();
+  nav(section);
+  setTimeout(() => { if (OPEN_FNS[section]) OPEN_FNS[section](id); }, 80);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Modal helpers
+// ══════════════════════════════════════════════════════════════════════
+function setModal(title, body, footer) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML    = body;
+  document.getElementById('modal-footer').innerHTML  = footer;
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-backdrop').classList.remove('open'); }
+function closeMaybe(e) { if (e.target===document.getElementById('modal-backdrop')) closeModal(); }
+
+function openConfirm(title, bodyHtml, onConfirm, danger=false) {
+  setModal(title,
+    `<p style="font-size:14px;line-height:1.7;color:var(--cream-dim)">${bodyHtml}</p>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+     <button class="btn ${danger?'btn-danger':'btn-green'}" id="confirm-ok">Confirm</button>`
+  );
+  document.getElementById('confirm-ok').onclick = () => { closeModal(); onConfirm(); };
+}
+
+function deleteItem(resource, id, label) {
+  openConfirm('Confirm Delete', `Delete <strong>${esc(label)}</strong>? This cannot be undone.`,
+    async () => { await api.del(resource, id); toast('Deleted'); await reload(resource); }, true);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Keyboard shortcuts
+// ══════════════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); openSearch(); return; }
+  if (e.key==='Escape') {
+    if (document.getElementById('search-overlay').classList.contains('open')) { closeSearch(); return; }
+    closeModal();
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════════
+// Boot
+// ══════════════════════════════════════════════════════════════════════
+loadAll();
+</script>
+</body>
+</html>

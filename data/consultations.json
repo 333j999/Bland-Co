@@ -1,0 +1,41 @@
+[
+  {
+    "id": "con_001",
+    "name": "Isabella Harrington",
+    "email": "i.harrington@email.com",
+    "phone": "+44 7700 904444",
+    "purpose": "selling",
+    "preferredDate": "2026-04-17",
+    "preferredTime": "14:00",
+    "message": "I have a collection of vintage Cartier pieces I'd like to discuss selling. Primarily bracelets and a brooch from the 1970s.",
+    "status": "confirmed",
+    "notes": "Confirmed via phone. She's bringing 3 pieces. Set up the valuation room.",
+    "createdAt": "2026-04-12T11:00:00Z"
+  },
+  {
+    "id": "con_002",
+    "name": "George Pemberton",
+    "email": "g.pemberton@city.co.uk",
+    "phone": "+44 7700 905555",
+    "purpose": "buying",
+    "preferredDate": "2026-04-18",
+    "preferredTime": "11:00",
+    "message": "Looking to purchase a Rolex or AP as a long-term investment. Budget around £30,000. Would like to discuss options.",
+    "status": "pending",
+    "notes": "",
+    "createdAt": "2026-04-13T09:30:00Z"
+  },
+  {
+    "id": "con_003",
+    "name": "Miriam Okafor",
+    "email": "miriam.o@protonmail.com",
+    "phone": "+44 7700 906666",
+    "purpose": "valuation",
+    "preferredDate": "2026-04-15",
+    "preferredTime": "16:00",
+    "message": "Inherited a collection of gold jewellery and would like to understand its value before deciding what to do.",
+    "status": "completed",
+    "notes": "Valued 6 pieces. Total estimated £8,200. She'll come back next week to discuss selling 2 of them.",
+    "createdAt": "2026-04-10T14:00:00Z"
+  }
+]
