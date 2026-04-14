@@ -165,7 +165,7 @@
 
     /* ── QR Setup section ── */
     .qr-wrap { text-align: center; margin: 20px 0 24px; }
-    .qr-wrap canvas, .qr-wrap img { border: 6px solid #fff; display: inline-block; }
+    .qr-wrap canvas, .qr-wrap img { border: 12px solid #fff; display: inline-block; }
     .secret-display {
       background: var(--elevated); border: 1px solid var(--border);
       padding: 10px 14px; font-family: monospace; font-size: 13px;
@@ -502,9 +502,9 @@
       el.innerHTML = '';
       new QRCode(el, {
         text: data.uri,
-        width: 200, height: 200,
+        width: 256, height: 256,
         colorDark: '#000000', colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M,
+        correctLevel: QRCode.CorrectLevel.L,
       });
     } catch { /* server may not be running */ }
   }
