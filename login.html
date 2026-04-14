@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <!-- QR code renderer (client-side, no external data sent) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg:        #060A08;
@@ -206,131 +204,29 @@
       </div>
     </div>
 
-    <!-- ═══════════════════════ STEP 1 — PASSWORD ═══════════════════════ -->
-    <div id="step1">
-      <!-- Step indicator -->
-      <div style="margin-bottom:28px;">
-        <div class="steps">
-          <div class="step-dot active" id="dot1">1</div>
-          <div class="step-line" id="line1"></div>
-          <div class="step-dot" id="dot2">2</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:6px;">
-          <span class="step-label" style="color:var(--cream);">Password</span>
-          <span class="step-label">Authenticator</span>
-        </div>
-      </div>
+    <h1 class="card-title">Welcome back</h1>
+    <p class="card-desc">Enter your admin password to continue.</p>
 
-      <h1 class="card-title">Welcome back</h1>
-      <p class="card-desc">Enter your admin password to continue.</p>
-
-      <div class="error-msg" id="err1">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
-        <span id="err1Txt">Incorrect password.</span>
-      </div>
-
-      <form id="form1" onsubmit="submitPassword(event)" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="pw">Password</label>
-          <div class="input-wrap">
-            <input type="password" id="pw" class="form-input" placeholder="Enter admin password" autocomplete="current-password" required>
-            <button type="button" class="eye-btn" onclick="togglePw()" aria-label="Toggle password visibility">
-              <svg id="eyeIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-        <button type="submit" class="btn-submit" id="btn1">
-          Continue
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
-        </button>
-      </form>
+    <div class="error-msg" id="err1">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+      <span id="err1Txt">Incorrect password.</span>
     </div>
 
-    <!-- ═══════════════════════ STEP 2 — TOTP ═════════════════════════ -->
-    <div id="step2" style="display:none;">
-      <div style="margin-bottom:28px;">
-        <div class="steps">
-          <div class="step-dot done" id="dot1b">
-            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,5 4,8 9,2"/></svg>
-          </div>
-          <div class="step-line done"></div>
-          <div class="step-dot active">2</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:6px;">
-          <span class="step-label">Password</span>
-          <span class="step-label" style="color:var(--cream);">Authenticator</span>
+    <form id="form1" onsubmit="submitPassword(event)" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="pw">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="pw" class="form-input" placeholder="Enter admin password" autocomplete="current-password" autofocus required>
+          <button type="button" class="eye-btn" onclick="togglePw()" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
       </div>
-
-      <h1 class="card-title">Two-factor auth</h1>
-      <p class="card-desc">Enter the 6-digit code from your authenticator app.</p>
-
-      <div class="error-msg" id="err2">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
-        <span id="err2Txt">Invalid code — please try again.</span>
-      </div>
-
-      <form id="form2" onsubmit="submitTOTP(event)" novalidate>
-        <div class="form-group">
-          <label class="form-label">Verification Code</label>
-          <div class="totp-wrap" id="totpBoxes">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="1" autofocus>
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="2">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="3">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="4">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="5">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="6">
-          </div>
-        </div>
-        <button type="submit" class="btn-submit" id="btn2">
-          Verify &amp; Sign In
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
-        </button>
-      </form>
-
-      <button class="back-link" onclick="goBack()">
-        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 6H2M6 2L2 6l4 4"/></svg>
-        Back to password
+      <button type="submit" class="btn-submit" id="btn1">
+        Sign In
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
       </button>
-    </div>
-
-    <!-- ═══════════════════════ FIRST-RUN SETUP ═══════════════════════ -->
-    <div id="stepSetup" style="display:none;">
-      <h1 class="card-title">Set up 2FA</h1>
-      <p class="card-desc">First-time setup. Scan the QR code with your authenticator app, then enter the code to confirm.</p>
-
-      <div class="setup-steps">
-        <div class="setup-step"><div class="setup-step-num">1</div><span>Install <strong style="color:var(--cream);">Google Authenticator</strong> or <strong style="color:var(--cream);">Authy</strong> on your phone.</span></div>
-        <div class="setup-step"><div class="setup-step-num">2</div><span>Tap <strong style="color:var(--cream);">"+"</strong> or <strong style="color:var(--cream);">"Add account"</strong> and scan the QR code below.</span></div>
-        <div class="setup-step"><div class="setup-step-num">3</div><span>Enter the 6-digit code the app shows to confirm setup.</span></div>
-      </div>
-
-      <div class="qr-wrap">
-        <div id="qrCanvas"></div>
-      </div>
-      <p style="font-size:11px;color:var(--cream-dim);text-align:center;margin-bottom:6px;">Or enter this key manually:</p>
-      <div class="secret-display" id="totpSecretDisplay">Loading…</div>
-
-      <div class="error-msg" id="errSetup" style="margin-top:16px;">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
-        <span id="errSetupTxt">Invalid code — try again.</span>
-      </div>
-
-      <form id="formSetup" onsubmit="submitSetup(event)" novalidate style="margin-top:16px;">
-        <div class="form-group">
-          <label class="form-label">Confirm code from app</label>
-          <div class="totp-wrap" id="setupBoxes">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="1">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="2">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="3">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="4">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="5">
-            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="6">
-          </div>
-        </div>
-        <button type="submit" class="btn-submit" id="btnSetup">Confirm &amp; Activate 2FA</button>
-      </form>
-    </div>
+    </form>
 
   </div><!-- /card -->
 
@@ -338,10 +234,7 @@
 </main>
 
 <script>
-  // ── State ──────────────────────────────────────────────────────────────────
-  let challengeToken = null;
-
-  // ── Redirect if already logged in ─────────────────────────────────────────
+  // Redirect if already logged in
   (async () => {
     const tok = localStorage.getItem('admin_session');
     if (!tok) return;
@@ -349,65 +242,17 @@
     if (r && r.ok) location.replace('/admin.html');
   })();
 
-  // ── TOTP digit box wiring ─────────────────────────────────────────────────
-  function wireDigitBoxes(containerId) {
-    const inputs = document.querySelectorAll(`#${containerId} .totp-input`);
-    inputs.forEach((inp, i) => {
-      inp.addEventListener('input', () => {
-        const v = inp.value.replace(/\D/g, '').slice(-1);
-        inp.value = v;
-        if (v && i < inputs.length - 1) inputs[i + 1].focus();
-        // auto-submit when last digit filled
-        if (i === inputs.length - 1 && v) inp.closest('form').requestSubmit();
-      });
-      inp.addEventListener('keydown', e => {
-        if (e.key === 'Backspace' && !inp.value && i > 0) { inputs[i - 1].focus(); inputs[i - 1].value = ''; }
-        if (e.key === 'ArrowLeft'  && i > 0) inputs[i - 1].focus();
-        if (e.key === 'ArrowRight' && i < inputs.length - 1) inputs[i + 1].focus();
-      });
-      inp.addEventListener('paste', e => {
-        e.preventDefault();
-        const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
-        digits.split('').forEach((d, j) => { if (inputs[j]) inputs[j].value = d; });
-        const next = Math.min(digits.length, inputs.length - 1);
-        inputs[next].focus();
-        if (digits.length === 6) inp.closest('form').requestSubmit();
-      });
-    });
-  }
-  wireDigitBoxes('totpBoxes');
-  wireDigitBoxes('setupBoxes');
-
-  function getCode(containerId) {
-    return [...document.querySelectorAll(`#${containerId} .totp-input`)].map(i => i.value).join('');
-  }
-  function clearCode(containerId) {
-    const inputs = document.querySelectorAll(`#${containerId} .totp-input`);
-    inputs.forEach(i => { i.value = ''; i.classList.remove('error'); });
-    inputs[0].focus();
-  }
-
-  // ── Helpers ───────────────────────────────────────────────────────────────
-  function showError(id, msg) {
-    const el = document.getElementById(id);
-    const txt = document.getElementById(id + 'Txt');
-    if (txt && msg) txt.textContent = msg;
+  function showError(msg) {
+    const el = document.getElementById('err1');
+    document.getElementById('err1Txt').textContent = msg;
     el.classList.add('show');
-    el.closest('.card, form, div')?.classList.add('shake');
-    setTimeout(() => el.closest('.card, form, div')?.classList.remove('shake'), 400);
   }
-  function hideError(id) { document.getElementById(id).classList.remove('show'); }
+  function hideError() { document.getElementById('err1').classList.remove('show'); }
 
-  function setLoading(btnId, loading) {
-    const btn = document.getElementById(btnId);
-    if (loading) {
-      btn._txt = btn.innerHTML;
-      btn.innerHTML = '<div class="spinner"></div>';
-      btn.disabled = true;
-    } else {
-      btn.innerHTML = btn._txt;
-      btn.disabled = false;
-    }
+  function setLoading(loading) {
+    const btn = document.getElementById('btn1');
+    if (loading) { btn._txt = btn.innerHTML; btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true; }
+    else { btn.innerHTML = btn._txt; btn.disabled = false; }
   }
 
   function togglePw() {
@@ -422,14 +267,12 @@
     }
   }
 
-  // ── Step 1: Password ───────────────────────────────────────────────────────
   async function submitPassword(e) {
     e.preventDefault();
-    hideError('err1');
+    hideError();
     const pw = document.getElementById('pw').value;
     if (!pw) return;
-
-    setLoading('btn1', true);
+    setLoading(true);
     try {
       const r = await fetch('/api/auth/login', {
         method: 'POST',
@@ -438,116 +281,19 @@
       });
       const data = await r.json();
       if (!r.ok) {
-        showError('err1', data.error || 'Incorrect password.');
-        document.getElementById('pw').classList.add('error');
-        setTimeout(() => document.getElementById('pw').classList.remove('error'), 1500);
-        return;
-      }
-      challengeToken = data.challenge;
-      // First-run: need to set up 2FA
-      if (data.setupRequired) {
-        await loadSetupQR();
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('stepSetup').style.display = 'block';
-      } else {
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
-        setTimeout(() => document.querySelector('#totpBoxes .totp-input').focus(), 50);
-      }
-    } catch {
-      showError('err1', 'Network error — is the server running?');
-    } finally {
-      setLoading('btn1', false);
-    }
-  }
-
-  // ── Step 2: TOTP ───────────────────────────────────────────────────────────
-  async function submitTOTP(e) {
-    e.preventDefault();
-    hideError('err2');
-    const code = getCode('totpBoxes');
-    if (code.length < 6) { showError('err2', 'Please enter all 6 digits.'); return; }
-
-    setLoading('btn2', true);
-    try {
-      const r = await fetch('/api/auth/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ challenge: challengeToken, code }),
-      });
-      const data = await r.json();
-      if (!r.ok) {
-        showError('err2', data.error || 'Invalid code.');
-        clearCode('totpBoxes');
+        showError(data.error || 'Incorrect password.');
+        const inp = document.getElementById('pw');
+        inp.classList.add('error');
+        setTimeout(() => inp.classList.remove('error'), 1500);
         return;
       }
       localStorage.setItem('admin_session', data.session);
       location.replace('/admin.html');
     } catch {
-      showError('err2', 'Network error — is the server running?');
+      showError('Network error — please try again.');
     } finally {
-      setLoading('btn2', false);
+      setLoading(false);
     }
-  }
-
-  // ── First-run setup ────────────────────────────────────────────────────────
-  async function loadSetupQR() {
-    try {
-      const r = await fetch('/api/auth/setup');
-      const data = await r.json();
-      if (!r.ok) return;
-      document.getElementById('totpSecretDisplay').textContent = data.secret;
-      // Render QR code client-side
-      const el = document.getElementById('qrCanvas');
-      el.innerHTML = '';
-      new QRCode(el, {
-        text: data.uri,
-        width: 256, height: 256,
-        colorDark: '#000000', colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.L,
-      });
-    } catch { /* server may not be running */ }
-  }
-
-  async function submitSetup(e) {
-    e.preventDefault();
-    hideError('errSetup');
-    const code = getCode('setupBoxes');
-    if (code.length < 6) { showError('errSetup', 'Please enter all 6 digits.'); return; }
-
-    setLoading('btnSetup', true);
-    try {
-      const r = await fetch('/api/auth/complete-setup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
-      });
-      const data = await r.json();
-      if (!r.ok) {
-        showError('errSetup', data.error || 'Invalid code — try again.');
-        clearCode('setupBoxes');
-        return;
-      }
-      // Setup complete — now verify TOTP to get session
-      document.getElementById('stepSetup').style.display = 'none';
-      document.getElementById('step2').style.display = 'block';
-      setTimeout(() => document.querySelector('#totpBoxes .totp-input').focus(), 50);
-    } catch {
-      showError('errSetup', 'Network error.');
-    } finally {
-      setLoading('btnSetup', false);
-    }
-  }
-
-  // ── Back button ───────────────────────────────────────────────────────────
-  function goBack() {
-    challengeToken = null;
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step1').style.display = 'block';
-    hideError('err1');
-    clearCode('totpBoxes');
-    document.getElementById('pw').value = '';
-    document.getElementById('pw').focus();
   }
 </script>
 </body>
