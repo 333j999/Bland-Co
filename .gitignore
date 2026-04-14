@@ -1,0 +1,10 @@
+# Admin credentials — never commit this file
+admin-config.json
+
+# Runtime data (optional — remove lines below if you want to track data in git)
+# data/
+
+# Node / OS
+node_modules/
+.DS_Store
+Thumbs.db

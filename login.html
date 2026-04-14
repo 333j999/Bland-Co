@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Bland & Co Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <!-- QR code renderer (client-side, no external data sent) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg:        #060A08;
+      --surface:   #0D1511;
+      --card:      #111917;
+      --elevated:  #162019;
+      --green:     #0C4535;
+      --green-dark:#073D2A;
+      --green-mid: #166649;
+      --green-hi:  #1E8560;
+      --cream:     #E8DFC8;
+      --cream-dim: #9E9583;
+      --gold:      #C4962E;
+      --border:    rgba(232,223,200,0.07);
+      --red:       #C0392B;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Background ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(12,69,53,.32) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(7,61,42,.18) 0%, transparent 50%);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(232,223,200,.012) 0, rgba(232,223,200,.012) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(0deg,  rgba(232,223,200,.012) 0, rgba(232,223,200,.012) 1px, transparent 1px, transparent 100px);
+      pointer-events: none;
+    }
+    .noise {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .025; mix-blend-mode: overlay;
+    }
+
+    /* ── Card ── */
+    .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+
+    .card {
+      width: 100%; max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 48px 44px;
+    }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+    .logo-wrap img { width: 40px; height: 40px; object-fit: cover; }
+    .logo-text { line-height: 1.2; }
+    .logo-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
+    .logo-sub  { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-dim); margin-top: 1px; }
+
+    /* ── Step indicator ── */
+    .steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px; }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 500; color: var(--cream-dim);
+      transition: background .25s, border-color .25s, color .25s;
+      flex-shrink: 0;
+    }
+    .step-dot.done  { background: var(--green); border-color: var(--green); color: var(--cream); }
+    .step-dot.active{ background: var(--green-mid); border-color: var(--green-mid); color: var(--cream); }
+    .step-line { flex: 1; height: 1px; background: var(--border); transition: background .25s; }
+    .step-line.done { background: var(--green-mid); }
+    .step-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); margin-top: 6px; white-space: nowrap; }
+
+    /* ── Headings ── */
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+    .card-desc  { font-size: 13px; color: var(--cream-dim); line-height: 1.65; margin-bottom: 28px; }
+
+    /* ── Form ── */
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .form-label { font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--cream-dim); }
+    .input-wrap { position: relative; }
+    .form-input {
+      width: 100%; background: var(--elevated); border: 1px solid rgba(232,223,200,.1);
+      color: var(--cream); padding: 13px 16px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; outline: none; transition: border-color .2s, background .2s;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder { color: var(--cream-dim); opacity: .4; }
+    .form-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .form-input.error { border-color: var(--red) !important; }
+    .eye-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--cream-dim);
+      padding: 4px; display: flex; align-items: center;
+      transition: color .2s;
+    }
+    .eye-btn:hover { color: var(--cream); }
+
+    /* TOTP digit boxes */
+    .totp-wrap { display: flex; gap: 8px; }
+    .totp-input {
+      width: 48px; height: 56px; background: var(--elevated);
+      border: 1px solid rgba(232,223,200,.1); color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 500;
+      text-align: center; outline: none; -webkit-appearance: none;
+      transition: border-color .2s, background .2s;
+      border-radius: 0;
+      /* hide spinner */
+      -moz-appearance: textfield;
+    }
+    .totp-input::-webkit-outer-spin-button,
+    .totp-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .totp-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .totp-input.error { border-color: var(--red) !important; }
+
+    /* ── Submit btn ── */
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--cream); color: var(--bg);
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase; border: none;
+      cursor: pointer; margin-top: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-submit:hover:not(:disabled) { background: #fff; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(232,223,200,.12); }
+    .btn-submit:active:not(:disabled) { transform: none; }
+    .btn-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ── Error msg ── */
+    .error-msg {
+      display: none; align-items: center; gap: 8px;
+      padding: 11px 14px; background: rgba(192,57,43,.12);
+      border: 1px solid rgba(192,57,43,.3);
+      font-size: 13px; color: #E57373; margin-bottom: 16px;
+    }
+    .error-msg.show { display: flex; }
+
+    /* ── Shake animation ── */
+    @keyframes shake {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-6px)}
+      40%{transform:translateX(6px)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }
+    .shake { animation: shake .35s ease; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(6,10,8,.3); border-top-color: var(--bg); border-radius: 50%; animation: spin .7s linear infinite; }
+
+    /* ── QR Setup section ── */
+    .qr-wrap { text-align: center; margin: 20px 0 24px; }
+    .qr-wrap canvas { border: 6px solid #fff; display: inline-block; }
+    .secret-display {
+      background: var(--elevated); border: 1px solid var(--border);
+      padding: 10px 14px; font-family: monospace; font-size: 13px;
+      letter-spacing: .12em; color: var(--cream); text-align: center;
+      word-break: break-all; margin: 12px 0;
+    }
+    .setup-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .setup-step  { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--cream-dim); line-height: 1.55; }
+    .setup-step-num { width: 22px; height: 22px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--cream); flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Back link ── */
+    .back-link {
+      font-size: 12px; color: var(--cream-dim); background: none; border: none;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 20px; padding: 0; transition: color .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .back-link:hover { color: var(--cream); }
+
+    /* ── Footer ── */
+    .page-footer { margin-top: 24px; font-size: 11.5px; color: rgba(158,149,131,.45); text-align: center; }
+  </style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<main class="page">
+  <div class="card" id="loginCard">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers">
+      <div class="logo-text">
+        <div class="logo-name">Bland &amp; Co</div>
+        <div class="logo-sub">Admin Portal</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ STEP 1 — PASSWORD ═══════════════════════ -->
+    <div id="step1">
+      <!-- Step indicator -->
+      <div style="margin-bottom:28px;">
+        <div class="steps">
+          <div class="step-dot active" id="dot1">1</div>
+          <div class="step-line" id="line1"></div>
+          <div class="step-dot" id="dot2">2</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+          <span class="step-label" style="color:var(--cream);">Password</span>
+          <span class="step-label">Authenticator</span>
+        </div>
+      </div>
+
+      <h1 class="card-title">Welcome back</h1>
+      <p class="card-desc">Enter your admin password to continue.</p>
+
+      <div class="error-msg" id="err1">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+        <span id="err1Txt">Incorrect password.</span>
+      </div>
+
+      <form id="form1" onsubmit="submitPassword(event)" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="pw">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="pw" class="form-input" placeholder="Enter admin password" autocomplete="current-password" required>
+            <button type="button" class="eye-btn" onclick="togglePw()" aria-label="Toggle password visibility">
+              <svg id="eyeIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" id="btn1">
+          Continue
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- ═══════════════════════ STEP 2 — TOTP ═════════════════════════ -->
+    <div id="step2" style="display:none;">
+      <div style="margin-bottom:28px;">
+        <div class="steps">
+          <div class="step-dot done" id="dot1b">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,5 4,8 9,2"/></svg>
+          </div>
+          <div class="step-line done"></div>
+          <div class="step-dot active">2</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+          <span class="step-label">Password</span>
+          <span class="step-label" style="color:var(--cream);">Authenticator</span>
+        </div>
+      </div>
+
+      <h1 class="card-title">Two-factor auth</h1>
+      <p class="card-desc">Enter the 6-digit code from your authenticator app.</p>
+
+      <div class="error-msg" id="err2">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+        <span id="err2Txt">Invalid code — please try again.</span>
+      </div>
+
+      <form id="form2" onsubmit="submitTOTP(event)" novalidate>
+        <div class="form-group">
+          <label class="form-label">Verification Code</label>
+          <div class="totp-wrap" id="totpBoxes">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="1" autofocus>
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="2">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="3">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="4">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="5">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="6">
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" id="btn2">
+          Verify &amp; Sign In
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </button>
+      </form>
+
+      <button class="back-link" onclick="goBack()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 6H2M6 2L2 6l4 4"/></svg>
+        Back to password
+      </button>
+    </div>
+
+    <!-- ═══════════════════════ FIRST-RUN SETUP ═══════════════════════ -->
+    <div id="stepSetup" style="display:none;">
+      <h1 class="card-title">Set up 2FA</h1>
+      <p class="card-desc">First-time setup. Scan the QR code with your authenticator app, then enter the code to confirm.</p>
+
+      <div class="setup-steps">
+        <div class="setup-step"><div class="setup-step-num">1</div><span>Install <strong style="color:var(--cream);">Google Authenticator</strong> or <strong style="color:var(--cream);">Authy</strong> on your phone.</span></div>
+        <div class="setup-step"><div class="setup-step-num">2</div><span>Tap <strong style="color:var(--cream);">"+"</strong> or <strong style="color:var(--cream);">"Add account"</strong> and scan the QR code below.</span></div>
+        <div class="setup-step"><div class="setup-step-num">3</div><span>Enter the 6-digit code the app shows to confirm setup.</span></div>
+      </div>
+
+      <div class="qr-wrap">
+        <canvas id="qrCanvas"></canvas>
+      </div>
+      <p style="font-size:11px;color:var(--cream-dim);text-align:center;margin-bottom:6px;">Or enter this key manually:</p>
+      <div class="secret-display" id="totpSecretDisplay">Loading…</div>
+
+      <div class="error-msg" id="errSetup" style="margin-top:16px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+        <span id="errSetupTxt">Invalid code — try again.</span>
+      </div>
+
+      <form id="formSetup" onsubmit="submitSetup(event)" novalidate style="margin-top:16px;">
+        <div class="form-group">
+          <label class="form-label">Confirm code from app</label>
+          <div class="totp-wrap" id="setupBoxes">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="1">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="2">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="3">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="4">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="5">
+            <input type="number" class="totp-input" maxlength="1" min="0" max="9" inputmode="numeric" tabindex="6">
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" id="btnSetup">Confirm &amp; Activate 2FA</button>
+      </form>
+    </div>
+
+  </div><!-- /card -->
+
+  <p class="page-footer">Bland &amp; Co Jewellers · Admin Access Only</p>
+</main>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let challengeToken = null;
+
+  // ── Redirect if already logged in ─────────────────────────────────────────
+  (async () => {
+    const tok = localStorage.getItem('admin_session');
+    if (!tok) return;
+    const r = await fetch('/api/auth/check', { headers: { Authorization: `Bearer ${tok}` } }).catch(() => null);
+    if (r && r.ok) location.replace('/admin.html');
+  })();
+
+  // ── TOTP digit box wiring ─────────────────────────────────────────────────
+  function wireDigitBoxes(containerId) {
+    const inputs = document.querySelectorAll(`#${containerId} .totp-input`);
+    inputs.forEach((inp, i) => {
+      inp.addEventListener('input', () => {
+        const v = inp.value.replace(/\D/g, '').slice(-1);
+        inp.value = v;
+        if (v && i < inputs.length - 1) inputs[i + 1].focus();
+        // auto-submit when last digit filled
+        if (i === inputs.length - 1 && v) inp.closest('form').requestSubmit();
+      });
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !inp.value && i > 0) { inputs[i - 1].focus(); inputs[i - 1].value = ''; }
+        if (e.key === 'ArrowLeft'  && i > 0) inputs[i - 1].focus();
+        if (e.key === 'ArrowRight' && i < inputs.length - 1) inputs[i + 1].focus();
+      });
+      inp.addEventListener('paste', e => {
+        e.preventDefault();
+        const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+        digits.split('').forEach((d, j) => { if (inputs[j]) inputs[j].value = d; });
+        const next = Math.min(digits.length, inputs.length - 1);
+        inputs[next].focus();
+        if (digits.length === 6) inp.closest('form').requestSubmit();
+      });
+    });
+  }
+  wireDigitBoxes('totpBoxes');
+  wireDigitBoxes('setupBoxes');
+
+  function getCode(containerId) {
+    return [...document.querySelectorAll(`#${containerId} .totp-input`)].map(i => i.value).join('');
+  }
+  function clearCode(containerId) {
+    const inputs = document.querySelectorAll(`#${containerId} .totp-input`);
+    inputs.forEach(i => { i.value = ''; i.classList.remove('error'); });
+    inputs[0].focus();
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    const txt = document.getElementById(id + 'Txt');
+    if (txt && msg) txt.textContent = msg;
+    el.classList.add('show');
+    el.closest('.card, form, div')?.classList.add('shake');
+    setTimeout(() => el.closest('.card, form, div')?.classList.remove('shake'), 400);
+  }
+  function hideError(id) { document.getElementById(id).classList.remove('show'); }
+
+  function setLoading(btnId, loading) {
+    const btn = document.getElementById(btnId);
+    if (loading) {
+      btn._txt = btn.innerHTML;
+      btn.innerHTML = '<div class="spinner"></div>';
+      btn.disabled = true;
+    } else {
+      btn.innerHTML = btn._txt;
+      btn.disabled = false;
+    }
+  }
+
+  function togglePw() {
+    const inp = document.getElementById('pw');
+    const icon = document.getElementById('eyeIcon');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+    } else {
+      inp.type = 'password';
+      icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+  }
+
+  // ── Step 1: Password ───────────────────────────────────────────────────────
+  async function submitPassword(e) {
+    e.preventDefault();
+    hideError('err1');
+    const pw = document.getElementById('pw').value;
+    if (!pw) return;
+
+    setLoading('btn1', true);
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        showError('err1', data.error || 'Incorrect password.');
+        document.getElementById('pw').classList.add('error');
+        setTimeout(() => document.getElementById('pw').classList.remove('error'), 1500);
+        return;
+      }
+      challengeToken = data.challenge;
+      // First-run: need to set up 2FA
+      if (data.setupRequired) {
+        await loadSetupQR();
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('stepSetup').style.display = 'block';
+      } else {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+        setTimeout(() => document.querySelector('#totpBoxes .totp-input').focus(), 50);
+      }
+    } catch {
+      showError('err1', 'Network error — is the server running?');
+    } finally {
+      setLoading('btn1', false);
+    }
+  }
+
+  // ── Step 2: TOTP ───────────────────────────────────────────────────────────
+  async function submitTOTP(e) {
+    e.preventDefault();
+    hideError('err2');
+    const code = getCode('totpBoxes');
+    if (code.length < 6) { showError('err2', 'Please enter all 6 digits.'); return; }
+
+    setLoading('btn2', true);
+    try {
+      const r = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ challenge: challengeToken, code }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        showError('err2', data.error || 'Invalid code.');
+        clearCode('totpBoxes');
+        return;
+      }
+      localStorage.setItem('admin_session', data.session);
+      location.replace('/admin.html');
+    } catch {
+      showError('err2', 'Network error — is the server running?');
+    } finally {
+      setLoading('btn2', false);
+    }
+  }
+
+  // ── First-run setup ────────────────────────────────────────────────────────
+  async function loadSetupQR() {
+    try {
+      const r = await fetch('/api/auth/setup');
+      const data = await r.json();
+      if (!r.ok) return;
+      document.getElementById('totpSecretDisplay').textContent = data.secret;
+      // Render QR code client-side
+      QRCode.toCanvas(document.getElementById('qrCanvas'), data.uri, {
+        width: 200, margin: 1,
+        color: { dark: '#000000', light: '#ffffff' },
+      });
+    } catch { /* server may not be running */ }
+  }
+
+  async function submitSetup(e) {
+    e.preventDefault();
+    hideError('errSetup');
+    const code = getCode('setupBoxes');
+    if (code.length < 6) { showError('errSetup', 'Please enter all 6 digits.'); return; }
+
+    setLoading('btnSetup', true);
+    try {
+      const r = await fetch('/api/auth/complete-setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        showError('errSetup', data.error || 'Invalid code — try again.');
+        clearCode('setupBoxes');
+        return;
+      }
+      // Setup complete — now verify TOTP to get session
+      document.getElementById('stepSetup').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+      setTimeout(() => document.querySelector('#totpBoxes .totp-input').focus(), 50);
+    } catch {
+      showError('errSetup', 'Network error.');
+    } finally {
+      setLoading('btnSetup', false);
+    }
+  }
+
+  // ── Back button ───────────────────────────────────────────────────────────
+  function goBack() {
+    challengeToken = null;
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    hideError('err1');
+    clearCode('totpBoxes');
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').focus();
+  }
+</script>
+</body>
+</html>
