@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <!-- QR code renderer (client-side, no external data sent) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg:        #060A08;
@@ -165,7 +165,7 @@
 
     /* ── QR Setup section ── */
     .qr-wrap { text-align: center; margin: 20px 0 24px; }
-    .qr-wrap canvas { border: 6px solid #fff; display: inline-block; }
+    .qr-wrap canvas, .qr-wrap img { border: 6px solid #fff; display: inline-block; }
     .secret-display {
       background: var(--elevated); border: 1px solid var(--border);
       padding: 10px 14px; font-family: monospace; font-size: 13px;
@@ -306,7 +306,7 @@
       </div>
 
       <div class="qr-wrap">
-        <canvas id="qrCanvas"></canvas>
+        <div id="qrCanvas"></div>
       </div>
       <p style="font-size:11px;color:var(--cream-dim);text-align:center;margin-bottom:6px;">Or enter this key manually:</p>
       <div class="secret-display" id="totpSecretDisplay">Loading…</div>
@@ -498,9 +498,13 @@
       if (!r.ok) return;
       document.getElementById('totpSecretDisplay').textContent = data.secret;
       // Render QR code client-side
-      QRCode.toCanvas(document.getElementById('qrCanvas'), data.uri, {
-        width: 200, margin: 1,
-        color: { dark: '#000000', light: '#ffffff' },
+      const el = document.getElementById('qrCanvas');
+      el.innerHTML = '';
+      new QRCode(el, {
+        text: data.uri,
+        width: 200, height: 200,
+        colorDark: '#000000', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
       });
     } catch { /* server may not be running */ }
   }
