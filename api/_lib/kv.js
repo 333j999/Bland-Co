@@ -1,12 +1,14 @@
-// Vercel KV (Upstash Redis) via REST API — no npm required
-// Requires env vars: KV_REST_API_URL, KV_REST_API_TOKEN
-// (Auto-provided by Vercel when you link a KV database to your project)
+// Upstash Redis via REST API — no npm required
+// Requires env vars: UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
+// (Auto-provided by Vercel when you add Upstash from the Storage marketplace)
 
 async function kvExec(...command) {
-  const r = await fetch(`${process.env.KV_REST_API_URL}/pipeline`, {
+  const url   = process.env.UPSTASH_REDIS_REST_URL   || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  const r = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify([command]),
