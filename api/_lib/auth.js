@@ -43,8 +43,8 @@ function b64url(buf) {
   return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
-function signJWT(payload) {
-  const s = process.env.JWT_SECRET;
+function signJWT(payload, secret) {
+  const s = secret || process.env.JWT_SECRET;
   if (!s) throw new Error('JWT_SECRET env var is not set');
   const h = b64url(Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
   const b = b64url(Buffer.from(JSON.stringify(payload)));

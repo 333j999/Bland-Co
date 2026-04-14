@@ -4,12 +4,14 @@ function cors(res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 }
 
+// Use raw Node.js response API — avoids relying on Vercel/Express helpers
 function json(res, status, body) {
   cors(res);
-  res.status(status).json(body);
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(body));
 }
 
-// Vercel does not always auto-parse JSON bodies — read the stream to be safe
 function parseBody(req) {
   if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
   return new Promise((resolve) => {
