@@ -8,14 +8,16 @@ const write = async (r, d) => kvSet(`data:${r}`, d);
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); return res.status(204).end(); }
-  if (!checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
-
   const { resource } = req.query;
   if (!RESOURCES.includes(resource)) return json(res, 404, { error: 'Unknown resource' });
 
   const data = await read(resource);
 
+  // GET is public — no auth required for reading
   if (req.method === 'GET') return json(res, 200, data);
+
+  // All write operations require a valid session
+  if (!checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
 
   if (req.method === 'POST') {
     const payload = await parseBody(req);
