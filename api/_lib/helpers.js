@@ -9,4 +9,15 @@ function json(res, status, body) {
   res.status(status).json(body);
 }
 
-module.exports = { cors, json };
+// Vercel does not always auto-parse JSON bodies — read the stream to be safe
+function parseBody(req) {
+  if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
+  return new Promise((resolve) => {
+    let raw = '';
+    req.on('data', c => raw += c);
+    req.on('end', () => { try { resolve(JSON.parse(raw || '{}')); } catch { resolve({}); } });
+    req.on('error', () => resolve({}));
+  });
+}
+
+module.exports = { cors, json, parseBody };

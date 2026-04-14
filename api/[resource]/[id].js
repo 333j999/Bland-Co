@@ -1,6 +1,6 @@
 const { checkSession } = require('../_lib/auth');
 const { kvGet, kvSet } = require('../_lib/kv');
-const { cors, json }   = require('../_lib/helpers');
+const { cors, json, parseBody } = require('../_lib/helpers');
 
 const RESOURCES = ['inventory', 'enquiries', 'valuations', 'testimonials', 'consultations'];
 const read  = async r => (await kvGet(`data:${r}`)) ?? [];
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
   if (req.method === 'PUT') {
     const idx = data.findIndex(i => i.id === id);
     if (idx === -1) return json(res, 404, { error: 'Not found' });
-    const payload = req.body ?? {};
+    const payload = await parseBody(req);
     data[idx] = { ...data[idx], ...payload, id, updatedAt: new Date().toISOString() };
     await write(resource, data);
     return json(res, 200, data[idx]);
