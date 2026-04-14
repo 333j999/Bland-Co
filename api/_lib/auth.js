@@ -52,10 +52,11 @@ function signJWT(payload, secret) {
   return `${h}.${b}.${sig}`;
 }
 
+const JWT_SECRET_FALLBACK = 'dev-secret-set-JWT_SECRET-in-vercel';
+
 function verifyJWT(token) {
   try {
-    const s = process.env.JWT_SECRET;
-    if (!s) return null;
+    const s = process.env.JWT_SECRET || JWT_SECRET_FALLBACK;
     const parts = (token ?? '').split('.');
     if (parts.length !== 3) return null;
     const [h, b, sig] = parts;
@@ -99,6 +100,7 @@ function checkSession(req) {
 }
 
 module.exports = {
+  JWT_SECRET_FALLBACK,
   genBase32Secret, verifyTOTP, signJWT, verifyJWT,
   getAdminCfg, checkPassword, checkSession, randomUUID,
 };

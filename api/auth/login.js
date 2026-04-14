@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       return json(res, 401, { error: 'Incorrect password' });
     }
 
-    const jwtSecret = process.env.JWT_SECRET || 'dev-secret-set-JWT_SECRET-in-vercel';
+    const jwtSecret = process.env.JWT_SECRET || require('../_lib/auth').JWT_SECRET_FALLBACK;
     const iat = Math.floor(Date.now() / 1000);
     const session = signJWT({ sub: 'admin', iat, exp: iat + SESSION_TTL }, jwtSecret);
     json(res, 200, { session });
