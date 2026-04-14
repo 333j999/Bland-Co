@@ -279,7 +279,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw }),
       });
-      const data = await r.json();
+      let data; try { data = await r.json(); } catch { data = {}; }
       if (!r.ok) {
         showError(data.error || 'Incorrect password.');
         const inp = document.getElementById('pw');
