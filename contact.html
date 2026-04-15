@@ -266,7 +266,7 @@
 <script>
   function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const privacy = document.getElementById('privacy');
@@ -280,13 +280,35 @@
       field.style.borderColor = field.value.trim() ? 'rgba(232,223,200,.1)' : 'rgba(196,150,46,.6)';
       if (!field.value.trim()) valid = false;
     });
-    if (valid) {
-      document.getElementById('successMsg').style.display = 'block';
-      const btn = form.querySelector('button[type=submit]');
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
+    if (!valid) return;
+
+    const btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.textContent = 'Sending…';
+
+    try {
+      await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:    document.getElementById('name').value.trim(),
+          email:   document.getElementById('email').value.trim(),
+          phone:   document.getElementById('phone').value.trim(),
+          subject: document.getElementById('subject').value,
+          message: document.getElementById('message').value.trim(),
+          status:  'new',
+        }),
+      });
       btn.textContent = 'Message Sent';
-      document.getElementById('successMsg').scrollIntoView({behavior:'smooth',block:'center'});
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = 'Send Message';
+      alert('Something went wrong — please try again.');
     }
   }
 
