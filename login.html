@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Bland & Co Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #060A08;
+      --surface:   #0D1511;
+      --card:      #111917;
+      --elevated:  #162019;
+      --green:     #0C4535;
+      --green-dark:#073D2A;
+      --green-mid: #166649;
+      --green-hi:  #1E8560;
+      --cream:     #E8DFC8;
+      --cream-dim: #9E9583;
+      --gold:      #C4962E;
+      --border:    rgba(232,223,200,0.07);
+      --red:       #C0392B;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Background ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(12,69,53,.32) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(7,61,42,.18) 0%, transparent 50%);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(232,223,200,.012) 0, rgba(232,223,200,.012) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(0deg,  rgba(232,223,200,.012) 0, rgba(232,223,200,.012) 1px, transparent 1px, transparent 100px);
+      pointer-events: none;
+    }
+    .noise {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .025; mix-blend-mode: overlay;
+    }
+
+    /* ── Card ── */
+    .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+
+    .card {
+      width: 100%; max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 48px 44px;
+    }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+    .logo-wrap img { width: 40px; height: 40px; object-fit: cover; }
+    .logo-text { line-height: 1.2; }
+    .logo-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
+    .logo-sub  { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-dim); margin-top: 1px; }
+
+    /* ── Step indicator ── */
+    .steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px; }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 500; color: var(--cream-dim);
+      transition: background .25s, border-color .25s, color .25s;
+      flex-shrink: 0;
+    }
+    .step-dot.done  { background: var(--green); border-color: var(--green); color: var(--cream); }
+    .step-dot.active{ background: var(--green-mid); border-color: var(--green-mid); color: var(--cream); }
+    .step-line { flex: 1; height: 1px; background: var(--border); transition: background .25s; }
+    .step-line.done { background: var(--green-mid); }
+    .step-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); margin-top: 6px; white-space: nowrap; }
+
+    /* ── Headings ── */
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+    .card-desc  { font-size: 13px; color: var(--cream-dim); line-height: 1.65; margin-bottom: 28px; }
+
+    /* ── Form ── */
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .form-label { font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--cream-dim); }
+    .input-wrap { position: relative; }
+    .form-input {
+      width: 100%; background: var(--elevated); border: 1px solid rgba(232,223,200,.1);
+      color: var(--cream); padding: 13px 16px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; outline: none; transition: border-color .2s, background .2s;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder { color: var(--cream-dim); opacity: .4; }
+    .form-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .form-input.error { border-color: var(--red) !important; }
+    .eye-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--cream-dim);
+      padding: 4px; display: flex; align-items: center;
+      transition: color .2s;
+    }
+    .eye-btn:hover { color: var(--cream); }
+
+    /* TOTP digit boxes */
+    .totp-wrap { display: flex; gap: 8px; }
+    .totp-input {
+      width: 48px; height: 56px; background: var(--elevated);
+      border: 1px solid rgba(232,223,200,.1); color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 500;
+      text-align: center; outline: none; -webkit-appearance: none;
+      transition: border-color .2s, background .2s;
+      border-radius: 0;
+      /* hide spinner */
+      -moz-appearance: textfield;
+    }
+    .totp-input::-webkit-outer-spin-button,
+    .totp-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .totp-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .totp-input.error { border-color: var(--red) !important; }
+
+    /* ── Submit btn ── */
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--cream); color: var(--bg);
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase; border: none;
+      cursor: pointer; margin-top: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-submit:hover:not(:disabled) { background: #fff; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(232,223,200,.12); }
+    .btn-submit:active:not(:disabled) { transform: none; }
+    .btn-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ── Error msg ── */
+    .error-msg {
+      display: none; align-items: center; gap: 8px;
+      padding: 11px 14px; background: rgba(192,57,43,.12);
+      border: 1px solid rgba(192,57,43,.3);
+      font-size: 13px; color: #E57373; margin-bottom: 16px;
+    }
+    .error-msg.show { display: flex; }
+
+    /* ── Shake animation ── */
+    @keyframes shake {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-6px)}
+      40%{transform:translateX(6px)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }
+    .shake { animation: shake .35s ease; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(6,10,8,.3); border-top-color: var(--bg); border-radius: 50%; animation: spin .7s linear infinite; }
+
+    /* ── QR Setup section ── */
+    .qr-wrap { text-align: center; margin: 20px 0 24px; }
+    .qr-wrap canvas, .qr-wrap img { border: 12px solid #fff; display: inline-block; }
+    .secret-display {
+      background: var(--elevated); border: 1px solid var(--border);
+      padding: 10px 14px; font-family: monospace; font-size: 13px;
+      letter-spacing: .12em; color: var(--cream); text-align: center;
+      word-break: break-all; margin: 12px 0;
+    }
+    .setup-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .setup-step  { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--cream-dim); line-height: 1.55; }
+    .setup-step-num { width: 22px; height: 22px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--cream); flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Back link ── */
+    .back-link {
+      font-size: 12px; color: var(--cream-dim); background: none; border: none;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 20px; padding: 0; transition: color .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .back-link:hover { color: var(--cream); }
+
+    /* ── Footer ── */
+    .page-footer { margin-top: 24px; font-size: 11.5px; color: rgba(158,149,131,.45); text-align: center; }
+  </style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<main class="page">
+  <div class="card" id="loginCard">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers">
+      <div class="logo-text">
+        <div class="logo-name">Bland &amp; Co</div>
+        <div class="logo-sub">Admin Portal</div>
+      </div>
+    </div>
+
+    <h1 class="card-title">Welcome back</h1>
+    <p class="card-desc">Enter your admin password to continue.</p>
+
+    <div class="error-msg" id="err1">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+      <span id="err1Txt">Incorrect password.</span>
+    </div>
+
+    <form id="form1" onsubmit="submitPassword(event)" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="pw">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="pw" class="form-input" placeholder="Enter admin password" autocomplete="current-password" autofocus required>
+          <button type="button" class="eye-btn" onclick="togglePw()" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="btn-submit" id="btn1">
+        Sign In
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </button>
+    </form>
+
+  </div><!-- /card -->
+
+  <p class="page-footer">Bland &amp; Co Jewellers · Admin Access Only</p>
+</main>
+
+<script>
+  // Redirect if already logged in
+  (async () => {
+    const tok = localStorage.getItem('admin_session');
+    if (!tok) return;
+    const r = await fetch('/api/auth/check', { headers: { Authorization: `Bearer ${tok}` } }).catch(() => null);
+    if (r && r.ok) location.replace('/admin.html');
+  })();
+
+  function showError(msg) {
+    const el = document.getElementById('err1');
+    document.getElementById('err1Txt').textContent = msg;
+    el.classList.add('show');
+  }
+  function hideError() { document.getElementById('err1').classList.remove('show'); }
+
+  function setLoading(loading) {
+    const btn = document.getElementById('btn1');
+    if (loading) { btn._txt = btn.innerHTML; btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true; }
+    else { btn.innerHTML = btn._txt; btn.disabled = false; }
+  }
+
+  function togglePw() {
+    const inp = document.getElementById('pw');
+    const icon = document.getElementById('eyeIcon');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+    } else {
+      inp.type = 'password';
+      icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+  }
+
+  async function submitPassword(e) {
+    e.preventDefault();
+    hideError();
+    const pw = document.getElementById('pw').value;
+    if (!pw) return;
+    setLoading(true);
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      let data; try { data = await r.json(); } catch { data = {}; }
+      if (!r.ok) {
+        showError(data.error || 'Incorrect password.');
+        const inp = document.getElementById('pw');
+        inp.classList.add('error');
+        setTimeout(() => inp.classList.remove('error'), 1500);
+        return;
+      }
+      localStorage.setItem('admin_session', data.session);
+      location.replace('/admin.html');
+    } catch {
+      showError('Network error — please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+</script>
+</body>
+</html>
