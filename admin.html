@@ -709,6 +709,13 @@ function viewValuation(id) {
       <div class="detail-row"><span class="detail-key">Description</span><span class="detail-val">${esc(v.description)}</span></div>
       <div class="detail-row"><span class="detail-key">Status</span><span class="detail-val">${badge(v.status)}</span></div>
     </div>
+    ${v.images && v.images.length ? `
+    <div style="margin-top:18px;">
+      <div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:10px;">Photos</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        ${v.images.map(url => `<a href="${esc(url)}" target="_blank" rel="noopener"><img src="${esc(url)}" style="width:90px;height:90px;object-fit:cover;border:1px solid var(--border);cursor:pointer;" loading="lazy"></a>`).join('')}
+      </div>
+    </div>` : ''}
     ${canConvert ? `
     <div class="convert-banner">
       <p><strong style="color:var(--gold)">Convert to Inventory</strong><br>Bought from this client? Add directly to your inventory pre-filled with these details.</p>

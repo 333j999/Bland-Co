@@ -322,7 +322,23 @@
     }
   }
 
-  function handleSubmit(e) {
+  const CLOUDINARY_CLOUD  = 'YOUR_CLOUD_NAME';   // replace with your Cloudinary cloud name
+  const CLOUDINARY_PRESET = 'bland_co_unsigned'; // replace with your unsigned upload preset name
+
+  async function uploadImages(files) {
+    const urls = [];
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', CLOUDINARY_PRESET);
+      const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+      const data = await r.json();
+      if (data.secure_url) urls.push(data.secure_url);
+    }
+    return urls;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const required = form.querySelectorAll('[required]');
@@ -331,12 +347,45 @@
       field.style.borderColor = field.value.trim() ? 'rgba(232,223,200,.1)' : 'rgba(196,150,46,.6)';
       if (!field.value.trim()) valid = false;
     });
-    if (valid) {
+    if (!valid) return;
+
+    const btn = form.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Uploading…';
+    btn.style.opacity = '0.6';
+
+    try {
+      const imageFiles = Array.from(document.getElementById('images').files);
+      const images = imageFiles.length ? await uploadImages(imageFiles) : [];
+
+      await fetch('/api/valuations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:        document.getElementById('fullName').value.trim(),
+          email:       document.getElementById('email').value.trim(),
+          phone:       document.getElementById('phone').value.trim(),
+          itemType:    document.getElementById('itemType').value,
+          brand:       document.getElementById('brand').value.trim(),
+          model:       document.getElementById('model').value.trim(),
+          reference:   document.getElementById('year').value.trim(),
+          condition:   document.getElementById('condition').value,
+          paperwork:   document.getElementById('accessories').value,
+          description: document.getElementById('description').value.trim(),
+          status:      'pending',
+          images,
+        }),
+      });
+
+      btn.textContent = 'Request Submitted';
       document.getElementById('successMsg').style.display = 'block';
-      form.querySelector('.btn-submit').disabled = true;
-      form.querySelector('.btn-submit').textContent = 'Request Submitted';
-      form.querySelector('.btn-submit').style.opacity = '0.6';
-      document.getElementById('successMsg').scrollIntoView({behavior:'smooth',block:'center'});
+      document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'Submit Valuation Request';
+      btn.style.opacity = '1';
+      alert('Something went wrong — please try again.');
     }
   }
 
