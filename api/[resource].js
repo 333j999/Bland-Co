@@ -3,6 +3,8 @@ const { kvGet, kvSet }             = require('./_lib/kv');
 const { cors, json, parseBody }    = require('./_lib/helpers');
 
 const RESOURCES = ['inventory', 'enquiries', 'valuations', 'testimonials', 'consultations'];
+// Public resources accept POST from website forms without a session
+const PUBLIC_POST = ['valuations', 'enquiries', 'consultations'];
 const read  = async r => (await kvGet(`data:${r}`)) ?? [];
 const write = async (r, d) => kvSet(`data:${r}`, d);
 
@@ -16,8 +18,9 @@ module.exports = async (req, res) => {
   // GET is public — no auth required for reading
   if (req.method === 'GET') return json(res, 200, data);
 
-  // All write operations require a valid session
-  if (!checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
+  // Public form submissions don't need a session; all other writes do
+  const isPublicPost = req.method === 'POST' && PUBLIC_POST.includes(resource);
+  if (!isPublicPost && !checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
 
   if (req.method === 'POST') {
     const payload = await parseBody(req);
