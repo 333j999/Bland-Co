@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Consultation | Bland & Co Jewellers</title>
+  <meta name="description" content="Book a private consultation with Bland & Co Jewellers. Whether you're buying, selling, or seeking a valuation — speak with our specialists in Hatton Garden.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--green-hi:#1E8560;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{background:var(--bg);scroll-behavior:smooth;}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
+
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-bottom:1px solid var(--border);}
+    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
+    .nav-link:hover,.nav-link.active{color:var(--cream);}
+    .nav-link:hover::after,.nav-link.active::after{width:100%;}
+    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
+    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
+    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
+    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
+    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
+    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
+    .fi{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+    .fi.v{opacity:1;transform:none;}
+    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
+    .fl:hover{color:var(--cream);}
+    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
+    #mmenu.open{display:flex;}
+
+    /* Form */
+    .form-group{display:flex;flex-direction:column;gap:7px;}
+    .form-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);font-weight:500;}
+    .form-input{background:var(--elevated);border:1px solid rgba(232,223,200,.1);color:var(--cream);padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,background .2s;width:100%;-webkit-appearance:none;}
+    .form-input::placeholder{color:var(--cream-dim);opacity:.45;}
+    .form-input:focus{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
+    textarea.form-input{resize:vertical;min-height:120px;line-height:1.6;}
+    select.form-input option{background:var(--elevated);color:var(--cream);}
+    input[type="date"].form-input::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
+    input[type="time"].form-input::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
+
+    /* Purpose cards */
+    .purpose-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+    .purpose-card{position:relative;cursor:pointer;}
+    .purpose-card input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+    .purpose-label{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:var(--elevated);border:1px solid rgba(232,223,200,.1);text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+    .purpose-card input:checked + .purpose-label{border-color:var(--green-mid);background:rgba(22,102,73,.1);}
+    .purpose-label:hover{border-color:rgba(232,223,200,.2);}
+    .purpose-icon{font-size:22px;line-height:1;}
+    .purpose-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);font-weight:500;}
+    .purpose-sub{font-size:11px;color:var(--cream-dim);line-height:1.4;}
+
+    /* Step indicator */
+    .step-dot{width:8px;height:8px;border-radius:50%;background:var(--green);transition:background .3s;}
+    .step-dot.active{background:var(--green-mid);}
+
+    /* Info sidebar */
+    .info-block{background:var(--surface);border:1px solid var(--border);padding:32px;}
+    .contact-method{display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--card);border:1px solid var(--border);transition:border-color .2s;}
+    .contact-method:hover{border-color:rgba(232,223,200,.14);}
+    .contact-icon{width:40px;height:40px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .btn-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,border-color .2s,transform .15s;}
+    .btn-whatsapp:hover{background:rgba(37,211,102,.2);border-color:rgba(37,211,102,.5);transform:translateY(-1px);}
+
+    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split{grid-template-columns:1fr!important;}.form-row{grid-template-columns:1fr!important;}.purpose-grid{grid-template-columns:repeat(2,1fr)!important;}}
+    @media(min-width:901px){.mbtn{display:none!important;}}
+    @media(max-width:480px){.purpose-grid{grid-template-columns:1fr 1fr!important;}.fg{grid-template-columns:1fr!important;}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
+  <div class="dnav" style="display:flex;align-items:center;gap:36px;position:absolute;left:50%;transform:translateX(-50%);">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="inventory.html" class="nav-link">Inventory</a>
+    <a href="sell.html" class="nav-link">Sell / Value</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="testimonials.html" class="nav-link">Testimonials</a>
+    <a href="faq.html" class="nav-link">FAQ</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="consultation.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
+  </div>
+</nav>
+
+<div id="mmenu" role="dialog" aria-modal="true">
+  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
+  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a>
+  <a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a>
+  <a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a>
+  <a href="about.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">About</a>
+  <a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a>
+  <a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a>
+  <a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
+</div>
+
+<!-- HERO -->
+<section style="padding:140px 48px 80px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(12,69,53,.22) 0%,transparent 60%);"></div>
+  <div class="noise"></div>
+  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
+    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Private Consultation</span></div>
+    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:700px;">Book a <span class="display-i">Specialist</span> Appointment</h1>
+    <p class="fi" style="font-size:16px;line-height:1.8;color:var(--cream-dim);max-width:500px;margin-top:18px;font-weight:300;">Whether you're looking to buy, sell, or receive a professional valuation — our experts will give you their full, undivided attention.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<section style="padding:80px 0 112px;background:var(--bg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+    <div class="split" style="display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start;">
+
+      <!-- BOOKING FORM -->
+      <div class="fi">
+        <div style="background:var(--card);border:1px solid var(--border);padding:52px;">
+          <h2 class="display" style="font-size:36px;color:var(--cream);margin-bottom:8px;">Request an Appointment</h2>
+          <p style="font-size:14px;color:var(--cream-dim);margin-bottom:44px;line-height:1.7;">We'll confirm your preferred time within one business day. All consultations are private and without obligation.</p>
+
+          <form id="consultationForm" onsubmit="handleSubmit(event)" novalidate>
+            <div style="display:flex;flex-direction:column;gap:24px;">
+
+              <!-- Purpose -->
+              <div class="form-group">
+                <label class="form-label">Purpose of Visit *</label>
+                <div class="purpose-grid" id="purposeGrid">
+                  <div class="purpose-card">
+                    <input type="radio" name="purpose" id="p-buying" value="buying" checked>
+                    <label class="purpose-label" for="p-buying">
+                      <span class="purpose-icon">⌚</span>
+                      <span class="purpose-title">Buying</span>
+                      <span class="purpose-sub">Browse & acquire watches or jewellery</span>
+                    </label>
+                  </div>
+                  <div class="purpose-card">
+                    <input type="radio" name="purpose" id="p-selling" value="selling">
+                    <label class="purpose-label" for="p-selling">
+                      <span class="purpose-icon">💎</span>
+                      <span class="purpose-title">Selling</span>
+                      <span class="purpose-sub">Get a fair offer for your pieces</span>
+                    </label>
+                  </div>
+                  <div class="purpose-card">
+                    <input type="radio" name="purpose" id="p-valuation" value="valuation">
+                    <label class="purpose-label" for="p-valuation">
+                      <span class="purpose-icon">📋</span>
+                      <span class="purpose-title">Valuation</span>
+                      <span class="purpose-sub">Professional assessment & certificate</span>
+                    </label>
+                  </div>
+                  <div class="purpose-card">
+                    <input type="radio" name="purpose" id="p-general" value="general">
+                    <label class="purpose-label" for="p-general">
+                      <span class="purpose-icon">💬</span>
+                      <span class="purpose-title">General</span>
+                      <span class="purpose-sub">Chat with a specialist about options</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Name & Phone -->
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="name">Full Name *</label>
+                  <input type="text" id="name" name="name" class="form-input" placeholder="James Harrison" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" class="form-input" placeholder="+44 7700 900000">
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="email">Email Address *</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="james@example.com" required>
+              </div>
+
+              <!-- Date & Time -->
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="preferredDate">Preferred Date *</label>
+                  <input type="date" id="preferredDate" name="preferredDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="preferredTime">Preferred Time *</label>
+                  <select id="preferredTime" name="preferredTime" class="form-input" required>
+                    <option value="" disabled selected>Select a time</option>
+                    <option value="09:00">9:00 AM</option>
+                    <option value="09:30">9:30 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="10:30">10:30 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="12:30">12:30 PM</option>
+                    <option value="13:00">1:00 PM</option>
+                    <option value="13:30">1:30 PM</option>
+                    <option value="14:00">2:00 PM</option>
+                    <option value="14:30">2:30 PM</option>
+                    <option value="15:00">3:00 PM</option>
+                    <option value="15:30">3:30 PM</option>
+                    <option value="16:00">4:00 PM</option>
+                    <option value="16:30">4:30 PM</option>
+                    <option value="17:00">5:00 PM</option>
+                    <option value="17:30">5:30 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Note about Saturday -->
+              <div id="satNote" style="display:none;padding:12px 16px;background:rgba(196,150,46,.06);border:1px solid rgba(196,150,46,.2);">
+                <p style="font-size:12px;color:var(--gold);line-height:1.6;">Saturday appointments run 10:00 AM – 4:00 PM. Times outside this window will be adjusted.</p>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group">
+                <label class="form-label" for="message">Tell Us More <span style="opacity:.5;font-size:9px;letter-spacing:.1em;">(optional)</span></label>
+                <textarea id="message" name="message" class="form-input" placeholder="Describe what you're bringing, what you're looking for, or any questions you have…"></textarea>
+              </div>
+
+              <!-- Privacy -->
+              <div style="display:flex;align-items:flex-start;gap:10px;padding:16px;background:var(--surface);border:1px solid var(--border);">
+                <input type="checkbox" id="privacy" name="privacy" style="margin-top:3px;accent-color:var(--green-mid);flex-shrink:0;">
+                <label for="privacy" style="font-size:12px;color:var(--cream-dim);line-height:1.6;cursor:pointer;">I agree to the <a href="#" style="color:var(--green-mid);text-decoration:none;">Privacy Policy</a> and consent to Bland &amp; Co Jewellers contacting me to confirm this appointment.</label>
+              </div>
+
+              <button type="submit" id="submitBtn" style="width:100%;padding:16px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s,box-shadow .2s;" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 32px rgba(232,223,200,.15)'" onmouseout="this.style.background='var(--cream)';this.style.transform='none';this.style.boxShadow='none'">
+                Request Appointment
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+              </button>
+
+              <div id="successMsg" style="display:none;padding:28px;background:rgba(12,69,53,.25);border:1px solid var(--green-mid);text-align:center;">
+                <div style="width:48px;height:48px;border:1px solid var(--green-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                  <svg width="20" height="20" fill="none" stroke="var(--green-mid)" stroke-width="1.5"><polyline points="4 10 8 14 16 6"/></svg>
+                </div>
+                <p class="display" style="font-size:22px;color:var(--cream);margin-bottom:8px;">Request Received</p>
+                <p style="font-size:14px;color:var(--cream-dim);line-height:1.7;">Thank you — we'll confirm your appointment within one business day. Please check your email for details.</p>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div style="display:flex;flex-direction:column;gap:20px;" class="fi">
+
+        <!-- What to expect -->
+        <div class="info-block">
+          <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:20px;">What to Expect</h3>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">1</div>
+              <div>
+                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">We confirm your slot</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">You'll hear from us within one business day to confirm or suggest an alternative time.</div>
+              </div>
+            </div>
+            <div style="height:1px;background:var(--border);margin-left:42px;"></div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">2</div>
+              <div>
+                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">Private appointment</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Meet one of our specialists in our Hatton Garden showroom. Bring any pieces you'd like assessed.</div>
+              </div>
+            </div>
+            <div style="height:1px;background:var(--border);margin-left:42px;"></div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">3</div>
+              <div>
+                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">No pressure, no obligation</div>
+                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">All consultations are free and entirely without commitment. We're here to advise.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="info-block">
+          <h3 class="display" style="font-size:22px;color:var(--cream);margin-bottom:18px;">Visit Us</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="contact-method">
+              <div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+              <div>
+                <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:4px;">Address</div>
+                <div style="font-size:13px;color:var(--cream);line-height:1.6;">Hatton Garden<br>London, EC1N</div>
+              </div>
+            </div>
+            <div class="contact-method">
+              <div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div>
+              <div>
+                <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:4px;">Phone</div>
+                <a href="tel:+447399426893" style="font-size:13px;color:var(--cream);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--green-mid)'" onmouseout="this.style.color='var(--cream)'">07399 426893</a>
+                <div style="font-size:11px;color:var(--cream-dim);margin-top:2px;">Mon–Fri 9–6, Sat 10–4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div style="background:var(--green-dark);border:1px solid rgba(232,223,200,.08);padding:28px;text-align:center;position:relative;overflow:hidden;">
+          <div class="noise"></div>
+          <div style="position:relative;z-index:1;">
+            <div style="width:44px;height:44px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+              <svg width="20" height="20" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <h3 class="display" style="font-size:20px;color:var(--cream);margin-bottom:8px;">Prefer WhatsApp?</h3>
+            <p style="font-size:12px;color:rgba(232,223,200,.6);line-height:1.7;margin-bottom:18px;">Message us directly for the fastest response.</p>
+            <a href="https://wa.me/447399426893" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Message on WhatsApp
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
+      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">London's trusted luxury reseller. Based in Hatton Garden.</p></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a><a href="consultation.html" class="fl">Book Consultation</a></div></div>
+      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Info</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, EC1N</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="faq.html" class="fl">FAQ</a></div></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2024 Bland &amp; Co Jewellers. All rights reserved.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media(max-width:900px){.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}}
+  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
+</style>
+
+<script>
+  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+  // Set min date to tomorrow
+  const dateInput = document.getElementById('preferredDate');
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  dateInput.min = tomorrow.toISOString().slice(0,10);
+
+  // Saturday notice & time slot adjustment
+  dateInput.addEventListener('change', function() {
+    const d = new Date(this.value + 'T00:00:00');
+    const isSat = d.getDay() === 6;
+    const isSun = d.getDay() === 0;
+    const note = document.getElementById('satNote');
+    const timeSelect = document.getElementById('preferredTime');
+
+    if (isSun) {
+      this.value = '';
+      note.style.display = 'none';
+      return;
+    }
+
+    note.style.display = isSat ? 'block' : 'none';
+
+    // On Saturday, hide slots before 10:00 and after 16:00
+    Array.from(timeSelect.options).forEach(opt => {
+      if (!opt.value) return;
+      const [h] = opt.value.split(':').map(Number);
+      opt.disabled = isSat && (h < 10 || h >= 16);
+      opt.style.display = (isSat && (h < 10 || h >= 16)) ? 'none' : '';
+    });
+
+    // Reset selection if now disabled
+    const sel = timeSelect.options[timeSelect.selectedIndex];
+    if (sel && sel.disabled) timeSelect.value = '';
+  });
+
+  // Fade-in on scroll
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('v'); }), {threshold:0.12});
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+
+    const privacy = document.getElementById('privacy');
+    if (!privacy.checked) {
+      privacy.style.outline = '1px solid rgba(196,150,46,.6)';
+      return;
+    }
+
+    const required = form.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(field => {
+      const empty = !field.value.trim();
+      field.style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
+      if (empty) valid = false;
+    });
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.innerHTML = 'Sending… <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
+
+    try {
+      const purpose = document.querySelector('input[name="purpose"]:checked').value;
+
+      await fetch('/api/consultations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:          document.getElementById('name').value.trim(),
+          email:         document.getElementById('email').value.trim(),
+          phone:         document.getElementById('phone').value.trim(),
+          purpose,
+          preferredDate: document.getElementById('preferredDate').value,
+          preferredTime: document.getElementById('preferredTime').value,
+          message:       document.getElementById('message').value.trim(),
+          status:        'pending',
+        }),
+      });
+
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = 'Request Appointment <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
+    }
+  }
+</script>
+</body>
+</html>
