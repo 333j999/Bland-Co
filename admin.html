@@ -634,7 +634,7 @@ function renderSection(s) {
   if (s==='valuations')   renderValuations();
   if (s==='consultations')renderConsultations();
   if (s==='testimonials') renderTestimonials();
-  if (s==='settings')     renderSettings();
+  if (s==='settings')     { if (!siteSettings._loaded) { siteSettings._loaded = true; loadSettings(); } else renderSettings(); }
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -1291,15 +1291,6 @@ async function clearHeroVideo() {
   });
 }
 
-// Override nav to load settings on first visit
-const _origNav = nav;
-function nav(section) {
-  _origNav(section);
-  if (section === 'settings' && !siteSettings._loaded) {
-    siteSettings._loaded = true;
-    loadSettings();
-  }
-}
 
 // ══════════════════════════════════════════════════════════════════════
 // Boot
