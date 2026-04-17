@@ -9,6 +9,35 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    /* ── Flatpickr brand theme ── */
+    .flatpickr-calendar{background:var(--card)!important;border:1px solid rgba(232,223,200,.12)!important;border-radius:0!important;box-shadow:0 24px 64px rgba(0,0,0,.5)!important;font-family:'DM Sans',sans-serif!important;color:var(--cream)!important;}
+    .flatpickr-months{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;padding:10px 0!important;}
+    .flatpickr-month{color:var(--cream)!important;fill:var(--cream)!important;}
+    .flatpickr-current-month{font-family:'Cormorant Garamond',serif!important;font-size:18px!important;font-weight:400!important;color:var(--cream)!important;letter-spacing:.02em!important;}
+    .flatpickr-current-month .numInputWrapper input{color:var(--cream)!important;}
+    .flatpickr-current-month select{color:var(--cream)!important;background:transparent!important;}
+    .flatpickr-prev-month,.flatpickr-next-month{color:var(--cream-dim)!important;fill:var(--cream-dim)!important;transition:color .2s!important;}
+    .flatpickr-prev-month:hover,.flatpickr-next-month:hover{color:var(--cream)!important;fill:var(--cream)!important;background:none!important;}
+    .flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--cream-dim)!important;transition:fill .2s!important;}
+    .flatpickr-prev-month:hover svg,.flatpickr-next-month:hover svg{fill:var(--cream)!important;}
+    .flatpickr-weekdays{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;}
+    span.flatpickr-weekday{color:var(--cream-dim)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important;font-weight:500!important;background:transparent!important;}
+    .flatpickr-days{border:none!important;}
+    .dayContainer{border:none!important;}
+    .flatpickr-day{color:var(--cream)!important;border-radius:0!important;border:1px solid transparent!important;font-size:13px!important;transition:background .15s,border-color .15s,color .15s!important;}
+    .flatpickr-day:hover{background:rgba(22,102,73,.2)!important;border-color:var(--green-mid)!important;color:var(--cream)!important;}
+    .flatpickr-day.today{border-color:rgba(22,102,73,.4)!important;background:transparent!important;}
+    .flatpickr-day.today:hover{background:rgba(22,102,73,.2)!important;}
+    .flatpickr-day.selected,.flatpickr-day.selected:hover{background:var(--green-mid)!important;border-color:var(--green-mid)!important;color:var(--cream)!important;}
+    .flatpickr-day.flatpickr-disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:rgba(232,223,200,.2)!important;}
+    .flatpickr-day.flatpickr-disabled:hover{background:transparent!important;border-color:transparent!important;}
+    .numInputWrapper:hover{background:transparent!important;}
+    .numInputWrapper span{border:none!important;right:0!important;}
+    .numInputWrapper span svg{fill:var(--cream-dim)!important;}
+    .flatpickr-input{background:var(--elevated)!important;color:var(--cream)!important;}
+  </style>
   <style>
     :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--green-hi:#1E8560;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -43,19 +72,35 @@
     .form-input:focus{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
     textarea.form-input{resize:vertical;min-height:120px;line-height:1.6;}
     select.form-input option{background:var(--elevated);color:var(--cream);}
-    input[type="date"].form-input::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
-    input[type="time"].form-input::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
 
     /* Purpose cards */
     .purpose-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
     .purpose-card{position:relative;cursor:pointer;}
     .purpose-card input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
-    .purpose-label{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:var(--elevated);border:1px solid rgba(232,223,200,.1);text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+    .purpose-label{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--elevated);border:1px solid rgba(232,223,200,.1);text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
     .purpose-card input:checked + .purpose-label{border-color:var(--green-mid);background:rgba(22,102,73,.1);}
+    .purpose-card input:checked + .purpose-label .purpose-icon svg{stroke:var(--cream);}
     .purpose-label:hover{border-color:rgba(232,223,200,.2);}
-    .purpose-icon{font-size:22px;line-height:1;}
+    .purpose-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
     .purpose-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);font-weight:500;}
     .purpose-sub{font-size:11px;color:var(--cream-dim);line-height:1.4;}
+
+    /* Custom time dropdown */
+    .time-dropdown-wrap{position:relative;}
+    .time-btn{width:100%;background:var(--elevated);border:1px solid rgba(232,223,200,.1);color:var(--cream-dim);padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s,background .2s;-webkit-appearance:none;text-align:left;}
+    .time-btn.selected{color:var(--cream);}
+    .time-btn:focus,.time-btn.open{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
+    .time-btn svg{flex-shrink:0;transition:transform .2s;color:var(--cream-dim);}
+    .time-btn.open svg{transform:rotate(180deg);}
+    .time-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid rgba(232,223,200,.12);z-index:50;max-height:260px;overflow-y:auto;display:none;box-shadow:0 16px 40px rgba(0,0,0,.5);}
+    .time-list.open{display:block;}
+    .time-list::-webkit-scrollbar{width:4px;}
+    .time-list::-webkit-scrollbar-track{background:var(--card);}
+    .time-list::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px;}
+    .time-opt{padding:11px 18px;font-size:13px;color:var(--cream-dim);cursor:pointer;transition:background .15s,color .15s;letter-spacing:.02em;}
+    .time-opt:hover{background:rgba(22,102,73,.2);color:var(--cream);}
+    .time-opt.active{background:var(--green-mid);color:var(--cream);}
+    .time-opt.disabled{opacity:.25;cursor:default;pointer-events:none;}
 
     /* Step indicator */
     .step-dot{width:8px;height:8px;border-radius:50%;background:var(--green);transition:background .3s;}
@@ -138,7 +183,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-buying" value="buying" checked>
                     <label class="purpose-label" for="p-buying">
-                      <span class="purpose-icon">⌚</span>
+                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 01-1.99 1.82H9.83a2 2 0 01-1.99-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 019.83 1h4.34a2 2 0 011.99 1.82l.35 3.83"/></svg></span>
                       <span class="purpose-title">Buying</span>
                       <span class="purpose-sub">Browse & acquire watches or jewellery</span>
                     </label>
@@ -146,7 +191,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-selling" value="selling">
                     <label class="purpose-label" for="p-selling">
-                      <span class="purpose-icon">💎</span>
+                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
                       <span class="purpose-title">Selling</span>
                       <span class="purpose-sub">Get a fair offer for your pieces</span>
                     </label>
@@ -154,7 +199,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-valuation" value="valuation">
                     <label class="purpose-label" for="p-valuation">
-                      <span class="purpose-icon">📋</span>
+                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
                       <span class="purpose-title">Valuation</span>
                       <span class="purpose-sub">Professional assessment & certificate</span>
                     </label>
@@ -162,7 +207,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-general" value="general">
                     <label class="purpose-label" for="p-general">
-                      <span class="purpose-icon">💬</span>
+                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
                       <span class="purpose-title">General</span>
                       <span class="purpose-sub">Chat with a specialist about options</span>
                     </label>
@@ -192,31 +237,18 @@
               <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div class="form-group">
                   <label class="form-label" for="preferredDate">Preferred Date *</label>
-                  <input type="date" id="preferredDate" name="preferredDate" class="form-input" required>
+                  <input type="text" id="preferredDate" name="preferredDate" class="form-input" placeholder="Select a date" readonly required style="cursor:pointer;">
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="preferredTime">Preferred Time *</label>
-                  <select id="preferredTime" name="preferredTime" class="form-input" required>
-                    <option value="" disabled selected>Select a time</option>
-                    <option value="09:00">9:00 AM</option>
-                    <option value="09:30">9:30 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="10:30">10:30 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="11:30">11:30 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                    <option value="12:30">12:30 PM</option>
-                    <option value="13:00">1:00 PM</option>
-                    <option value="13:30">1:30 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="14:30">2:30 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="15:30">3:30 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                    <option value="16:30">4:30 PM</option>
-                    <option value="17:00">5:00 PM</option>
-                    <option value="17:30">5:30 PM</option>
-                  </select>
+                  <label class="form-label">Preferred Time *</label>
+                  <input type="hidden" id="preferredTime" name="preferredTime" required>
+                  <div class="time-dropdown-wrap">
+                    <button type="button" class="time-btn" id="timeBtnDisplay" onclick="toggleTimeDropdown()">
+                      <span id="timeBtnLabel">Select a time</span>
+                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="time-list" id="timeList"></div>
+                  </div>
                 </div>
               </div>
 
@@ -352,41 +384,88 @@
   @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
   function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
 
-  // Set min date to tomorrow
-  const dateInput = document.getElementById('preferredDate');
-  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
-  dateInput.min = tomorrow.toISOString().slice(0,10);
+  // ── Time slots ──────────────────────────────────────────────
+  const ALL_SLOTS = [
+    {v:'09:00',l:'9:00 AM'},{v:'09:30',l:'9:30 AM'},
+    {v:'10:00',l:'10:00 AM'},{v:'10:30',l:'10:30 AM'},
+    {v:'11:00',l:'11:00 AM'},{v:'11:30',l:'11:30 AM'},
+    {v:'12:00',l:'12:00 PM'},{v:'12:30',l:'12:30 PM'},
+    {v:'13:00',l:'1:00 PM'},{v:'13:30',l:'1:30 PM'},
+    {v:'14:00',l:'2:00 PM'},{v:'14:30',l:'2:30 PM'},
+    {v:'15:00',l:'3:00 PM'},{v:'15:30',l:'3:30 PM'},
+    {v:'16:00',l:'4:00 PM'},{v:'16:30',l:'4:30 PM'},
+    {v:'17:00',l:'5:00 PM'},{v:'17:30',l:'5:30 PM'},
+  ];
+  let isSaturday = false;
 
-  // Saturday notice & time slot adjustment
-  dateInput.addEventListener('change', function() {
-    const d = new Date(this.value + 'T00:00:00');
-    const isSat = d.getDay() === 6;
-    const isSun = d.getDay() === 0;
-    const note = document.getElementById('satNote');
-    const timeSelect = document.getElementById('preferredTime');
+  function buildTimeList() {
+    const list = document.getElementById('timeList');
+    const hidden = document.getElementById('preferredTime');
+    list.innerHTML = ALL_SLOTS.map(s => {
+      const [h] = s.v.split(':').map(Number);
+      const disabled = isSaturday && (h < 10 || h >= 16);
+      const active = hidden.value === s.v;
+      return `<div class="time-opt${disabled?' disabled':''}${active?' active':''}" data-v="${s.v}" data-l="${s.l}" onclick="selectTime('${s.v}','${s.l}')">${s.l}</div>`;
+    }).join('');
+  }
 
-    if (isSun) {
-      this.value = '';
-      note.style.display = 'none';
-      return;
+  function selectTime(v, l) {
+    document.getElementById('preferredTime').value = v;
+    const btn = document.getElementById('timeBtnDisplay');
+    document.getElementById('timeBtnLabel').textContent = l;
+    btn.classList.add('selected');
+    closeTimeDropdown();
+    buildTimeList();
+  }
+
+  function toggleTimeDropdown() {
+    const btn = document.getElementById('timeBtnDisplay');
+    const list = document.getElementById('timeList');
+    const open = list.classList.contains('open');
+    if (open) { closeTimeDropdown(); } else {
+      buildTimeList();
+      list.classList.add('open');
+      btn.classList.add('open');
     }
+  }
 
-    note.style.display = isSat ? 'block' : 'none';
+  function closeTimeDropdown() {
+    document.getElementById('timeList').classList.remove('open');
+    document.getElementById('timeBtnDisplay').classList.remove('open');
+  }
 
-    // On Saturday, hide slots before 10:00 and after 16:00
-    Array.from(timeSelect.options).forEach(opt => {
-      if (!opt.value) return;
-      const [h] = opt.value.split(':').map(Number);
-      opt.disabled = isSat && (h < 10 || h >= 16);
-      opt.style.display = (isSat && (h < 10 || h >= 16)) ? 'none' : '';
-    });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.time-dropdown-wrap')) closeTimeDropdown();
+  });
 
-    // Reset selection if now disabled
-    const sel = timeSelect.options[timeSelect.selectedIndex];
-    if (sel && sel.disabled) timeSelect.value = '';
+  // ── Flatpickr date picker ────────────────────────────────────
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  const fp = flatpickr('#preferredDate', {
+    minDate: tomorrow,
+    dateFormat: 'd M Y',
+    disableMobile: true,
+    disable: [d => d.getDay() === 0],
+    onChange(dates) {
+      const d = dates[0];
+      if (!d) return;
+      isSaturday = d.getDay() === 6;
+      const note = document.getElementById('satNote');
+      note.style.display = isSaturday ? 'block' : 'none';
+      // If a Saturday-disabled time is selected, clear it
+      if (isSaturday && document.getElementById('preferredTime').value) {
+        const [h] = document.getElementById('preferredTime').value.split(':').map(Number);
+        if (h < 10 || h >= 16) {
+          document.getElementById('preferredTime').value = '';
+          document.getElementById('timeBtnLabel').textContent = 'Select a time';
+          document.getElementById('timeBtnDisplay').classList.remove('selected');
+        }
+      }
+      buildTimeList();
+    }
   });
 
   // Fade-in on scroll
@@ -407,7 +486,12 @@
     let valid = true;
     required.forEach(field => {
       const empty = !field.value.trim();
-      field.style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
+      if (field.type === 'hidden') {
+        // time hidden input — highlight the visible button instead
+        document.getElementById('timeBtnDisplay').style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
+      } else {
+        field.style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
+      }
       if (empty) valid = false;
     });
     if (!valid) return;
@@ -428,7 +512,7 @@
           email:         document.getElementById('email').value.trim(),
           phone:         document.getElementById('phone').value.trim(),
           purpose,
-          preferredDate: document.getElementById('preferredDate').value,
+          preferredDate: fp.selectedDates[0] ? fp.selectedDates[0].toISOString().slice(0,10) : '',
           preferredTime: document.getElementById('preferredTime').value,
           message:       document.getElementById('message').value.trim(),
           status:        'pending',
