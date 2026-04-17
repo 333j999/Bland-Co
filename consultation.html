@@ -12,11 +12,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     /* ── Flatpickr brand theme ── */
-    #datepicker-wrap .flatpickr-calendar{width:100%!important;}
-    #datepicker-wrap .flatpickr-rContainer{width:100%!important;}
-    #datepicker-wrap .flatpickr-days{width:100%!important;}
-    #datepicker-wrap .dayContainer{width:100%!important;min-width:100%!important;max-width:100%!important;}
-    #datepicker-wrap .flatpickr-day{flex-basis:calc(100% / 7)!important;max-width:calc(100% / 7)!important;}
     .flatpickr-calendar{background:var(--card)!important;border:1px solid rgba(232,223,200,.12)!important;border-radius:0!important;box-shadow:0 24px 64px rgba(0,0,0,.5)!important;font-family:'DM Sans',sans-serif!important;color:var(--cream)!important;}
     .flatpickr-months{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;padding:10px 0!important;}
     .flatpickr-month{color:var(--cream)!important;fill:var(--cream)!important;}
@@ -456,7 +451,6 @@
     minDate: tomorrow,
     dateFormat: 'd M Y',
     disableMobile: true,
-    appendTo: document.getElementById('datepicker-wrap'),
     disable: [d => d.getDay() === 0],
     onChange(dates) {
       const d = dates[0];
