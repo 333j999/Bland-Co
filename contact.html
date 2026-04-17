@@ -288,16 +288,25 @@
     btn.textContent = 'Sending…';
 
     try {
-      await fetch('/api/enquiries', {
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const phone   = document.getElementById('phone').value.trim();
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value.trim();
+
+      const isConsultation = subject === "I'd like to book a consultation";
+
+      await fetch(isConsultation ? '/api/consultations' : '/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name:    document.getElementById('name').value.trim(),
-          email:   document.getElementById('email').value.trim(),
-          phone:   document.getElementById('phone').value.trim(),
-          subject: document.getElementById('subject').value,
-          message: document.getElementById('message').value.trim(),
-          status:  'new',
+        body: JSON.stringify(isConsultation ? {
+          name, email, phone, message,
+          purpose: 'general',
+          preferredDate: '', preferredTime: '',
+          status: 'pending',
+        } : {
+          name, email, phone, subject, message,
+          status: 'new',
         }),
       });
       btn.textContent = 'Message Sent';
