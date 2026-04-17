@@ -485,18 +485,36 @@
       return;
     }
 
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const phoneRe = /^[\+\d][\d\s\-\(\)\.]{6,19}$/;
+
     const required = form.querySelectorAll('[required]');
     let valid = true;
     required.forEach(field => {
-      const empty = !field.value.trim();
+      const val = field.value.trim();
+      const empty = !val;
+      let fieldValid = !empty;
+
+      if (!empty && field.id === 'email') fieldValid = emailRe.test(val);
+
       if (field.type === 'hidden') {
-        // time hidden input — highlight the visible button instead
         document.getElementById('timeBtnDisplay').style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
       } else {
-        field.style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
+        field.style.borderColor = fieldValid ? 'rgba(232,223,200,.1)' : 'rgba(196,150,46,.6)';
       }
-      if (empty) valid = false;
+      if (!fieldValid) valid = false;
     });
+
+    // Phone is optional but validate format if filled
+    const phoneEl = document.getElementById('phone');
+    const phoneVal = phoneEl.value.trim();
+    if (phoneVal && !phoneRe.test(phoneVal)) {
+      phoneEl.style.borderColor = 'rgba(196,150,46,.6)';
+      valid = false;
+    } else if (phoneVal) {
+      phoneEl.style.borderColor = 'rgba(232,223,200,.1)';
+    }
+
     if (!valid) return;
 
     const btn = document.getElementById('submitBtn');
