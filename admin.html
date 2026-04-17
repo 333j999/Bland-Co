@@ -295,6 +295,14 @@
       </a>
     </div>
 
+    <div class="sb-section">
+      <div class="sb-label">Site</div>
+      <a class="sb-link" data-section="settings" onclick="nav('settings')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+        Settings
+      </a>
+    </div>
+
     <div class="sb-footer">
       <a href="index.html" target="_blank">
         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M7 2H2v12h12V9"/><path d="M10 1h5v5M15 1L8 8"/></svg>
@@ -415,6 +423,42 @@
         </div>
       </div>
 
+      <!-- ── SETTINGS ── -->
+      <div id="sec-settings" class="section">
+        <div class="table-wrap" style="max-width:700px;">
+          <div class="table-header"><span class="table-title">Homepage Hero Video</span></div>
+          <div style="padding:28px;">
+            <p style="font-size:13px;color:var(--cream-dim);line-height:1.8;margin-bottom:24px;">Upload a video to display as the fullscreen homepage background. Max 50 MB. Uploading a new video replaces the current one instantly.</p>
+
+            <!-- Current video -->
+            <div id="vid-current" style="display:none;margin-bottom:20px;padding:16px;background:var(--surface);border:1px solid var(--border);">
+              <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:10px;">Current Video</div>
+              <video id="vid-preview" controls muted style="width:100%;max-height:200px;background:#000;display:block;margin-bottom:12px;"></video>
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                <a id="vid-url-link" href="" target="_blank" rel="noopener" style="font-size:12px;color:var(--green-mid);text-decoration:none;word-break:break-all;"></a>
+                <button class="btn btn-sm btn-danger" onclick="clearHeroVideo()">Remove Video</button>
+              </div>
+            </div>
+
+            <!-- Upload zone -->
+            <div id="vid-zone" style="border:1px dashed rgba(232,223,200,.2);padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;"
+              ondragover="e=>{e.preventDefault();this.style.borderColor='var(--green-mid)';this.style.background='rgba(12,69,53,.08)'}"
+              ondragleave="this.style.borderColor='rgba(232,223,200,.2)';this.style.background=''"
+              ondrop="e=>{e.preventDefault();this.style.borderColor='rgba(232,223,200,.2)';this.style.background='';handleVideoFile(e.dataTransfer.files[0])}">
+              <input type="file" id="vid-input" accept="video/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="handleVideoFile(this.files[0])">
+              <svg width="36" height="36" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 14px;display:block;opacity:.4;"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+              <p style="font-size:13px;color:var(--cream-dim);">Drag &amp; drop a video here, or <span style="color:var(--green-mid)">click to browse</span></p>
+              <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:6px;">MP4, MOV, WebM accepted · Max 50 MB</p>
+            </div>
+
+            <div id="vid-uploading" style="display:none;padding:20px;text-align:center;border:1px solid var(--border);margin-top:12px;">
+              <p style="font-size:13px;color:var(--cream-dim);">Uploading video — please wait…</p>
+              <div id="vid-prog-bar" style="height:3px;background:var(--surface);margin-top:14px;overflow:hidden;"><div id="vid-prog-fill" style="height:100%;width:0%;background:var(--green-mid);transition:width .3s;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -487,7 +531,8 @@ const api = {
 };
 
 async function handleResp(r) {
-  if (r.status === 401) { localStorage.removeItem('admin_session'); location.replace('/login.html'); return; }
+  if (r.status === 401) { localStorage.removeItem('admin_session'); location.replace('/login.html'); return []; }
+  if (!r.ok) throw new Error(`API ${r.status}`);
   return r.json();
 }
 
@@ -512,7 +557,7 @@ function toast(msg, type='success') {
 // ══════════════════════════════════════════════════════════════════════
 // Navigation
 // ══════════════════════════════════════════════════════════════════════
-const TITLES = { dashboard:'Dashboard', inventory:'Inventory', enquiries:'Enquiries', valuations:'Valuations', consultations:'Consultations', testimonials:'Testimonials' };
+const TITLES = { dashboard:'Dashboard', inventory:'Inventory', enquiries:'Enquiries', valuations:'Valuations', consultations:'Consultations', testimonials:'Testimonials', settings:'Settings' };
 const ADD_LABELS = { inventory:'Add Item', consultations:'Add Booking', testimonials:'Add Testimonial' };
 
 function nav(section) {
@@ -531,20 +576,37 @@ function nav(section) {
 // Data loading
 // ══════════════════════════════════════════════════════════════════════
 async function loadAll() {
-  const [inv, enq, val, tes, con, stats] = await Promise.all([
-    api.get('inventory'), api.get('enquiries'), api.get('valuations'),
-    api.get('testimonials'), api.get('consultations'), api.stats(),
-  ]);
-  S.inventory=inv; S.enquiries=enq; S.valuations=val; S.testimonials=tes; S.consultations=con;
-  updateSidebar(stats);
-  renderSection(S.section);
+  try {
+    const [inv, enq, val, tes, con, stats] = await Promise.all([
+      api.get('inventory').catch(()=>[]),
+      api.get('enquiries').catch(()=>[]),
+      api.get('valuations').catch(()=>[]),
+      api.get('testimonials').catch(()=>[]),
+      api.get('consultations').catch(()=>[]),
+      api.stats().catch(()=>null),
+    ]);
+    S.inventory     = Array.isArray(inv) ? inv : [];
+    S.enquiries     = Array.isArray(enq) ? enq : [];
+    S.valuations    = Array.isArray(val) ? val : [];
+    S.testimonials  = Array.isArray(tes) ? tes : [];
+    S.consultations = Array.isArray(con) ? con : [];
+    if (stats) updateSidebar(stats);
+    renderSection(S.section);
+  } catch (err) {
+    toast('Failed to load data — check Upstash KV env vars', 'error');
+    console.error(err);
+  }
 }
 
 async function reload(resource) {
-  S[resource] = await api.get(resource);
-  const stats = await api.stats();
-  updateSidebar(stats);
-  renderSection(S.section);
+  try {
+    S[resource] = await api.get(resource);
+    const stats = await api.stats().catch(()=>null);
+    if (stats) updateSidebar(stats);
+    renderSection(S.section);
+  } catch (err) {
+    toast('Failed to reload data', 'error');
+  }
 }
 
 function updateSidebar(s) {
@@ -572,6 +634,7 @@ function renderSection(s) {
   if (s==='valuations')   renderValuations();
   if (s==='consultations')renderConsultations();
   if (s==='testimonials') renderTestimonials();
+  if (s==='settings')     renderSettings();
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -1123,6 +1186,120 @@ document.addEventListener('keydown', e => {
     closeModal();
   }
 });
+
+// ══════════════════════════════════════════════════════════════════════
+// Settings — Hero Video
+// ══════════════════════════════════════════════════════════════════════
+const CLOUDINARY_CLOUD  = 'dshvvjpsg';
+const CLOUDINARY_PRESET = 'bland_co_unsigned';
+
+let siteSettings = {};
+
+async function loadSettings() {
+  try {
+    const r = await fetch('/api/site', { headers: authHeaders() });
+    siteSettings = r.ok ? await r.json() : {};
+  } catch { siteSettings = {}; }
+  renderSettings();
+}
+
+function renderSettings() {
+  const url = siteSettings.heroVideoUrl;
+  const cur = document.getElementById('vid-current');
+  if (!cur) return;
+  if (url) {
+    cur.style.display = 'block';
+    document.getElementById('vid-preview').src = url;
+    const link = document.getElementById('vid-url-link');
+    link.href = url;
+    link.textContent = url.split('/').pop().split('?')[0];
+  } else {
+    cur.style.display = 'none';
+    document.getElementById('vid-preview').src = '';
+  }
+}
+
+function resetVideoZone() {
+  const zone = document.getElementById('vid-zone');
+  if (!zone) return;
+  zone.innerHTML = `
+    <input type="file" id="vid-input" accept="video/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="handleVideoFile(this.files[0])">
+    <svg width="36" height="36" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 14px;display:block;opacity:.4;"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+    <p style="font-size:13px;color:var(--cream-dim);">Drag &amp; drop a video here, or <span style="color:var(--green-mid)">click to browse</span></p>
+    <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:6px;">MP4, MOV, WebM accepted · Max 50 MB</p>`;
+  const uploading = document.getElementById('vid-uploading');
+  if (uploading) uploading.style.display = 'none';
+}
+
+async function handleVideoFile(file) {
+  if (!file) return;
+  const MAX = 50 * 1024 * 1024;
+  if (file.size > MAX) { toast('Video must be under 50 MB', 'error'); return; }
+
+  const zone = document.getElementById('vid-zone');
+  const uploading = document.getElementById('vid-uploading');
+  if (zone) zone.style.opacity = '0.4';
+  if (uploading) { uploading.style.display = 'block'; }
+  setUploadProgress(0);
+
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+
+    const xhr = new XMLHttpRequest();
+    const url = await new Promise((resolve, reject) => {
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`);
+      xhr.upload.onprogress = e => { if (e.lengthComputable) setUploadProgress(e.loaded / e.total * 90); };
+      xhr.onload = () => {
+        const data = JSON.parse(xhr.responseText);
+        data.secure_url ? resolve(data.secure_url) : reject(new Error(data.error?.message || 'Upload failed'));
+      };
+      xhr.onerror = () => reject(new Error('Network error'));
+      xhr.send(fd);
+    });
+
+    setUploadProgress(95);
+    await fetch('/api/site', {
+      method: 'PUT',
+      headers: authHeaders(),
+      body: JSON.stringify({ heroVideoUrl: url }),
+    });
+    setUploadProgress(100);
+    siteSettings.heroVideoUrl = url;
+    toast('Hero video updated');
+    renderSettings();
+  } catch (err) {
+    toast('Upload failed — ' + err.message, 'error');
+  } finally {
+    if (zone) zone.style.opacity = '1';
+    resetVideoZone();
+  }
+}
+
+function setUploadProgress(pct) {
+  const fill = document.getElementById('vid-prog-fill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+async function clearHeroVideo() {
+  openConfirm('Remove Hero Video', 'Remove the homepage video background? The gradient fallback will display instead.', async () => {
+    await fetch('/api/site', { method: 'PUT', headers: authHeaders(), body: JSON.stringify({ heroVideoUrl: '' }) });
+    siteSettings.heroVideoUrl = '';
+    toast('Hero video removed');
+    renderSettings();
+  });
+}
+
+// Override nav to load settings on first visit
+const _origNav = nav;
+function nav(section) {
+  _origNav(section);
+  if (section === 'settings' && !siteSettings._loaded) {
+    siteSettings._loaded = true;
+    loadSettings();
+  }
+}
 
 // ══════════════════════════════════════════════════════════════════════
 // Boot
