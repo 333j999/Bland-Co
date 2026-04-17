@@ -12,7 +12,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     /* ── Flatpickr brand theme ── */
-    .flatpickr-calendar{background:var(--card)!important;border:1px solid rgba(232,223,200,.12)!important;border-radius:0!important;box-shadow:0 24px 64px rgba(0,0,0,.5)!important;font-family:'DM Sans',sans-serif!important;color:var(--cream)!important;}
+    .flatpickr-calendar{background:var(--card)!important;border:1px solid rgba(232,223,200,.12)!important;border-radius:0!important;box-shadow:0 24px 64px rgba(0,0,0,.5)!important;font-family:'DM Sans',sans-serif!important;color:var(--cream)!important;width:100%!important;}
+    .flatpickr-rContainer{width:100%!important;}
+    .flatpickr-days{width:100%!important;}
+    .dayContainer{width:100%!important;min-width:100%!important;max-width:100%!important;}
+    .flatpickr-day{flex-basis:calc(100% / 7)!important;max-width:calc(100% / 7)!important;}
     .flatpickr-months{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;padding:10px 0!important;}
     .flatpickr-month{color:var(--cream)!important;fill:var(--cream)!important;}
     .flatpickr-current-month{font-family:'Cormorant Garamond',serif!important;font-size:18px!important;font-weight:400!important;color:var(--cream)!important;letter-spacing:.02em!important;}
@@ -81,7 +85,8 @@
     .purpose-card input:checked + .purpose-label{border-color:var(--green-mid);background:rgba(22,102,73,.1);}
     .purpose-card input:checked + .purpose-label .purpose-icon svg{stroke:var(--cream);}
     .purpose-label:hover{border-color:rgba(232,223,200,.2);}
-    .purpose-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+    .purpose-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .purpose-icon svg{width:26px;height:26px;}
     .purpose-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);font-weight:500;}
     .purpose-sub{font-size:11px;color:var(--cream-dim);line-height:1.4;}
 
@@ -183,7 +188,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-buying" value="buying" checked>
                     <label class="purpose-label" for="p-buying">
-                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 01-1.99 1.82H9.83a2 2 0 01-1.99-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 019.83 1h4.34a2 2 0 011.99 1.82l.35 3.83"/></svg></span>
+                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><polyline points="12 9.5 12 12 13.5 13.5"/><path d="M15 4.5H9M15 19.5H9"/></svg></span>
                       <span class="purpose-title">Buying</span>
                       <span class="purpose-sub">Browse & acquire watches or jewellery</span>
                     </label>
@@ -191,7 +196,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-selling" value="selling">
                     <label class="purpose-label" for="p-selling">
-                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
+                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
                       <span class="purpose-title">Selling</span>
                       <span class="purpose-sub">Get a fair offer for your pieces</span>
                     </label>
@@ -199,7 +204,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-valuation" value="valuation">
                     <label class="purpose-label" for="p-valuation">
-                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
                       <span class="purpose-title">Valuation</span>
                       <span class="purpose-sub">Professional assessment & certificate</span>
                     </label>
@@ -207,7 +212,7 @@
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-general" value="general">
                     <label class="purpose-label" for="p-general">
-                      <span class="purpose-icon"><svg width="28" height="28" fill="none" stroke="var(--green-mid)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
                       <span class="purpose-title">General</span>
                       <span class="purpose-sub">Chat with a specialist about options</span>
                     </label>
