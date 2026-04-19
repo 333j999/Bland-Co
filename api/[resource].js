@@ -1,6 +1,7 @@
-const { checkSession, randomUUID } = require('./_lib/auth');
-const { kvGet, kvSet }             = require('./_lib/kv');
-const { cors, json, parseBody }    = require('./_lib/helpers');
+const { checkSession, randomUUID }  = require('./_lib/auth');
+const { kvGet, kvSet }              = require('./_lib/kv');
+const { cors, json, parseBody }     = require('./_lib/helpers');
+const { sendSubmissionEmails }      = require('./_lib/email');
 
 const RESOURCES = ['inventory', 'enquiries', 'valuations', 'testimonials', 'consultations'];
 // Public resources accept POST from website forms without a session
@@ -27,6 +28,9 @@ module.exports = async (req, res) => {
     const item = { id: `${resource.slice(0,3)}_${randomUUID().slice(0,8)}`, ...payload, createdAt: new Date().toISOString() };
     data.push(item);
     await write(resource, data);
+    if (PUBLIC_POST.includes(resource)) {
+      sendSubmissionEmails(resource, item).catch(() => {}); // fire-and-forget, don't block response
+    }
     return json(res, 201, item);
   }
 
