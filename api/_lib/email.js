@@ -3,12 +3,17 @@ const FROM        = process.env.RESEND_FROM || 'Bland & Co <noreply@blandco.com>
 const API_KEY     = process.env.RESEND_API_KEY;
 
 async function sendEmail({ to, subject, html }) {
-  if (!API_KEY) return; // silently skip if not configured
-  await fetch('https://api.resend.com/emails', {
+  if (!API_KEY) throw new Error('RESEND_API_KEY is not set');
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: FROM, to, subject, html }),
   });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Resend ${res.status}: ${body}`);
+  }
+  return res.json();
 }
 
 function row(label, value) {
