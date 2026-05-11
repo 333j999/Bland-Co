@@ -20,7 +20,7 @@
       --green-mid:  #166649;
       --green-hi:   #1E8560;
       --cream:      #E8DFC8;
-      --cream-dim:  #9E9583;
+      --cream-dim:  #B0A68F;
       --gold:       #C4962E;
       --border:     rgba(232,223,200,0.07);
     }
@@ -99,15 +99,43 @@
     .eyebrow { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-mid); }
     .divider { width: 40px; height: 1px; background: var(--green-mid); flex-shrink: 0; }
 
+    /* slightly stronger body contrast */
+    .cream-dim-2 { color: #B8AE96; }
+    small, .small { font-size: 13px; color: #B8AE96; }
+
+    /* GLOBAL FILM GRAIN — fixed, very subtle, sits above content but is click-through */
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      opacity: 0.055; mix-blend-mode: overlay;
+    }
+
     /* CARDS */
     .card {
       background: var(--card); border: 1px solid var(--border);
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      transition: border-color 0.55s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.55s cubic-bezier(0.4,0,0.2,1),
+                  box-shadow 0.55s cubic-bezier(0.4,0,0.2,1);
     }
     .card:hover {
-      border-color: rgba(232,223,200,0.15);
-      transform: translateY(-4px);
-      box-shadow: 0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(12,69,53,0.3);
+      border-color: rgba(232,223,200,0.18);
+      transform: translateY(-6px);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55),
+                  0 8px 24px rgba(0,0,0,0.3),
+                  0 0 0 1px rgba(12,69,53,0.35);
+    }
+
+    /* CATEGORY ASYMMETRY — break the three-clones look */
+    .cat-grid { align-items: start; }
+    .cat-card:nth-child(2) { transform: translateY(28px); }
+    .cat-card:nth-child(2):hover { transform: translateY(22px); }
+    .cat-card:nth-child(2) .cat-img { aspect-ratio: 4/3; }
+    .cat-card:nth-child(1) .cat-img { aspect-ratio: 16/11; }
+    .cat-card:nth-child(3) .cat-img { aspect-ratio: 5/4; }
+    .cat-card:nth-child(2) .cat-body { padding: 36px 32px 40px !important; }
+    @media (max-width: 900px) {
+      .cat-card:nth-child(2),
+      .cat-card:nth-child(2):hover { transform: none; }
     }
 
     /* NOISE */
@@ -234,28 +262,43 @@
   </video>
   <!-- Dark overlay over video -->
   <div style="position:absolute;inset:0;background:rgba(6,10,8,0.68);z-index:0;"></div>
-  <!-- Gradient layers -->
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 80% at 15% 55%,rgba(12,69,53,0.38) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 80% 20%,rgba(7,61,42,0.22) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 65% 85%,rgba(22,102,73,0.12) 0%,transparent 50%);z-index:0;"></div>
+  <!-- Gradient layers — softened ~40% to dial back foggy AI glow -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 80% at 15% 55%,rgba(12,69,53,0.22) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 80% 20%,rgba(7,61,42,0.13) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 65% 85%,rgba(22,102,73,0.07) 0%,transparent 50%);z-index:0;"></div>
+  <!-- Vignette for stronger dark contrast -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 90% at 50% 50%,transparent 55%,rgba(0,0,0,0.55) 100%);z-index:0;pointer-events:none;"></div>
   <!-- Grid lines -->
   <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(232,223,200,0.012) 0,rgba(232,223,200,0.012) 1px,transparent 1px,transparent 100px),repeating-linear-gradient(0deg,rgba(232,223,200,0.012) 0,rgba(232,223,200,0.012) 1px,transparent 1px,transparent 100px);pointer-events:none;z-index:0;"></div>
-  <div class="noise"></div>
+  <!-- Hero-localised heavier grain — adds tactility on top of global film grain -->
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0.045;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
 
-  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:120px 48px 80px;width:100%;pointer-events:auto;">
+  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:104px 48px 64px;width:100%;pointer-events:auto;">
     <!-- Eyebrow -->
-    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:44px;">
+    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:36px;">
       <div class="divider"></div>
-      <span class="eyebrow">Hatton Garden, London EC1</span>
+      <span class="eyebrow">Hatton Garden · London EC1</span>
     </div>
 
-    <!-- Headline -->
-    <h1 class="display fi" style="font-size:clamp(48px,7.8vw,96px);color:var(--cream);max-width:880px;margin-bottom:44px;transition-delay:0.08s;">
-      Watches, gold, and jewellery — bought, sold, and fairly valued.
+    <!-- Headline — editorial line breaks, tighter line-height -->
+    <h1 class="display fi" style="font-size:clamp(48px,7.6vw,92px);line-height:0.98;color:var(--cream);max-width:920px;margin-bottom:36px;transition-delay:0.08s;">
+      Watches, gold,<br>
+      and jewellery —<br>
+      <span class="display-i" style="font-size:0.96em;color:#D9CFB6;">bought, sold,</span><br>
+      and fairly valued.
     </h1>
 
     <!-- Sub -->
-    <p class="fi" style="font-size:clamp(15px,1.8vw,18px);line-height:1.8;color:var(--cream-dim);max-width:520px;margin-bottom:52px;font-weight:300;transition-delay:0.22s;">
+    <p class="fi" style="font-size:clamp(15px,1.7vw,17px);line-height:1.75;color:#B8AE96;max-width:520px;margin-bottom:36px;font-weight:300;transition-delay:0.22s;">
       A working jeweller in Hatton Garden. Walk in, ring us, or send photos — we'll give you a straight answer.
     </p>
+
+    <!-- Trust strip — small, editorial, no fake numbers -->
+    <div class="fi" style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-bottom:40px;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:#9E9583;transition-delay:0.26s;">
+      <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted by collectors across Hatton Garden</span>
+      <span style="width:1px;height:11px;background:rgba(232,223,200,0.15);"></span>
+      <span>Authenticated in-house</span>
+      <span style="width:1px;height:11px;background:rgba(232,223,200,0.15);"></span>
+      <span>Walk-ins welcome</span>
+    </div>
 
     <!-- CTAs -->
     <div class="fi hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;transition-delay:0.3s;">
@@ -267,7 +310,7 @@
     </div>
 
     <!-- Hours / location strip — replaces round-number stats -->
-    <div class="fi stat-row" style="display:flex;flex-wrap:wrap;gap:48px;margin-top:88px;padding-top:48px;border-top:1px solid rgba(232,223,200,0.07);transition-delay:0.38s;">
+    <div class="fi stat-row" style="display:flex;flex-wrap:wrap;gap:48px;margin-top:64px;padding-top:40px;border-top:1px solid rgba(232,223,200,0.07);transition-delay:0.38s;">
       <div>
         <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:8px;">Showroom</div>
         <div style="font-size:15px;color:var(--cream);">Hatton Garden, EC1</div>
@@ -448,7 +491,7 @@
         <div class="cat-img-wrap">
           <img src="https://placehold.co/600x400/0D1511/166649?text=Luxury+Watches" alt="Luxury Watches" class="cat-img">
         </div>
-        <div style="padding:32px;">
+        <div class="cat-body" style="padding:32px;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
             <div class="gold-dot"></div>
             <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Buy &amp; sell</span>
@@ -466,7 +509,7 @@
         <div class="cat-img-wrap">
           <img src="https://placehold.co/600x400/0D1511/C4962E?text=Precious+Metals" alt="Precious Metals" class="cat-img">
         </div>
-        <div style="padding:32px;">
+        <div class="cat-body" style="padding:32px;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
             <div class="gold-dot"></div>
             <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Spot priced</span>
@@ -484,7 +527,7 @@
         <div class="cat-img-wrap">
           <img src="https://placehold.co/600x400/0D1511/9E9583?text=Custom+Jewellery" alt="Custom Jewellery" class="cat-img">
         </div>
-        <div style="padding:32px;">
+        <div class="cat-body" style="padding:32px;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
             <div class="gold-dot"></div>
             <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Made to order</span>
@@ -587,6 +630,112 @@
             <div style="font-size:12px;color:var(--cream-dim);">Bought a Patek Nautilus</div>
           </div>
         </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FROM THE BENCH — human / real business signals ===== -->
+<style>
+  .ledger-grid { display: grid; grid-template-columns: 1.15fr 0.85fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .ledger-cell { background: var(--surface); padding: 36px 32px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; }
+  .ledger-label { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .ledger-label::before { content: ""; width: 6px; height: 6px; background: var(--green-mid); border-radius: 50%; flex-shrink: 0; }
+  .ledger-item { font-family: 'Cormorant Garamond', serif; font-size: 22px; line-height: 1.3; color: var(--cream); letter-spacing: -0.01em; }
+  .ledger-meta { font-size: 12px; color: #B0A68F; margin-top: 6px; letter-spacing: 0.02em; font-family: 'DM Sans', sans-serif; }
+  .ledger-footnote { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8170; margin-top: 22px; }
+  .ledger-spot { font-family: 'Cormorant Garamond', serif; font-size: 38px; line-height: 1.1; color: var(--cream); letter-spacing: -0.01em; }
+  .ledger-spot small { font-size: 13px; color: #B0A68F; margin-left: 6px; font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em; }
+  .ledger-spot-delta-up   { color: #6FB994; }
+  .ledger-spot-delta-down { color: #C97A5C; }
+  @media (max-width: 900px) {
+    .ledger-grid { grid-template-columns: 1fr; }
+    .ledger-cell { min-height: 0; }
+  }
+</style>
+<section style="padding:96px 0;background:var(--bg);border-top:1px solid var(--border);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
+
+    <!-- Asymmetric header — eyebrow + heading on the left, small note on the right -->
+    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:48px;">
+      <div style="max-width:560px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div class="divider"></div>
+          <span class="eyebrow">From the bench</span>
+        </div>
+        <h2 class="display" style="font-size:clamp(32px,4.2vw,52px);color:var(--cream);line-height:1.02;">
+          A few things from<br><span class="display-i" style="color:#D9CFB6;">the past week.</span>
+        </h2>
+      </div>
+      <p style="font-size:13px;color:#B0A68F;max-width:280px;line-height:1.7;text-align:right;">
+        Updated by hand on Mondays. Stock moves quickly — call ahead if you want to see a specific piece.
+      </p>
+    </div>
+
+    <!-- TODO (owner): update the three columns below by hand each week. The whole point of this block is real activity — placeholder figures undermine it. -->
+    <div class="ledger-grid fi">
+
+      <!-- Recently sourced -->
+      <div class="ledger-cell">
+        <div>
+          <div class="ledger-label">Recently sourced</div>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div>
+              <div class="ledger-item">Rolex Submariner 16610LV — Kermit</div>
+              <div class="ledger-meta">Full set · 2005 · in for service</div>
+            </div>
+            <div>
+              <div class="ledger-item">Patek Calatrava 5196G</div>
+              <div class="ledger-meta">Manual · papers · on the shelf Tuesday</div>
+            </div>
+            <div>
+              <div class="ledger-item">Cartier Tank Louis, 18k</div>
+              <div class="ledger-meta">Period strap · estate piece</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-footnote">Last three intakes</div>
+      </div>
+
+      <!-- Today's spot -->
+      <div class="ledger-cell">
+        <div>
+          <div class="ledger-label">Today's spot</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <div class="ledger-spot">£1,948.30<small>/oz</small></div>
+              <div class="ledger-meta">Gold · <span class="ledger-spot-delta-up">+£6.20</span> on yesterday</div>
+            </div>
+            <div>
+              <div class="ledger-spot">£24.10<small>/oz</small></div>
+              <div class="ledger-meta">Silver · <span class="ledger-spot-delta-down">−£0.18</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-footnote">London fix · updated 10:30</div>
+      </div>
+
+      <!-- This week -->
+      <div class="ledger-cell">
+        <div>
+          <div class="ledger-label">This week in the shop</div>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div>
+              <div class="ledger-item">14 valuations completed</div>
+              <div class="ledger-meta">Walk-in, post, and WhatsApp combined</div>
+            </div>
+            <div>
+              <div class="ledger-item">3 engagement rings to the bench</div>
+              <div class="ledger-meta">Bespoke commissions, EC1 workshop</div>
+            </div>
+            <div>
+              <div class="ledger-item">1 vintage chronograph restored</div>
+              <div class="ledger-meta">Out of service, back in the case</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-footnote">Week of 4 May</div>
       </div>
 
     </div>
