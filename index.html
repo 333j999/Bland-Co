@@ -6,68 +6,97 @@
   <title>Bland & Co Jewellers | Hatton Garden — Watches, Gold & Jewellery</title>
   <meta name="description" content="A working jeweller in Hatton Garden, London. Buy, sell and value luxury watches, precious metals and bespoke jewellery. Authenticated in-house. Free valuations.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
-    /* ---- page-specific ---- */
-    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    /* ---- page-specific · Modern Maison flagship ---- */
+
+    /* HERO — asymmetric editorial split: type left, feature plate right */
+    .hero { position: relative; overflow: hidden; padding-top: var(--nav-h); }
     .hero-bg { position: absolute; inset: 0; z-index: 0; }
     .hero-video { width: 100%; height: 100%; object-fit: cover; }
-    .hero-veil { position: absolute; inset: 0; background: rgba(6,10,8,0.66); }
+    .hero-veil { position: absolute; inset: 0; background: rgba(20,18,14,0.74); }
     .hero-glow { position: absolute; inset: 0;
-      background: radial-gradient(ellipse 90% 80% at 15% 55%, rgba(28,113,82,0.20) 0%, transparent 55%),
-                  radial-gradient(ellipse 60% 50% at 82% 18%, rgba(7,61,42,0.16) 0%, transparent 50%); }
+      background: radial-gradient(ellipse 80% 70% at 18% 50%, rgba(140,122,78,0.16) 0%, transparent 55%),
+                  radial-gradient(ellipse 55% 50% at 85% 22%, rgba(201,162,75,0.10) 0%, transparent 52%); }
     .hero-vignette { position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 110% 90% at 50% 50%, transparent 52%, rgba(0,0,0,0.6) 100%); }
+      background: radial-gradient(ellipse 120% 100% at 50% 45%, transparent 50%, rgba(0,0,0,0.55) 100%); }
     .hero-grid { position: absolute; inset: 0; pointer-events: none;
-      background-image: repeating-linear-gradient(90deg, rgba(236,228,207,0.012) 0 1px, transparent 1px 104px),
-                        repeating-linear-gradient(0deg, rgba(236,228,207,0.012) 0 1px, transparent 1px 104px); }
+      background-image: repeating-linear-gradient(90deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px),
+                        repeating-linear-gradient(0deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px); }
 
-    .trust-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px;
-      font-size: var(--fs-eyebrow); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.08fr 0.92fr;
+      gap: clamp(var(--sp-6), 5vw, var(--sp-10)); align-items: center;
+      min-height: calc(100vh - var(--nav-h)); padding-top: var(--sp-8); padding-bottom: var(--sp-10); }
+
+    .hero-left { max-width: 620px; }
+    .hero-h { margin-bottom: var(--sp-5); }
+    .hero-h .lead-num { font-family: var(--serif); font-size: var(--fs-md); color: var(--green-hi);
+      font-weight: 300; display: block; margin-bottom: var(--sp-2); letter-spacing: 0.02em; }
+
+    .trust-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px;
+      font-size: var(--fs-eyebrow); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); }
     .trust-strip .sep { width: 1px; height: 11px; background: var(--line-2); }
-    .hero-facts { display: flex; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-8);
-      padding-top: var(--sp-5); border-top: 1px solid var(--line); }
+
+    /* feature plate (the right-hand "halo" panel — replaces the centered stack) */
+    .hero-plate { position: relative; aspect-ratio: 3/3.6; min-height: 380px; border: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(201,162,75,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 80% at 80% 95%, rgba(34,29,18,0.7) 0%, transparent 55%),
+        linear-gradient(155deg, #2A2417 0%, #14120E 100%);
+      overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: var(--sp-5); }
+    .hero-plate::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hn)'/%3E%3C/svg%3E");
+      opacity: 0.05; mix-blend-mode: overlay; }
+    .hero-plate .hp-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(180px, 30vw, 300px);
+      color: rgba(230,204,142,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+    .hero-plate .hp-top { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-start; }
+    .hero-plate .hp-tag { font-size: var(--fs-eyebrow); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+    .hero-plate .hp-est { font-family: var(--serif); font-style: italic; font-size: var(--fs-sm); color: var(--text-3); }
+    .hero-plate .hp-bot { position: relative; z-index: 1; }
+    .hero-plate .hp-bot .hp-line { font-family: var(--serif); font-size: var(--fs-lg); line-height: 1.2; color: var(--text); letter-spacing: -0.01em; }
+    .hero-plate .hp-bot .hp-sub { font-size: var(--fs-xs); color: var(--text-3); margin-top: 8px; letter-spacing: 0.02em; }
+
+    .hero-facts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); margin-top: var(--sp-6);
+      padding-top: var(--sp-4); border-top: 1px solid var(--line); }
     .fact-k { font-size: var(--fs-eyebrow); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
     .fact-v { font-size: var(--fs-base); color: var(--text); text-decoration: none; }
-    .vrule { width: 1px; background: var(--line); align-self: stretch; }
 
     /* trust accordion */
     .tbar { background: var(--surface); border-top: 1px solid var(--line); overflow-x: auto; }
     .tbar-inner { min-width: 680px; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--sp-6);
       display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: center; }
-    .tbar-item { display: flex; align-items: center; gap: 8px; padding: 22px 12px; cursor: pointer; transition: opacity 0.25s var(--ease); white-space: nowrap; }
-    .tbar-item:hover { opacity: 0.75; }
+    .tbar-item { display: flex; align-items: center; gap: 10px; padding: 22px 12px; cursor: pointer; transition: opacity 0.25s var(--ease); white-space: nowrap; }
+    .tbar-item:hover { opacity: 0.78; }
     .tbar-item.active .tbar-label { color: var(--gold); }
     .tbar-item.active .tbar-chev { transform: rotate(180deg); }
-    .tbar-label { font-size: var(--fs-eyebrow); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); transition: color 0.25s var(--ease); }
-    .tbar-chev { transition: transform 0.3s var(--ease); opacity: 0.4; flex-shrink: 0; }
+    .tbar-label { font-size: var(--fs-eyebrow); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text); transition: color 0.25s var(--ease); font-weight: 500; }
+    .tbar-chev { transition: transform 0.3s var(--ease); opacity: 0.45; flex-shrink: 0; }
     .tbar-panel { max-height: 0; overflow: hidden; opacity: 0; background: var(--card); border-bottom: 1px solid var(--line);
       transition: max-height 0.2s var(--ease), opacity 0.15s var(--ease); }
     .tbar-panel.open { max-height: 460px; opacity: 1; transition: max-height 0.45s var(--ease), opacity 0.35s var(--ease); }
     .tbar-panel-inner { max-width: var(--maxw); margin: 0 auto; padding: var(--sp-4) var(--sp-6); }
     .tbar-panel-inner p { font-size: var(--fs-sm); line-height: 1.8; color: var(--text-2); max-width: 620px; }
-    #map-frame { width: 100%; height: 280px; border: none; filter: invert(0.9) hue-rotate(150deg) brightness(0.82) saturate(0.7); display: block; }
+    #map-frame { width: 100%; height: 280px; border: none; filter: invert(0.92) hue-rotate(170deg) brightness(0.86) saturate(0.55) sepia(0.18); display: block; }
 
-    /* categories */
+    /* CATEGORIES — editorial index rows + plates */
     .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); align-items: start; }
-    .cat-plate { aspect-ratio: 16/11; }
-    .cat-card:nth-child(2) { transform: translateY(28px); }
-    .cat-card:nth-child(2):hover { transform: translateY(22px); }
-    .cat-card:nth-child(2) .cat-plate { aspect-ratio: 4/3; }
-    .cat-card:nth-child(3) .cat-plate { aspect-ratio: 5/4; }
+    .cat-plate { aspect-ratio: 4/5; }
+    .cat-num { position: absolute; top: 16px; right: 18px; z-index: 1; font-family: var(--serif); font-weight: 300;
+      font-size: var(--fs-md); color: var(--gold-hi); opacity: 0.65; letter-spacing: 0; }
 
-    /* process */
-    .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); position: relative; }
-    .proc-num { font-family: var(--serif); font-size: 80px; font-weight: 300; line-height: 1; color: rgba(28,113,82,0.22); margin-bottom: 8px; }
-    .proc-icon { width: 56px; height: 56px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-3); color: var(--green-hi); }
+    /* PROCESS — numbered editorial steps on a hairline grid */
+    .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .proc-cell { background: var(--surface); padding: var(--sp-5) var(--sp-4); }
+    .proc-num { font-family: var(--serif); font-size: clamp(48px, 6vw, 72px); font-weight: 300; line-height: 1; color: var(--green-hi); margin-bottom: var(--sp-3); letter-spacing: -0.02em; }
+    .proc-icon { width: 44px; height: 44px; border: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-3); color: var(--gold); }
 
-    /* ledger */
+    /* LEDGER */
     .ledger-grid { display: grid; grid-template-columns: 1.15fr 0.85fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
     .ledger-cell { background: var(--surface); padding: var(--sp-4); min-height: 240px; display: flex; flex-direction: column; justify-content: space-between; }
-    .ledger-label { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-hi); margin-bottom: var(--sp-3); display: flex; align-items: center; gap: 10px; }
+    .ledger-label { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--sp-3); display: flex; align-items: center; gap: 10px; }
     .ledger-label::before { content: ""; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
     .ledger-item { font-family: var(--serif); font-size: var(--fs-md); line-height: 1.3; color: var(--text); letter-spacing: -0.01em; }
     .ledger-meta { font-size: var(--fs-xs); color: var(--text-3); margin-top: 6px; }
@@ -75,19 +104,22 @@
 
     .test-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
 
+    /* CTA band — warm bronze field with champagne glow */
     .cta-band { position: relative; overflow: hidden; background: var(--green-dark); border-top: 1px solid var(--line); }
-    .cta-band .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(28,113,82,0.28) 0%, transparent 70%); }
+    .cta-band .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 50% 45%, rgba(201,162,75,0.16) 0%, transparent 70%); }
 
     @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; min-height: 0; gap: var(--sp-6); }
+      .hero-plate { aspect-ratio: 16/10; min-height: 280px; order: 2; }
+      .hero-left { order: 1; max-width: none; }
       .cat-grid, .proc-grid, .test-grid { grid-template-columns: 1fr; }
-      .cat-card:nth-child(2), .cat-card:nth-child(2):hover { transform: none; }
       .ledger-grid { grid-template-columns: 1fr; }
       .ledger-cell { min-height: 0; }
-      .hero-facts { gap: var(--sp-4); }
-      .vrule { display: none; }
+      .hero-facts { gap: var(--sp-3); }
     }
     @media (max-width: 560px) {
       .hero-btns { flex-direction: column; align-items: stretch; }
+      .hero-facts { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -134,7 +166,7 @@
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO — asymmetric editorial split ===== -->
 <section class="hero">
   <div class="hero-bg">
     <video id="hero-video" class="hero-video" autoplay muted loop playsinline style="display:none;">
@@ -146,55 +178,69 @@
     <div class="hero-vignette"></div>
   </div>
 
-  <div class="wrap" style="position:relative;z-index:1;padding-top:120px;padding-bottom:var(--sp-8);">
-    <div class="fi eyebrow-row" style="margin-bottom:var(--sp-5);">
-      <div class="divider"></div>
-      <span class="eyebrow">Hatton Garden · London EC1</span>
-    </div>
-
-    <h1 class="display h-hero fi fi-1" style="max-width:14ch;margin-bottom:var(--sp-5);">
-      Watches, gold,<br>
-      and jewellery —<br>
-      <span class="display-i" style="font-size:0.95em;color:var(--gold-hi);">bought, sold,</span><br>
-      and fairly valued.
-    </h1>
-
-    <p class="lede fi fi-2" style="max-width:50ch;margin-bottom:var(--sp-5);">
-      A working jeweller in Hatton Garden. Walk in, ring us, or send photos — and you'll get a straight answer, the same day.
-    </p>
-
-    <div class="trust-strip fi fi-3" style="margin-bottom:var(--sp-5);">
-      <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted across Hatton Garden</span>
-      <span class="sep"></span><span>Authenticated in-house</span>
-      <span class="sep"></span><span>Walk-ins welcome</span>
-    </div>
-
-    <div class="fi fi-4 hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;">
-      <a href="inventory.html" class="btn-primary">See what's in
-        <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
-      </a>
-      <a href="sell.html" class="btn-outline">Free valuation</a>
-    </div>
-
-    <div class="hero-facts fi fi-5">
-      <div>
-        <div class="fact-k">Showroom</div>
-        <div class="fact-v">Hatton Garden, EC1</div>
+  <div class="wrap hero-inner">
+    <!-- LEFT: type column -->
+    <div class="hero-left">
+      <div class="fi eyebrow-row" style="margin-bottom:var(--sp-4);">
+        <div class="divider"></div>
+        <span class="eyebrow">Hatton Garden · London EC1</span>
       </div>
-      <div class="vrule"></div>
-      <div>
-        <div class="fact-k">Hours</div>
-        <div class="fact-v">Mon–Fri 9–6 · Sat 10–4</div>
+
+      <h1 class="display h-hero fi fi-1 hero-h" style="max-width:13ch;">
+        Watches, gold,<br>
+        and jewellery —<br>
+        <span class="display-i" style="font-size:0.92em;color:var(--gold-hi);">bought, sold,</span><br>
+        and fairly valued.
+      </h1>
+
+      <p class="lede fi fi-2" style="max-width:46ch;margin-bottom:var(--sp-5);">
+        A working jeweller in Hatton Garden. Walk in, ring us, or send photos — and you'll get a straight answer, the same day.
+      </p>
+
+      <div class="fi fi-3 hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:var(--sp-5);">
+        <a href="inventory.html" class="btn-primary">See what's in
+          <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </a>
+        <a href="sell.html" class="btn-outline">Free valuation</a>
       </div>
-      <div class="vrule"></div>
-      <div>
-        <div class="fact-k">Direct line</div>
-        <a href="tel:+447399426893" class="fact-v">07399 426893</a>
+
+      <div class="trust-strip fi fi-4">
+        <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted across Hatton Garden</span>
+        <span class="sep"></span><span>Authenticated in-house</span>
+        <span class="sep"></span><span>Walk-ins welcome</span>
+      </div>
+
+      <div class="hero-facts fi fi-5">
+        <div>
+          <div class="fact-k">Showroom</div>
+          <div class="fact-v">Hatton Garden, EC1</div>
+        </div>
+        <div>
+          <div class="fact-k">Hours</div>
+          <div class="fact-v">Mon–Fri 9–6 · Sat 10–4</div>
+        </div>
+        <div>
+          <div class="fact-k">Direct line</div>
+          <a href="tel:+447399426893" class="fact-v">07399 426893</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: feature plate (the halo panel) -->
+    <div class="hero-plate fi fi-3">
+      <div class="hp-mono">B</div>
+      <div class="hp-top">
+        <span class="hp-tag">The Maison</span>
+        <span class="hp-est">Est. Hatton Garden</span>
+      </div>
+      <div class="hp-bot">
+        <div class="hp-line">Authenticated<br>at the bench,<br><span style="font-style:italic;color:var(--gold-hi);">priced in the open.</span></div>
+        <div class="hp-sub">Every piece tested, weighed and certified before it ever reaches the case.</div>
       </div>
     </div>
   </div>
 
-  <div class="scroll-indicator" style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;">
+  <div class="scroll-indicator" style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1;">
     <span style="font-size:9.5px;letter-spacing:0.24em;text-transform:uppercase;color:var(--text);opacity:0.6;">Scroll</span>
     <svg width="14" height="20" fill="none" stroke="var(--text)" stroke-width="1" opacity="0.5"><rect x="1" y="1" width="12" height="18" rx="6"/><circle cx="7" cy="6" r="2" fill="var(--text)"/></svg>
   </div>
@@ -204,19 +250,19 @@
 <section class="tbar">
   <div class="tbar-inner">
     <div class="tbar-item" onclick="togglePanel('val')" id="tb-val">
-      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 2"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 2"/></svg>
       <span class="tbar-label">How we value</span>
       <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--line);"></div>
     <div class="tbar-item" onclick="togglePanel('loc')" id="tb-loc">
-      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
       <span class="tbar-label">Find the showroom</span>
       <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
     <div style="width:1px;height:36px;background:var(--line);"></div>
     <div class="tbar-item" onclick="togglePanel('resp')" id="tb-resp">
-      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 4l6 5 6-5"/><rect x="2" y="4" width="12" height="9" rx="1"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 4l6 5 6-5"/><rect x="2" y="4" width="12" height="9" rx="1"/></svg>
       <span class="tbar-label">When you'll hear back</span>
       <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
@@ -248,14 +294,17 @@
 <!-- ===== CATEGORIES ===== -->
 <section class="section">
   <div class="wrap">
-    <div class="fi" style="margin-bottom:var(--sp-8);">
-      <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">What we deal in</span></div>
-      <h2 class="display h-2" style="max-width:11ch;">Three categories. No filler.</h2>
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">What we deal in</span></div>
+        <h2 class="display h-2" style="max-width:13ch;">Three categories.<br>No filler.</h2>
+      </div>
+      <p class="meta" style="max-width:300px;line-height:1.8;">A focused house. We trade what we know cold — and authenticate every piece before it touches the case.</p>
     </div>
 
     <div class="cat-grid">
       <div class="card cat-card fi" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Buy &amp; sell</span></div>
+        <div class="plate cat-plate img-wrap"><span class="cat-num">01</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Buy &amp; sell</span></div>
         <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Watches</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Rolex, Patek, AP, Omega, JLC and the rest. Authenticated in-house before anything goes on the shelf.</p>
@@ -264,8 +313,8 @@
       </div>
 
       <div class="card cat-card fi fi-1" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Spot priced</span></div>
-        <div style="padding:var(--sp-5) var(--sp-4) var(--sp-5);">
+        <div class="plate cat-plate img-wrap"><span class="cat-num">02</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Spot priced</span></div>
+        <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Gold &amp; silver</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Bars, coins, bullion. We post the day's spot and our spread; what you see is what we pay or charge.</p>
           <span class="link-rev">View collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></span>
@@ -273,7 +322,7 @@
       </div>
 
       <div class="card cat-card fi fi-2" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Made to order</span></div>
+        <div class="plate cat-plate img-wrap"><span class="cat-num">03</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Made to order</span></div>
         <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Jewellery</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Engagement rings, diamond pieces, gold chains. Pre-owned in stock, or made to order with a Hatton Garden bench.</p>
@@ -287,27 +336,30 @@
 <!-- ===== PROCESS ===== -->
 <section class="section bg-surface border-t">
   <div class="wrap">
-    <div class="fi center" style="margin-bottom:var(--sp-10);">
-      <div class="eyebrow-row" style="justify-content:center;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">How it works</span><div class="divider"></div></div>
-      <h2 class="display h-2">Three steps. No theatre.</h2>
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">02</span><div class="divider"></div><span class="eyebrow">How it works</span></div>
+        <h2 class="display h-2">Three steps. No theatre.</h2>
+      </div>
+      <p class="meta" style="max-width:300px;line-height:1.8;">Send, assess, settle — usually inside the working day. No middlemen, no drawn-out waits.</p>
     </div>
 
-    <div class="proc-grid">
-      <div class="fi center" style="display:flex;flex-direction:column;align-items:center;">
+    <div class="proc-grid fi">
+      <div class="proc-cell">
         <div class="proc-num">01</div>
-        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></div>
+        <div class="proc-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></div>
         <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">Send the details</h3>
         <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Photos, hallmarks, papers if you have them. Or tell us what you're looking for. Reply usually inside the working day.</p>
       </div>
-      <div class="fi fi-1 center" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="proc-cell">
         <div class="proc-num">02</div>
-        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="proc-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
         <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">In person or by post</h3>
         <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Come into the showroom or send the piece insured. We authenticate, weigh, test, and price it in front of you.</p>
       </div>
-      <div class="fi fi-2 center" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="proc-cell">
         <div class="proc-num">03</div>
-        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <div class="proc-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
         <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">Same-day payment</h3>
         <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Selling: bank transfer the same day, or cash to the threshold. Buying: receipt, certificate, and the piece in your hand.</p>
       </div>
@@ -318,9 +370,9 @@
 <!-- ===== TESTIMONIALS PREVIEW ===== -->
 <section class="section">
   <div class="wrap">
-    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--sp-8);flex-wrap:wrap;gap:var(--sp-3);">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
       <div>
-        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">What clients say</span></div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">03</span><div class="divider"></div><span class="eyebrow">What clients say</span></div>
         <h2 class="display h-2">A few words from regulars.</h2>
       </div>
       <a href="testimonials.html" class="btn-outline">Read more reviews</a>
@@ -348,9 +400,9 @@
 <!-- ===== FROM THE BENCH ===== -->
 <section class="section-sm bg-alt border-t">
   <div class="wrap">
-    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;gap:var(--sp-4);flex-wrap:wrap;margin-bottom:var(--sp-6);">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-6);">
       <div style="max-width:560px;">
-        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">From the bench</span></div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">04</span><div class="divider"></div><span class="eyebrow">From the bench</span></div>
         <h2 class="display h-3" style="line-height:1.02;">A few things from<br><span class="display-i" style="color:var(--gold-hi);">the past week.</span></h2>
       </div>
       <p class="meta" style="max-width:280px;line-height:1.7;text-align:right;">Updated by hand on Mondays. Stock moves quickly — call ahead if you want to see a specific piece.</p>
@@ -400,12 +452,14 @@
   <div class="glow"></div>
   <div class="noise"></div>
   <div class="wrap center" style="position:relative;z-index:1;max-width:760px;">
-    <h2 class="display fi" style="font-size:clamp(2.4rem,5.5vw,4.5rem);margin-bottom:20px;">Bring it in, send a photo, or come and look.</h2>
-    <p class="fi fi-1" style="font-size:var(--fs-base);line-height:1.8;color:rgba(236,228,207,0.66);margin:0 auto var(--sp-6);max-width:48ch;">
+    <h2 class="display fi" style="font-size:clamp(2.4rem,5.5vw,4.5rem);margin-bottom:20px;letter-spacing:-0.025em;line-height:1.02;">Bring it in, send a photo, or come and look.</h2>
+    <p class="fi fi-1" style="font-size:var(--fs-base);line-height:1.8;color:var(--text-2);margin:0 auto var(--sp-6);max-width:48ch;">
       Free valuation, no pressure to sell. Walk in any weekday between 9 and 6, or book a slot if you'd rather have it to yourself.
     </p>
     <div class="fi fi-2" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
-      <a href="sell.html" class="btn-primary">Free valuation</a>
+      <a href="sell.html" class="btn-primary">Free valuation
+        <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </a>
       <a href="consultation.html" class="btn-outline">Book a slot</a>
     </div>
   </div>
@@ -449,7 +503,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   /* ---- trust accordion ---- */
   (function () {

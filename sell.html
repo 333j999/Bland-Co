@@ -6,27 +6,67 @@
   <title>Sell or Value Your Watch | Bland & Co Jewellers</title>
   <meta name="description" content="Get a free, expert valuation for your luxury watch or jewellery. A buy price and a resale figure, usually inside the working day. Hatton Garden, London.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
-    .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 25% 50%, rgba(28,113,82,0.26) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 85% 30%, rgba(7,61,42,0.18) 0%, transparent 50%); }
+    /* ---- page-specific · Modern Maison ---- */
+
+    /* PAGE HEAD — editorial split with feature plate */
+    .page-head { position: relative; overflow: hidden; padding-top: var(--nav-h); }
+    .page-head .ph-glow { position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 70% at 18% 50%, rgba(140,122,78,0.18) 0%, transparent 55%),
+                  radial-gradient(ellipse 45% 45% at 86% 28%, rgba(201,162,75,0.10) 0%, transparent 52%); }
+    .page-head .ph-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: repeating-linear-gradient(90deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px),
+                        repeating-linear-gradient(0deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px); }
+    .ph-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.12fr 0.88fr;
+      gap: clamp(var(--sp-6), 5vw, var(--sp-10)); align-items: end;
+      padding-top: var(--sp-10); padding-bottom: var(--sp-8); }
+    .ph-left { max-width: 600px; }
+
+    .ph-plate { position: relative; aspect-ratio: 4/3.4; min-height: 300px; border: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(201,162,75,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 80% at 80% 95%, rgba(34,29,18,0.7) 0%, transparent 55%),
+        linear-gradient(155deg, #2A2417 0%, #14120E 100%);
+      overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: var(--sp-4); }
+    .ph-plate::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='phn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23phn)'/%3E%3C/svg%3E");
+      opacity: 0.05; mix-blend-mode: overlay; }
+    .ph-plate .hp-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(140px, 24vw, 240px);
+      color: rgba(230,204,142,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+    .ph-plate .hp-top, .ph-plate .hp-bot { position: relative; z-index: 1; }
+    .ph-plate .hp-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .ph-plate .hp-tag { font-size: var(--fs-eyebrow); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+    .ph-plate .hp-est { font-family: var(--serif); font-style: italic; font-size: var(--fs-sm); color: var(--text-3); }
+    .ph-plate .hp-line { font-family: var(--serif); font-size: var(--fs-md); line-height: 1.25; color: var(--text); letter-spacing: -0.01em; }
+    .ph-plate .hp-sub { font-size: var(--fs-xs); color: var(--text-3); margin-top: 8px; letter-spacing: 0.02em; }
+
     .trust-pts { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
     .trust-pt { display: flex; align-items: center; gap: 8px; font-size: var(--fs-xs); color: var(--text-3); }
-    .trust-pt::before { content: ''; width: 6px; height: 6px; background: var(--green-hi); border-radius: 50%; flex-shrink: 0; }
+    .trust-pt::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+
+    /* FORM layout */
     .split { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-6); align-items: start; }
     .form-card { background: var(--card); border: 1px solid var(--line); padding: var(--sp-6); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
-    .group-h { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-hi); margin-bottom: var(--sp-3); padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .group-h { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--sp-3); padding-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+    .group-h .kicker-num { font-size: var(--fs-base); color: var(--green-hi); }
     .stack { display: flex; flex-direction: column; gap: var(--sp-2); }
     .cselect-btn.invalid, .input.invalid { border-color: rgba(201,162,75,0.6); }
     .side-card { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-5); }
-    .trust-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--card-2); border: 1px solid var(--line); }
+    .trust-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--card-2); border: 1px solid var(--line); transition: border-color 0.3s var(--ease); }
+    .trust-item:hover { border-color: var(--line-2); }
     .contact-line { display: flex; align-items: center; gap: 10px; font-size: var(--fs-xs); color: var(--text); text-decoration: none; transition: color 0.25s var(--ease); }
     .contact-line:hover { color: var(--gold); }
-    @media (max-width: 900px) { .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .form-card { padding: var(--sp-4); } }
+    @media (max-width: 900px) {
+      .ph-inner { grid-template-columns: 1fr; gap: var(--sp-6); align-items: start; }
+      .ph-plate { aspect-ratio: 16/9; min-height: 220px; order: 2; }
+      .ph-left { order: 1; max-width: none; }
+      .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .form-card { padding: var(--sp-4); }
+    }
   </style>
 </head>
 <body>
@@ -53,16 +93,31 @@
 
 <!-- HEAD -->
 <section class="page-head border-b">
-  <div class="glow"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-grid"></div>
   <div class="noise"></div>
-  <div class="wrap" style="position:relative;z-index:1;">
-    <div class="fi eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Free valuation</span></div>
-    <h1 class="display h-1 fi fi-1" style="max-width:14ch;">What's it actually worth?</h1>
-    <p class="lede fi fi-2" style="max-width:54ch;margin-top:20px;">Send us photos and a few details. We'll come back with a buy price and a rough resale figure — usually inside the working day. No obligation either way.</p>
-    <div class="trust-pts fi fi-3">
-      <span class="trust-pt">Free, no obligation</span>
-      <span class="trust-pt">Bank transfer the same day if you accept</span>
-      <span class="trust-pt">Priced against current auction data</span>
+  <div class="wrap ph-inner">
+    <div class="ph-left">
+      <div class="fi eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">Free valuation</span></div>
+      <h1 class="display h-1 fi fi-1" style="max-width:13ch;">What's it<br><span class="display-i" style="color:var(--gold-hi);">actually worth?</span></h1>
+      <p class="lede fi fi-2" style="max-width:52ch;margin-top:var(--sp-3);">Send us photos and a few details. We'll come back with a buy price and a rough resale figure — usually inside the working day. No obligation either way.</p>
+      <div class="trust-pts fi fi-3">
+        <span class="trust-pt">Free, no obligation</span>
+        <span class="trust-pt">Bank transfer the same day if you accept</span>
+        <span class="trust-pt">Priced against current auction data</span>
+      </div>
+    </div>
+
+    <div class="ph-plate fi fi-3">
+      <div class="hp-mono">B</div>
+      <div class="hp-top">
+        <span class="hp-tag">The Valuation</span>
+        <span class="hp-est">Same day</span>
+      </div>
+      <div class="hp-bot">
+        <div class="hp-line">A buy price<br>and a resale price —<br><span style="font-style:italic;color:var(--gold-hi);">the figures we use.</span></div>
+        <div class="hp-sub">No single number dressed up as both.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -78,7 +133,7 @@
         <form id="valuationForm" onsubmit="handleSubmit(event)" novalidate>
           <!-- Your details -->
           <div style="margin-bottom:var(--sp-4);">
-            <h3 class="group-h">Your details</h3>
+            <h3 class="group-h"><span class="kicker-num">01</span> Your details</h3>
             <div class="form-row">
               <div class="field"><label class="label" for="fullName">Full name <span class="req">*</span></label><input type="text" id="fullName" name="fullName" class="input" placeholder="James Harrison" required></div>
               <div class="field"><label class="label" for="phone">Phone number <span class="req">*</span></label><input type="tel" id="phone" name="phone" class="input" placeholder="+44 7700 900000" required></div>
@@ -88,7 +143,7 @@
 
           <!-- Item details -->
           <div style="margin-bottom:var(--sp-4);">
-            <h3 class="group-h">Item details</h3>
+            <h3 class="group-h"><span class="kicker-num">02</span> Item details</h3>
             <div class="form-row" style="margin-bottom:var(--sp-2);">
               <div class="field">
                 <label class="label" for="itemType">Item type <span class="req">*</span></label>
@@ -148,10 +203,10 @@
 
           <!-- Upload -->
           <div style="margin-bottom:var(--sp-5);">
-            <h3 class="group-h">Upload images</h3>
+            <h3 class="group-h"><span class="kicker-num">03</span> Upload images</h3>
             <div class="file-zone" id="fileZone">
               <input type="file" id="images" name="images" accept="image/*" multiple onchange="updateFileLabel(this)">
-              <svg width="32" height="32" fill="none" stroke="var(--text-3)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 12px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg width="32" height="32" fill="none" stroke="var(--gold)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 12px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <p id="fileLabel" class="text-2" style="font-size:var(--fs-xs);line-height:1.6;">Drag &amp; drop images here, or <span class="text-gold">click to browse</span></p>
               <p class="meta" style="margin-top:6px;opacity:0.7;">JPEG, PNG, HEIC accepted · Max 10MB per file</p>
             </div>
@@ -171,18 +226,18 @@
       <!-- SIDEBAR -->
       <div class="stack fi" style="gap:var(--sp-3);">
         <div class="side-card">
-          <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:var(--sp-3);">What you'll get</h3>
+          <div class="eyebrow-row" style="margin-bottom:var(--sp-3);"><div class="divider"></div><span class="eyebrow">What you'll get</span></div>
           <div class="stack">
             <div class="trust-item">
-              <svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg>
+              <svg width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg>
               <div><div style="font-size:var(--fs-xs);font-weight:500;color:var(--text);margin-bottom:4px;">A buy price <em>and</em> a resale price</div><div class="meta" style="line-height:1.6;">Same numbers we use internally. You see what we'd pay and what we'd ask for it.</div></div>
             </div>
             <div class="trust-item">
-              <svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <svg width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
               <div><div style="font-size:var(--fs-xs);font-weight:500;color:var(--text);margin-bottom:4px;">Same-day bank transfer</div><div class="meta" style="line-height:1.6;">If you accept and the piece checks out in person, money is in your account that afternoon.</div></div>
             </div>
             <div class="trust-item">
-              <svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.49.9 6.08 2.38"/></svg>
+              <svg width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.49.9 6.08 2.38"/></svg>
               <div><div style="font-size:var(--fs-xs);font-weight:500;color:var(--text);margin-bottom:4px;">Walk away if it isn't right</div><div class="meta" style="line-height:1.6;">No fee for the valuation. No pitch when you decline. Some pieces just aren't ours to sell.</div></div>
             </div>
           </div>
@@ -192,7 +247,7 @@
           <div class="noise"></div>
           <div style="position:relative;z-index:1;">
             <h3 class="display" style="font-size:var(--fs-md);margin-bottom:12px;">Rather just ring?</h3>
-            <p style="font-size:var(--fs-xs);color:rgba(236,228,207,0.66);line-height:1.7;margin-bottom:var(--sp-3);">Direct line to the bench. Phone, email, or WhatsApp — whichever's quicker for you.</p>
+            <p style="font-size:var(--fs-xs);color:var(--text-2);line-height:1.7;margin-bottom:var(--sp-3);">Direct line to the bench. Phone, email, or WhatsApp — whichever's quicker for you.</p>
             <div class="stack" style="gap:10px;">
               <a href="tel:+447399426893" class="contact-line"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>07399 426893</a>
               <a href="mailto:bland.jewellers@gmail.com" class="contact-line" style="word-break:break-all;"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>bland.jewellers@gmail.com</a>
@@ -218,7 +273,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   function updateFileLabel(input) {
     const label = document.getElementById('fileLabel');

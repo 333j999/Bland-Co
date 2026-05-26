@@ -6,18 +6,23 @@
   <title>Testimonials | Bland & Co Jewellers</title>
   <meta name="description" content="Read what our clients say about buying and selling luxury watches and jewellery with Bland & Co Jewellers, Hatton Garden.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
+    /* ---- page-specific · Modern Maison ---- */
     .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 75% 50%, rgba(28,113,82,0.2) 0%, transparent 60%); }
+    .page-head .glow { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 78% 50%, rgba(201,162,75,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 50% 50% at 12% 40%, rgba(140,122,78,0.10) 0%, transparent 55%); }
+    .page-head .pg-meta { font-size: var(--fs-xs); color: var(--text-3); letter-spacing: 0.04em; }
+
     .tgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
     .tcard { transition: border-color 0.5s var(--ease), transform 0.5s var(--ease); }
     .tcard:hover { border-color: var(--line-2); transform: translateY(-4px); }
     .t-quote { font-size: var(--fs-md); line-height: 1.6; color: var(--text); margin: 28px 0 var(--sp-4); padding-top: 16px; }
-    .end-cta { text-align: center; margin-top: var(--sp-10); padding: var(--sp-8) var(--sp-5); background: var(--surface); border: 1px solid var(--line); }
+    .end-cta { position: relative; overflow: hidden; text-align: center; margin-top: var(--sp-10); padding: var(--sp-10) var(--sp-5); background: var(--green-dark); border: 1px solid var(--line); }
+    .end-cta .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 50% 40%, rgba(201,162,75,0.14) 0%, transparent 70%); }
     @media (max-width: 900px) { .tgrid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -43,12 +48,12 @@
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- HEAD -->
+<!-- PAGE HEAD -->
 <section class="page-head border-b">
   <div class="glow"></div>
   <div class="noise"></div>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div class="fi eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Reviews</span></div>
+    <div class="fi eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">00</span><div class="divider"></div><span class="eyebrow">Reviews</span></div>
     <h1 class="display h-1 fi fi-1" style="max-width:14ch;">A few words from regulars.</h1>
     <p class="lede fi fi-2" style="max-width:52ch;margin-top:18px;">Most of our work comes from word of mouth. Here's a flavour of what people who've used us actually say.</p>
   </div>
@@ -57,6 +62,14 @@
 <!-- GRID -->
 <section class="section-sm">
   <div class="wrap">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">In their words</span></div>
+        <h2 class="display h-2" style="max-width:16ch;">Honest accounts,<br>not five-star noise.</h2>
+      </div>
+      <p class="pg-meta" style="max-width:300px;line-height:1.8;">Real clients, real pieces. We don't filter for the flattering ones — these are simply the people who came back.</p>
+    </div>
+
     <!-- Curated fallback cards. Replaced by backend entries (/api/testimonials) when present. -->
     <div class="tgrid" id="tGrid">
       <div class="tcard card fi">
@@ -74,11 +87,16 @@
     </div>
 
     <div class="end-cta fi">
-      <h2 class="display h-3" style="margin-bottom:14px;">Try us yourself.</h2>
-      <p class="text-2" style="font-size:var(--fs-sm);max-width:440px;margin:0 auto var(--sp-4);line-height:1.7;">Send a piece for valuation, or come and look at what's in the case.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-        <a href="sell.html" class="btn-primary">Free valuation</a>
-        <a href="contact.html" class="btn-outline">Contact</a>
+      <div class="glow"></div>
+      <div class="noise"></div>
+      <div style="position:relative;z-index:1;">
+        <div class="eyebrow-row" style="justify-content:center;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Your turn</span><div class="divider"></div></div>
+        <h2 class="display h-3" style="margin-bottom:14px;">Try us yourself.</h2>
+        <p class="text-2" style="font-size:var(--fs-sm);max-width:440px;margin:0 auto var(--sp-4);line-height:1.7;">Send a piece for valuation, or come and look at what's in the case.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+          <a href="sell.html" class="btn-primary">Free valuation <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a href="contact.html" class="btn-outline">Contact</a>
+        </div>
       </div>
     </div>
   </div>
@@ -97,7 +115,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function tInitial(name){var p=String(name||'').trim().split(/\s+/)[0];return (p&&p[0]?p[0]:'·').toUpperCase();}

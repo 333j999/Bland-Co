@@ -6,27 +6,30 @@
   <title>About Us | Bland & Co Jewellers</title>
   <meta name="description" content="London's trusted luxury reseller. Based in Hatton Garden since day one — discover our story, values, and expertise.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
+    /* ---- page-specific · Modern Maison ---- */
     .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 25% 50%, rgba(28,113,82,0.26) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 85% 30%, rgba(7,61,42,0.18) 0%, transparent 50%); }
+    .page-head .glow { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 22% 50%, rgba(201,162,75,0.13) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 40% at 85% 30%, rgba(140,122,78,0.12) 0%, transparent 50%); }
 
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--sp-5), 6vw, var(--sp-10)); align-items: center; }
+    .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--sp-5), 6vw, var(--sp-10)); align-items: center; }
     .split-media { position: relative; }
-    .split-media .plate-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(6,10,8,0.55) 100%); pointer-events: none; z-index: 2; }
+    .split-media .plate-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(20,18,14,0.55) 100%); pointer-events: none; z-index: 2; }
 
     .val-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
     .value-card { padding: var(--sp-5); }
-    .value-num { font-family: var(--serif); font-size: var(--fs-3xl); font-weight: 300; line-height: 1; color: rgba(28,113,82,0.3); margin-bottom: var(--sp-3); }
+    .value-num { font-family: var(--serif); font-size: var(--fs-3xl); font-weight: 300; line-height: 1; color: var(--green-hi); margin-bottom: var(--sp-3); letter-spacing: -0.02em; }
 
     .cta-strip { position: relative; overflow: hidden; background: var(--green-dark); border-top: 1px solid var(--line); }
+    .cta-strip .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,162,75,0.12) 0%, transparent 70%); }
     .cta-strip .cta-inner { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: var(--sp-5); align-items: center; justify-content: space-between; }
 
     @media (max-width: 900px) {
-      .split { grid-template-columns: 1fr; gap: var(--sp-5); }
+      .about-split { grid-template-columns: 1fr; gap: var(--sp-5); }
       .split-media[data-order] { order: -1; }
       .val-grid { grid-template-columns: 1fr 1fr; }
     }
@@ -74,7 +77,7 @@
   <div class="glow"></div>
   <div class="noise"></div>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div class="eyebrow-row fi" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">About</span></div>
+    <div class="eyebrow-row fi" style="margin-bottom:18px;"><span class="kicker-num">00</span><div class="divider"></div><span class="eyebrow">About</span></div>
     <h1 class="display h-1 fi fi-1" style="max-width:18ch;">A small Hatton Garden jeweller, dealing the way the trade used to.</h1>
     <p class="lede fi fi-2" style="max-width:540px;margin-top:var(--sp-2);">No call centres, no script, no markup dressed up as service. Just the people who'll be valuing your piece, on the other end of the phone.</p>
   </div>
@@ -83,10 +86,16 @@
 <!-- BRAND STORY -->
 <section class="section">
   <div class="wrap">
-    <div class="split">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">Who we are</span></div>
+        <h2 class="display h-2" style="max-width:16ch;">A small team. One Hatton Garden showroom.</h2>
+      </div>
+      <p class="meta" style="max-width:300px;line-height:1.8;">Most of our work comes from people who've used us before, or been sent by someone who has.</p>
+    </div>
+
+    <div class="about-split">
       <div class="fi">
-        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Who we are</span></div>
-        <h2 class="display h-2" style="margin-bottom:var(--sp-4);">A small team. One Hatton Garden showroom.</h2>
         <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">We deal in pre-owned watches, gold, and jewellery. Most of our work comes from people who've used us before, or been sent by someone who has.</p>
         <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">When you ring us, you speak to the person who'll value your piece — not a switchboard. When you visit, the door is round the back of a real bench, not a glass-fronted office. That's the trade we wanted to keep.</p>
         <p class="text-2" style="line-height:1.85;">We'll tell you what something is worth even if it means you walk out and sell it elsewhere. That's what brings the next person back.</p>
@@ -105,7 +114,15 @@
 <!-- HATTON GARDEN SECTION -->
 <section class="section bg-surface border-t">
   <div class="wrap">
-    <div class="split">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">02</span><div class="divider"></div><span class="eyebrow">The street</span></div>
+        <h2 class="display h-2" style="max-width:14ch;">Why Hatton Garden matters.</h2>
+      </div>
+      <p class="meta" style="max-width:300px;line-height:1.8;">Reputation gets around quickly on these streets — which is exactly the point.</p>
+    </div>
+
+    <div class="about-split">
       <div class="fi fi-1 split-media" data-order style="order:2;">
         <div class="plate" style="aspect-ratio:5/4;">
           <div class="monogram">B</div>
@@ -113,8 +130,6 @@
         </div>
       </div>
       <div class="fi" style="order:1;">
-        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">The street</span></div>
-        <h2 class="display h-2" style="margin-bottom:var(--sp-4);">Why Hatton Garden matters.</h2>
         <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">Most of London's jewellery trade still passes through these few streets. The benches are next to each other, the testing kit is shared, and reputation gets around quickly — which is the point.</p>
         <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-4);">If we quote you wrongly on a piece, the dealer ten doors down will tell you. So we don't.</p>
         <a href="contact.html" class="link-rev">Come and find us <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></a>
@@ -126,15 +141,18 @@
 <!-- VALUES GRID -->
 <section class="section">
   <div class="wrap">
-    <div class="fi" style="margin-bottom:var(--sp-8);max-width:680px;">
-      <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">How we work</span></div>
-      <h2 class="display h-2">Three things we won't budge on.</h2>
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">03</span><div class="divider"></div><span class="eyebrow">How we work</span></div>
+        <h2 class="display h-2" style="max-width:14ch;">Three things we won't budge on.</h2>
+      </div>
+      <p class="meta" style="max-width:300px;line-height:1.8;">The same standards on a £200 chain as on a five-figure watch.</p>
     </div>
 
     <div class="val-grid">
       <div class="value-card card fi fi-1">
         <div class="value-num">01</div>
-        <h3 class="display h-4" style="margin-bottom:12px;">We tell you the buy price <em>and</em> the resale price.</h3>
+        <h3 class="display h-4" style="margin-bottom:12px;">We tell you the buy price <em style="color:var(--gold-hi);">and</em> the resale price.</h3>
         <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;">If we're buying from you, you'll see what we'd offer and roughly what we'd ask for it on the shelf. Same numbers we use internally. No mystery.</p>
       </div>
 
@@ -155,11 +173,12 @@
 
 <!-- CTA STRIP -->
 <section class="section-sm cta-strip">
+  <div class="glow"></div>
   <div class="noise"></div>
   <div class="wrap cta-inner">
     <div>
       <h2 class="display h-3 fi" style="margin-bottom:12px;">Got a piece in mind?</h2>
-      <p class="fi fi-1" style="color:rgba(236,228,207,0.6);max-width:420px;line-height:1.7;">Send a photo, ring the bench, or pop by between 10 and 6.</p>
+      <p class="fi fi-1" style="color:var(--text-2);max-width:420px;line-height:1.7;">Send a photo, ring the bench, or pop by between 10 and 6.</p>
     </div>
     <div class="fi fi-2" style="display:flex;flex-wrap:wrap;gap:12px;">
       <a href="sell.html" class="btn-primary">Free valuation <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
@@ -187,6 +206,6 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 </body>
 </html>

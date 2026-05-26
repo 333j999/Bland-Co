@@ -6,55 +6,59 @@
   <title>Book a Consultation | Bland & Co Jewellers</title>
   <meta name="description" content="Book a private consultation with Bland & Co Jewellers. Whether you're buying, selling, or seeking a valuation — speak with our specialists in Hatton Garden.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
+    /* ---- page-specific · Modern Maison ---- */
     .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(28,113,82,0.22) 0%, transparent 60%); }
-    .split { display: grid; grid-template-columns: 1fr 360px; gap: var(--sp-6); align-items: start; }
-    .form-card { background: var(--card); border: 1px solid var(--line); padding: var(--sp-6); }
+    .page-head .glow { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(201,162,75,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 50% 50% at 14% 30%, rgba(140,122,78,0.10) 0%, transparent 55%); }
+    .page-head .pg-meta { font-size: var(--fs-xs); color: var(--text-3); letter-spacing: 0.04em; text-align: right; }
+
+    .book-split { display: grid; grid-template-columns: 1fr 360px; gap: clamp(var(--sp-5), 5vw, var(--sp-8)); align-items: start; }
+    .form-card { background: var(--card); border: 1px solid var(--line); padding: clamp(var(--sp-4), 4vw, var(--sp-6)); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
     .stack { display: flex; flex-direction: column; gap: var(--sp-3); }
-    .input.invalid, .time-btn.invalid { border-color: rgba(201,162,75,0.6); }
+    .input.invalid, .time-btn.invalid { border-color: rgba(201,162,75,0.6); box-shadow: 0 0 0 3px rgba(201,162,75,0.10); }
 
     /* purpose cards */
     .purpose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .purpose-card { position: relative; }
     .purpose-card input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
     .purpose-label { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 22px 12px; background: var(--card-2); border: 1px solid var(--line); text-align: center; cursor: pointer; transition: border-color 0.3s var(--ease), background 0.3s var(--ease); height: 140px; }
-    .purpose-card input:checked + .purpose-label { border-color: var(--green-hi); background: rgba(28,113,82,0.12); }
-    .purpose-card input:checked + .purpose-label svg { stroke: var(--text); }
-    .purpose-card input:focus-visible + .purpose-label { outline: 2px solid var(--green-hi); outline-offset: 3px; }
+    .purpose-card input:checked + .purpose-label { border-color: var(--gold); background: rgba(201,162,75,0.10); }
+    .purpose-card input:checked + .purpose-label svg { stroke: var(--gold-hi); }
+    .purpose-card input:focus-visible + .purpose-label { outline: 2px solid var(--gold); outline-offset: 3px; }
     .purpose-label:hover { border-color: var(--line-2); }
     .purpose-title { font-size: var(--fs-eyebrow); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); font-weight: 500; }
     .purpose-sub { font-size: var(--fs-eyebrow); color: var(--text-3); line-height: 1.4; }
 
     /* time dropdown */
     .time-wrap { position: relative; }
-    .time-btn { width: 100%; background: var(--card-2); border: 1px solid var(--line); color: #6E6857; padding: 15px 16px; font-family: var(--sans); font-size: var(--fs-base); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease); text-align: left; }
+    .time-btn { width: 100%; background: var(--card-2); border: 1px solid var(--line); color: #756B57; padding: 15px 16px; font-family: var(--sans); font-size: var(--fs-base); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease); text-align: left; }
     .time-btn.selected { color: var(--text); }
-    .time-btn.open { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,0.16); }
+    .time-btn.open { border-color: var(--gold); background: #2B2619; box-shadow: 0 0 0 3px rgba(201,162,75,0.14); }
     .time-btn svg { flex-shrink: 0; transition: transform 0.3s var(--ease); opacity: 0.6; }
     .time-btn.open svg { transform: rotate(180deg); }
-    .time-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #141E18; border: 1px solid var(--line-2); z-index: 50; max-height: 260px; overflow-y: auto; display: none; box-shadow: var(--shadow-card); }
+    .time-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #221E16; border: 1px solid var(--line-2); z-index: 50; max-height: 260px; overflow-y: auto; display: none; box-shadow: var(--shadow-card); }
     .time-list.open { display: block; }
     .time-opt { padding: 11px 16px; font-size: var(--fs-sm); color: var(--text-2); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); }
-    .time-opt:hover { background: rgba(28,113,82,0.18); color: var(--text); }
-    .time-opt.active { background: var(--green-mid); color: var(--text); }
+    .time-opt:hover { background: rgba(201,162,75,0.14); color: var(--text); }
+    .time-opt.active { background: rgba(201,162,75,0.20); color: var(--text); }
     .time-opt.disabled { opacity: 0.25; cursor: default; pointer-events: none; }
 
     .info-block { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-4); }
-    .num-badge { width: 28px; height: 28px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: var(--fs-eyebrow); color: var(--green-hi); font-weight: 500; margin-top: 1px; }
+    .num-badge { width: 28px; height: 28px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: var(--fs-eyebrow); color: var(--gold-hi); font-weight: 500; margin-top: 1px; }
     .contact-method { display: flex; align-items: flex-start; gap: 14px; padding: 16px; background: var(--card); border: 1px solid var(--line); transition: border-color 0.3s var(--ease); }
     .contact-method:hover { border-color: var(--line-2); }
-    .contact-icon { width: 40px; height: 40px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-icon { width: 40px; height: 40px; border: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); }
     .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #25D366; font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.3s var(--ease), transform 0.3s var(--ease); }
     .btn-whatsapp:hover { background: rgba(37,211,102,0.2); transform: translateY(-2px); }
 
-    /* flatpickr brand theme */
+    /* flatpickr brand theme — charcoal + champagne */
     .flatpickr-calendar { background: var(--card) !important; border: 1px solid var(--line-2) !important; border-radius: 0 !important; box-shadow: var(--shadow-card) !important; font-family: var(--sans) !important; color: var(--text) !important; }
     .flatpickr-months { background: var(--surface) !important; border-bottom: 1px solid var(--line) !important; padding: 10px 0 !important; }
     .flatpickr-month, .flatpickr-current-month .numInputWrapper input { color: var(--text) !important; fill: var(--text) !important; }
@@ -67,13 +71,13 @@
     span.flatpickr-weekday { color: var(--text-3) !important; font-size: 10px !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; font-weight: 500 !important; background: transparent !important; }
     .flatpickr-days, .dayContainer { border: none !important; }
     .flatpickr-day { color: var(--text) !important; border-radius: 0 !important; border: 1px solid transparent !important; font-size: 13px !important; transition: background 0.15s, border-color 0.15s !important; }
-    .flatpickr-day:hover { background: rgba(28,113,82,0.2) !important; border-color: var(--green-hi) !important; }
-    .flatpickr-day.today { border-color: rgba(28,113,82,0.4) !important; background: transparent !important; }
-    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--green-mid) !important; border-color: var(--green-mid) !important; color: var(--text) !important; }
-    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(236,228,207,0.2) !important; }
+    .flatpickr-day:hover { background: rgba(140,122,78,0.22) !important; border-color: var(--gold) !important; }
+    .flatpickr-day.today { border-color: rgba(201,162,75,0.4) !important; background: transparent !important; }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--gold) !important; border-color: var(--gold) !important; color: #1A160C !important; }
+    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(236,229,214,0.2) !important; }
     .numInputWrapper span { border: none !important; }
 
-    @media (max-width: 900px) { .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .purpose-grid { grid-template-columns: repeat(2, 1fr); } .form-card { padding: var(--sp-4); } }
+    @media (max-width: 900px) { .book-split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .purpose-grid { grid-template-columns: repeat(2, 1fr); } .page-head .pg-meta { text-align: left; } }
     @media (max-width: 480px) { .purpose-grid { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
@@ -99,12 +103,12 @@
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- HEAD -->
+<!-- PAGE HEAD -->
 <section class="page-head border-b">
   <div class="glow"></div>
   <div class="noise"></div>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div class="fi eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Book a slot</span></div>
+    <div class="fi eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">00</span><div class="divider"></div><span class="eyebrow">Book a slot</span></div>
     <h1 class="display h-1 fi fi-1" style="max-width:16ch;">Pick a time. We'll keep the bench clear for you.</h1>
     <p class="lede fi fi-2" style="max-width:52ch;margin-top:18px;">Walk-ins are fine, but booking means we've pulled the pieces, cleared the workspace, and won't be on the phone when you arrive.</p>
   </div>
@@ -113,12 +117,17 @@
 <!-- MAIN -->
 <section class="section-sm">
   <div class="wrap">
-    <div class="split">
+    <div class="fi sec-head" style="margin-bottom:var(--sp-8);">
+      <div>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">The appointment</span></div>
+        <h2 class="display h-2" style="max-width:16ch;">Tell us when works.</h2>
+      </div>
+      <p class="pg-meta" style="max-width:300px;line-height:1.8;">We'll come back to confirm or suggest the next slot, usually inside the working day.</p>
+    </div>
+
+    <div class="book-split">
       <div class="fi">
         <div class="form-card">
-          <h2 class="display h-3" style="margin-bottom:8px;">Tell us when works.</h2>
-          <p class="text-2" style="font-size:var(--fs-sm);margin-bottom:var(--sp-5);line-height:1.7;">We'll come back to confirm or suggest the next slot, usually inside the working day.</p>
-
           <form id="consultationForm" onsubmit="handleSubmit(event)" novalidate>
             <div class="stack" style="gap:var(--sp-4);">
 
@@ -127,22 +136,24 @@
                 <div class="purpose-grid" id="purposeGrid">
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-buying" value="buying" checked>
-                    <label class="purpose-label" for="p-buying"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><polyline points="12 9.5 12 12 13.5 13.5"/><path d="M15 4.5H9M15 19.5H9"/></svg><span class="purpose-title">Buying</span><span class="purpose-sub">Browse &amp; acquire watches or jewellery</span></label>
+                    <label class="purpose-label" for="p-buying"><svg width="26" height="26" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><polyline points="12 9.5 12 12 13.5 13.5"/><path d="M15 4.5H9M15 19.5H9"/></svg><span class="purpose-title">Buying</span><span class="purpose-sub">Browse &amp; acquire watches or jewellery</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-selling" value="selling">
-                    <label class="purpose-label" for="p-selling"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span class="purpose-title">Selling</span><span class="purpose-sub">Get a fair offer for your pieces</span></label>
+                    <label class="purpose-label" for="p-selling"><svg width="26" height="26" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span class="purpose-title">Selling</span><span class="purpose-sub">Get a fair offer for your pieces</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-valuation" value="valuation">
-                    <label class="purpose-label" for="p-valuation"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg><span class="purpose-title">Valuation</span><span class="purpose-sub">Professional assessment &amp; report</span></label>
+                    <label class="purpose-label" for="p-valuation"><svg width="26" height="26" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg><span class="purpose-title">Valuation</span><span class="purpose-sub">Professional assessment &amp; report</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-general" value="general">
-                    <label class="purpose-label" for="p-general"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="purpose-title">General</span><span class="purpose-sub">Chat with a specialist about options</span></label>
+                    <label class="purpose-label" for="p-general"><svg width="26" height="26" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="purpose-title">General</span><span class="purpose-sub">Chat with a specialist about options</span></label>
                   </div>
                 </div>
               </div>
+
+              <div class="rule"></div>
 
               <div class="form-row">
                 <div class="field"><label class="label" for="name">Full name <span class="req">*</span></label><input type="text" id="name" name="name" class="input" placeholder="James Harrison" required></div>
@@ -192,21 +203,21 @@
       <!-- SIDEBAR -->
       <div class="stack fi">
         <div class="info-block">
-          <h3 class="display" style="font-size:var(--fs-md);margin-bottom:var(--sp-3);">What happens next</h3>
+          <div class="eyebrow-row" style="margin-bottom:var(--sp-3);"><span class="kicker-num" style="font-size:var(--fs-sm);">02</span><div class="divider" style="width:28px;"></div><span class="eyebrow">What happens next</span></div>
           <div class="stack">
             <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">1</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">We confirm</div><div class="meta" style="line-height:1.6;">Same-day reply on weekdays — your slot, or the nearest one we can do.</div></div></div>
-            <div style="height:1px;background:var(--line);margin-left:42px;"></div>
+            <div class="rule" style="margin-left:42px;width:auto;"></div>
             <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">2</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">You come in</div><div class="meta" style="line-height:1.6;">Bring whatever you want assessed — papers, photos of bigger pieces, the watch on your wrist. Tea's on the side.</div></div></div>
-            <div style="height:1px;background:var(--line);margin-left:42px;"></div>
+            <div class="rule" style="margin-left:42px;width:auto;"></div>
             <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">3</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">Walk away if you want</div><div class="meta" style="line-height:1.6;">No fee, no follow-up sales call. We're here when you need us.</div></div></div>
           </div>
         </div>
 
         <div class="info-block">
-          <h3 class="display" style="font-size:var(--fs-md);margin-bottom:var(--sp-3);">Where to find us</h3>
+          <div class="eyebrow-row" style="margin-bottom:var(--sp-3);"><span class="kicker-num" style="font-size:var(--fs-sm);">03</span><div class="divider" style="width:28px;"></div><span class="eyebrow">Where to find us</span></div>
           <div class="stack" style="gap:12px;">
-            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><div class="label" style="margin-bottom:4px;">Address</div><div style="font-size:var(--fs-xs);color:var(--text);line-height:1.6;">Hatton Garden<br>London, EC1N</div></div></div>
-            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div><div><div class="label" style="margin-bottom:4px;">Phone</div><a href="tel:+447399426893" style="font-size:var(--fs-xs);color:var(--text);text-decoration:none;">07399 426893</a><div class="meta" style="margin-top:2px;">Mon–Fri 9–6, Sat 10–4</div></div></div>
+            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><div class="label" style="margin-bottom:4px;">Address</div><div style="font-size:var(--fs-xs);color:var(--text);line-height:1.6;">Hatton Garden<br>London, EC1N</div></div></div>
+            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div><div><div class="label" style="margin-bottom:4px;">Phone</div><a href="tel:+447399426893" style="font-size:var(--fs-xs);color:var(--text);text-decoration:none;">07399 426893</a><div class="meta" style="margin-top:2px;">Mon–Fri 9–6, Sat 10–4</div></div></div>
           </div>
         </div>
 
@@ -217,7 +228,7 @@
               <svg width="20" height="20" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
             </div>
             <h3 class="display" style="font-size:var(--fs-md);margin-bottom:8px;">Or just message us.</h3>
-            <p style="font-size:var(--fs-xs);color:rgba(236,228,207,0.66);line-height:1.7;margin-bottom:var(--sp-3);">Photos go through faster than email.</p>
+            <p style="font-size:var(--fs-xs);color:var(--text-2);line-height:1.7;margin-bottom:var(--sp-3);">Photos go through faster than email.</p>
             <a href="https://wa.me/447399426893" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
               <svg width="14" height="14" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
               Message on WhatsApp
@@ -243,7 +254,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   const ALL_SLOTS = [
     {v:'09:00',l:'9:00 AM'},{v:'09:30',l:'9:30 AM'},{v:'10:00',l:'10:00 AM'},{v:'10:30',l:'10:30 AM'},

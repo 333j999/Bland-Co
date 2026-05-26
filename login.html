@@ -5,24 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login | Bland & Co Jewellers</title>
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:        #060A08;
-      --surface:   #0C120F;
-      --card:      #111917;
-      --elevated:  #16201A;
-      --green:     #0C4535;
-      --green-dark:#073D2A;
-      --green-mid: #1C7152;
-      --green-hi:  #2E9A73;
-      --cream:     #ECE4CF;
-      --cream-dim: #C2B89F;
+      --bg:        #14120E;
+      --surface:   #1C1A14;
+      --card:      #211E17;
+      --elevated:  #262219;
+      --green:     #2E2818;
+      --green-dark:#221D12;
+      --green-mid: #4A3F25;
+      --green-hi:  #8C7A4E;
+      --cream:     #ECE5D6;
+      --cream-dim: #B8AE99;
       --gold:      #C9A24B;
-      --gold-hi:   #E2C57E;
-      --border:    rgba(232,223,200,0.08);
+      --gold-hi:   #E6CC8E;
+      --border:    rgba(236,229,214,0.10);
       --red:       #C0392B;
       --ease:      cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -31,7 +30,7 @@
       height: 100%;
       background: var(--bg);
       color: var(--cream);
-      font-family: 'DM Sans', system-ui, sans-serif;
+      font-family: 'General Sans', system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -39,8 +38,8 @@
     .bg-layer {
       position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(12,69,53,.32) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(7,61,42,.18) 0%, transparent 50%);
+        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(140,122,78,.22) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(201,162,75,.12) 0%, transparent 50%);
     }
     .bg-grid {
       position: fixed; inset: 0; z-index: 0;
@@ -69,7 +68,7 @@
     .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
     .logo-wrap img { width: 40px; height: 40px; object-fit: cover; }
     .logo-text { line-height: 1.2; }
-    .logo-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
+    .logo-name { font-family: 'Zodiak', serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
     .logo-sub  { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-dim); margin-top: 1px; }
 
     /* ── Step indicator ── */
@@ -88,7 +87,7 @@
     .step-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); margin-top: 6px; white-space: nowrap; }
 
     /* ── Headings ── */
-    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+    .card-title { font-family: 'Zodiak', serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
     .card-desc  { font-size: 13px; color: var(--cream-dim); line-height: 1.65; margin-bottom: 28px; }
 
     /* ── Form ── */
@@ -97,12 +96,12 @@
     .input-wrap { position: relative; }
     .form-input {
       width: 100%; background: var(--elevated); border: 1px solid rgba(232,223,200,.1);
-      color: var(--cream); padding: 13px 16px; font-family: 'DM Sans', sans-serif;
+      color: var(--cream); padding: 13px 16px; font-family: 'General Sans', sans-serif;
       font-size: 14px; outline: none; transition: border-color .2s, background .2s;
       -webkit-appearance: none;
     }
     .form-input::placeholder { color: var(--cream-dim); opacity: .4; }
-    .form-input:focus { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,.16); }
+    .form-input:focus { border-color: var(--gold); background: #262219; box-shadow: 0 0 0 3px rgba(201,162,75,.18); }
     .form-input.error { border-color: var(--red) !important; }
     .eye-btn {
       position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -117,7 +116,7 @@
     .totp-input {
       width: 48px; height: 56px; background: var(--elevated);
       border: 1px solid rgba(232,223,200,.1); color: var(--cream);
-      font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 500;
+      font-family: 'General Sans', sans-serif; font-size: 22px; font-weight: 500;
       text-align: center; outline: none; -webkit-appearance: none;
       transition: border-color .2s, background .2s;
       border-radius: 0;
@@ -126,13 +125,13 @@
     }
     .totp-input::-webkit-outer-spin-button,
     .totp-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .totp-input:focus { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,.16); }
+    .totp-input:focus { border-color: var(--gold); background: #262219; box-shadow: 0 0 0 3px rgba(201,162,75,.18); }
     .totp-input.error { border-color: var(--red) !important; }
 
     /* ── Submit btn ── */
     .btn-submit {
       width: 100%; padding: 14px; background: var(--cream); color: var(--bg);
-      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      font-family: 'General Sans', sans-serif; font-size: 12px; font-weight: 500;
       letter-spacing: .16em; text-transform: uppercase; border: none;
       cursor: pointer; margin-top: 8px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -183,7 +182,7 @@
       font-size: 12px; color: var(--cream-dim); background: none; border: none;
       cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
       margin-top: 20px; padding: 0; transition: color .2s;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'General Sans', sans-serif;
     }
     .back-link:hover { color: var(--cream); }
 

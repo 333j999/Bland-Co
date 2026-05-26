@@ -6,24 +6,67 @@
   <title>Inventory | Bland & Co Jewellers</title>
   <meta name="description" content="Browse our current inventory of luxury watches, precious metals and bespoke jewellery. Each piece authenticated in-house. Prices quoted live.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
-    .page-head { padding: 140px 0 var(--sp-8); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(28,113,82,0.20) 0%, transparent 60%); }
+    /* ---- page-specific · Modern Maison ---- */
+
+    /* PAGE HEAD — editorial split: type left, feature plate right (echoes index hero) */
+    .page-head { position: relative; overflow: hidden; padding-top: var(--nav-h); }
+    .page-head .ph-glow { position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 70% at 16% 50%, rgba(140,122,78,0.16) 0%, transparent 55%),
+                  radial-gradient(ellipse 55% 50% at 88% 24%, rgba(201,162,75,0.10) 0%, transparent 52%); }
+    .page-head .ph-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: repeating-linear-gradient(90deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px),
+                        repeating-linear-gradient(0deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px); }
+    .ph-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.12fr 0.88fr;
+      gap: clamp(var(--sp-6), 5vw, var(--sp-10)); align-items: end;
+      padding-top: var(--sp-10); padding-bottom: var(--sp-8); }
+    .ph-left { max-width: 600px; }
+
+    .ph-plate { position: relative; aspect-ratio: 4/3.2; min-height: 280px; border: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(201,162,75,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 80% at 80% 95%, rgba(34,29,18,0.7) 0%, transparent 55%),
+        linear-gradient(155deg, #2A2417 0%, #14120E 100%);
+      overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: var(--sp-4); }
+    .ph-plate::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='phn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23phn)'/%3E%3C/svg%3E");
+      opacity: 0.05; mix-blend-mode: overlay; }
+    .ph-plate .hp-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(140px, 24vw, 240px);
+      color: rgba(230,204,142,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+    .ph-plate .hp-top, .ph-plate .hp-bot { position: relative; z-index: 1; }
+    .ph-plate .hp-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .ph-plate .hp-tag { font-size: var(--fs-eyebrow); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+    .ph-plate .hp-est { font-family: var(--serif); font-style: italic; font-size: var(--fs-sm); color: var(--text-3); }
+    .ph-plate .hp-line { font-family: var(--serif); font-size: var(--fs-md); line-height: 1.25; color: var(--text); letter-spacing: -0.01em; }
+    .ph-plate .hp-sub { font-size: var(--fs-xs); color: var(--text-3); margin-top: 8px; letter-spacing: 0.02em; }
+
+    /* FILTERS — sticky tab strip; gold active state */
     .filters { padding: var(--sp-3) 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); position: sticky; top: 68px; z-index: 50; }
     .filter-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .filter-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--line); background: transparent; color: var(--text-3); cursor: pointer; transition: all 0.25s var(--ease); }
+    .filter-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--line); background: transparent; color: var(--text-3); cursor: pointer; transition: border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease); }
     .filter-tab:hover { border-color: var(--line-2); color: var(--text); }
-    .filter-tab.active { border-color: var(--green-hi); background: rgba(28,113,82,0.18); color: var(--text); }
+    .filter-tab.active { border-color: var(--gold); background: rgba(201,162,75,0.14); color: var(--gold-hi); }
+
+    /* GRID + cards */
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
     .pcard .plate, .pcard .img-wrap { aspect-ratio: 4/3; }
-    .btn-enquire { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 13px; background: transparent; color: var(--text); font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--line-2); cursor: pointer; text-decoration: none; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.3s var(--ease); }
-    .btn-enquire:hover { border-color: var(--green-hi); background: rgba(28,113,82,0.14); transform: translateY(-2px); }
-    .find-cta { margin-top: var(--sp-10); padding: var(--sp-6); background: var(--surface); border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-3); }
-    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+    .btn-enquire { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 13px; background: transparent; color: var(--text); font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--line-2); cursor: pointer; text-decoration: none; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease); }
+    .btn-enquire:hover { border-color: var(--gold); background: rgba(201,162,75,0.10); color: var(--gold-hi); transform: translateY(-2px); }
+
+    /* FIND CTA — bronze field with champagne glow */
+    .find-cta { margin-top: var(--sp-10); position: relative; overflow: hidden; padding: var(--sp-6); background: var(--green-dark); border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4); }
+    .find-cta .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,162,75,0.14) 0%, transparent 65%); }
+
+    @media (max-width: 900px) {
+      .ph-inner { grid-template-columns: 1fr; gap: var(--sp-6); align-items: start; }
+      .ph-plate { aspect-ratio: 16/9; min-height: 220px; order: 2; }
+      .ph-left { order: 1; max-width: none; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
     @media (max-width: 600px) { .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -63,12 +106,27 @@
 
 <!-- PAGE HEAD -->
 <section class="page-head border-b">
-  <div class="glow"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-grid"></div>
   <div class="noise"></div>
-  <div class="wrap" style="position:relative;z-index:1;">
-    <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">In the case</span></div>
-    <h1 class="display h-1" style="max-width:14ch;">What's in stock right now.</h1>
-    <p class="lede" style="max-width:52ch;margin-top:var(--sp-2);">Each piece is authenticated before it goes up here. Prices move week to week, so we quote live — message us on anything you'd like the figure for.</p>
+  <div class="wrap ph-inner">
+    <div class="ph-left">
+      <div class="fi eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">In the case</span></div>
+      <h1 class="display h-1 fi fi-1" style="max-width:13ch;">What's in stock<br><span class="display-i" style="color:var(--gold-hi);">right now.</span></h1>
+      <p class="lede fi fi-2" style="max-width:50ch;margin-top:var(--sp-3);">Each piece is authenticated before it goes up here. Prices move week to week, so we quote live — message us on anything you'd like the figure for.</p>
+    </div>
+
+    <div class="ph-plate fi fi-3">
+      <div class="hp-mono">B</div>
+      <div class="hp-top">
+        <span class="hp-tag">The Case</span>
+        <span class="hp-est">Updated by hand</span>
+      </div>
+      <div class="hp-bot">
+        <div class="hp-line">Authenticated<br>before it ever<br><span style="font-style:italic;color:var(--gold-hi);">reaches the shelf.</span></div>
+        <div class="hp-sub">Tested, weighed and priced live against the market.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -101,11 +159,13 @@
     </div>
 
     <div class="find-cta">
-      <div>
-        <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:8px;">Looking for something specific?</h3>
-        <p class="text-2" style="font-size:var(--fs-sm);max-width:480px;line-height:1.7;">Tell us the reference, dial, year range, and budget. The street is small — most things turn up within a week or two.</p>
+      <div class="glow"></div>
+      <div style="position:relative;z-index:1;max-width:520px;">
+        <div class="eyebrow-row" style="margin-bottom:14px;"><div class="divider"></div><span class="eyebrow">Sourcing</span></div>
+        <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Looking for something specific?</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);max-width:480px;line-height:1.75;">Tell us the reference, dial, year range, and budget. The street is small — most things turn up within a week or two.</p>
       </div>
-      <a href="contact.html" class="btn-primary">Send the brief <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a href="contact.html" class="btn-primary" style="position:relative;z-index:1;">Send the brief <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
   </div>
 </section>
@@ -129,7 +189,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   let allItems = [];
   let activeFilter = 'all';

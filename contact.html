@@ -6,13 +6,45 @@
   <title>Contact | Bland & Co Jewellers</title>
   <meta name="description" content="Get in touch with Bland & Co Jewellers. Visit us in Hatton Garden, London, call, email, or WhatsApp. We respond within the working day.">
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css?v=2">
   <style>
-    .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
-    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 25% 50%, rgba(28,113,82,0.24) 0%, transparent 60%); }
+    /* ---- page-specific · Modern Maison ---- */
+
+    /* PAGE HEAD — editorial split with feature plate */
+    .page-head { position: relative; overflow: hidden; padding-top: var(--nav-h); }
+    .page-head .ph-glow { position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 70% at 18% 50%, rgba(140,122,78,0.18) 0%, transparent 55%),
+                  radial-gradient(ellipse 45% 45% at 86% 28%, rgba(201,162,75,0.10) 0%, transparent 52%); }
+    .page-head .ph-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: repeating-linear-gradient(90deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px),
+                        repeating-linear-gradient(0deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px); }
+    .ph-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.12fr 0.88fr;
+      gap: clamp(var(--sp-6), 5vw, var(--sp-10)); align-items: end;
+      padding-top: var(--sp-10); padding-bottom: var(--sp-8); }
+    .ph-left { max-width: 600px; }
+
+    .ph-plate { position: relative; aspect-ratio: 4/3.2; min-height: 280px; border: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(201,162,75,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 80% at 80% 95%, rgba(34,29,18,0.7) 0%, transparent 55%),
+        linear-gradient(155deg, #2A2417 0%, #14120E 100%);
+      overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: var(--sp-4); }
+    .ph-plate::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='phn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23phn)'/%3E%3C/svg%3E");
+      opacity: 0.05; mix-blend-mode: overlay; }
+    .ph-plate .hp-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(140px, 24vw, 240px);
+      color: rgba(230,204,142,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+    .ph-plate .hp-top, .ph-plate .hp-bot { position: relative; z-index: 1; }
+    .ph-plate .hp-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .ph-plate .hp-tag { font-size: var(--fs-eyebrow); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); }
+    .ph-plate .hp-est { font-family: var(--serif); font-style: italic; font-size: var(--fs-sm); color: var(--text-3); }
+    .ph-plate .hp-line { font-family: var(--serif); font-size: var(--fs-md); line-height: 1.25; color: var(--text); letter-spacing: -0.01em; }
+    .ph-plate .hp-sub { font-size: var(--fs-xs); color: var(--text-3); margin-top: 8px; letter-spacing: 0.02em; }
+
+    /* FORM layout */
     .split { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-6); align-items: start; }
     .form-card { background: var(--card); border: 1px solid var(--line); padding: var(--sp-6); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
@@ -20,11 +52,17 @@
     .side-card { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-5); }
     .cselect-btn.invalid, .input.invalid { border-color: rgba(201,162,75,0.6); }
     .contact-method { display: flex; align-items: flex-start; gap: 14px; }
-    .contact-icon { width: 40px; height: 40px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-icon { width: 40px; height: 40px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); transition: border-color 0.3s var(--ease); }
+    .contact-method:hover .contact-icon { border-color: var(--gold); }
     .hours-row { display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); }
     .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: transparent; border: 1px solid rgba(37,211,102,0.4); color: #25D366; font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.3s var(--ease), transform 0.3s var(--ease); }
     .btn-whatsapp:hover { background: rgba(37,211,102,0.1); transform: translateY(-2px); }
-    @media (max-width: 900px) { .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .form-card { padding: var(--sp-4); } }
+    @media (max-width: 900px) {
+      .ph-inner { grid-template-columns: 1fr; gap: var(--sp-6); align-items: start; }
+      .ph-plate { aspect-ratio: 16/9; min-height: 220px; order: 2; }
+      .ph-left { order: 1; max-width: none; }
+      .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .form-card { padding: var(--sp-4); }
+    }
   </style>
 </head>
 <body>
@@ -51,12 +89,27 @@
 
 <!-- HEAD -->
 <section class="page-head border-b">
-  <div class="glow"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-grid"></div>
   <div class="noise"></div>
-  <div class="wrap" style="position:relative;z-index:1;">
-    <div class="fi eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Get in touch</span></div>
-    <h1 class="display h-1 fi fi-1" style="max-width:14ch;">Talk to a real person.</h1>
-    <p class="lede fi fi-2" style="max-width:54ch;margin-top:20px;">Phone, email, WhatsApp, or walk in. It's a small team in Hatton Garden — when you message us, you reach us, not a call centre.</p>
+  <div class="wrap ph-inner">
+    <div class="ph-left">
+      <div class="fi eyebrow-row" style="margin-bottom:18px;"><span class="kicker-num">01</span><div class="divider"></div><span class="eyebrow">Get in touch</span></div>
+      <h1 class="display h-1 fi fi-1" style="max-width:13ch;">Talk to a<br><span class="display-i" style="color:var(--gold-hi);">real person.</span></h1>
+      <p class="lede fi fi-2" style="max-width:52ch;margin-top:var(--sp-3);">Phone, email, WhatsApp, or walk in. It's a small team in Hatton Garden — when you message us, you reach us, not a call centre.</p>
+    </div>
+
+    <div class="ph-plate fi fi-3">
+      <div class="hp-mono">B</div>
+      <div class="hp-top">
+        <span class="hp-tag">The Bench</span>
+        <span class="hp-est">Hatton Garden, EC1</span>
+      </div>
+      <div class="hp-bot">
+        <div class="hp-line">When you<br>message us,<br><span style="font-style:italic;color:var(--gold-hi);">you message us.</span></div>
+        <div class="hp-sub">Read by the team, not a queue. Same-day reply on weekdays.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -115,18 +168,18 @@
       <!-- SIDEBAR -->
       <div class="stack fi">
         <div class="side-card">
-          <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:var(--sp-3);">Where to find us</h3>
+          <div class="eyebrow-row" style="margin-bottom:var(--sp-3);"><div class="divider"></div><span class="eyebrow">Where to find us</span></div>
           <div class="stack">
             <div class="contact-method">
-              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
               <div><div class="label" style="margin-bottom:6px;">Location</div><div style="font-size:var(--fs-sm);color:var(--text);line-height:1.6;">Hatton Garden<br>London, EC1N</div><div class="meta" style="margin-top:4px;">Walk in any time, or book a slot</div></div>
             </div>
             <div class="contact-method">
-              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div>
+              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div>
               <div><div class="label" style="margin-bottom:6px;">Phone</div><a href="tel:+447399426893" style="font-size:var(--fs-sm);color:var(--text);text-decoration:none;">07399 426893</a><div class="meta" style="margin-top:4px;">Direct to the bench. Mon–Fri 9–6, Sat 10–4.</div></div>
             </div>
             <div class="contact-method">
-              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
               <div><div class="label" style="margin-bottom:6px;">Email</div><a href="mailto:bland.jewellers@gmail.com" style="font-size:var(--fs-sm);color:var(--text);text-decoration:none;word-break:break-all;">bland.jewellers@gmail.com</a><div class="meta" style="margin-top:4px;">Read by us, not a queue.</div></div>
             </div>
           </div>
@@ -136,11 +189,11 @@
           <h3 class="display" style="font-size:var(--fs-md);margin-bottom:var(--sp-3);">Hours</h3>
           <div class="stack" style="gap:10px;">
             <div class="hours-row"><span class="text-3">Monday – Friday</span><span style="color:var(--text);font-weight:500;">9:00 – 18:00</span></div>
-            <div style="height:1px;background:var(--line);"></div>
+            <div class="rule"></div>
             <div class="hours-row"><span class="text-3">Saturday</span><span style="color:var(--text);font-weight:500;">10:00 – 16:00</span></div>
-            <div style="height:1px;background:var(--line);"></div>
+            <div class="rule"></div>
             <div class="hours-row"><span class="text-3">Sunday</span><span class="text-3">Closed</span></div>
-            <div style="margin-top:12px;padding:12px;background:rgba(12,69,53,0.2);border:1px solid rgba(28,113,82,0.25);"><p class="meta" style="line-height:1.6;">Out of hours? Ring us — we can usually open up for an appointment.</p></div>
+            <div style="margin-top:12px;padding:12px;background:rgba(201,162,75,0.08);border:1px solid rgba(201,162,75,0.25);"><p class="meta" style="line-height:1.6;">Out of hours? Ring us — we can usually open up for an appointment.</p></div>
           </div>
         </div>
 
@@ -151,7 +204,7 @@
               <svg width="22" height="22" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
             </div>
             <h3 class="display" style="font-size:var(--fs-md);margin-bottom:8px;">Or just WhatsApp.</h3>
-            <p style="font-size:var(--fs-xs);color:rgba(236,228,207,0.66);line-height:1.7;margin-bottom:var(--sp-3);">Photos go through faster than email. Same number as the phone line.</p>
+            <p style="font-size:var(--fs-xs);color:var(--text-2);line-height:1.7;margin-bottom:var(--sp-3);">Photos go through faster than email. Same number as the phone line.</p>
             <a href="https://wa.me/447399426893" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
               <svg width="16" height="16" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
               Message on WhatsApp
@@ -176,7 +229,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
   function markInvalid(field, bad) {
     if (field.type === 'hidden') { field.closest('.cselect').querySelector('.cselect-btn').classList.toggle('invalid', bad); }
