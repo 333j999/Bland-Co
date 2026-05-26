@@ -3,226 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bland & Co Jewellers | London's Premier Luxury Reseller</title>
-  <meta name="description" content="Buy, sell and valuate luxury watches, precious metals and bespoke jewellery. Based in Hatton Garden, London. Authenticity guaranteed.">
+  <title>Bland & Co Jewellers | Hatton Garden — Watches, Gold & Jewellery</title>
+  <meta name="description" content="A working jeweller in Hatton Garden, London. Buy, sell and value luxury watches, precious metals and bespoke jewellery. Authenticated in-house. Free valuations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/theme.css">
   <style>
-    :root {
-      --bg:         #060A08;
-      --surface:    #0D1511;
-      --card:       #111917;
-      --elevated:   #162019;
-      --green:      #0C4535;
-      --green-dark: #073D2A;
-      --green-mid:  #166649;
-      --green-hi:   #1E8560;
-      --cream:      #E8DFC8;
-      --cream-dim:  #B0A68F;
-      --gold:       #C4962E;
-      --border:     rgba(232,223,200,0.07);
-    }
+    /* ---- page-specific ---- */
+    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-video { width: 100%; height: 100%; object-fit: cover; }
+    .hero-veil { position: absolute; inset: 0; background: rgba(6,10,8,0.66); }
+    .hero-glow { position: absolute; inset: 0;
+      background: radial-gradient(ellipse 90% 80% at 15% 55%, rgba(28,113,82,0.20) 0%, transparent 55%),
+                  radial-gradient(ellipse 60% 50% at 82% 18%, rgba(7,61,42,0.16) 0%, transparent 50%); }
+    .hero-vignette { position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 110% 90% at 50% 50%, transparent 52%, rgba(0,0,0,0.6) 100%); }
+    .hero-grid { position: absolute; inset: 0; pointer-events: none;
+      background-image: repeating-linear-gradient(90deg, rgba(236,228,207,0.012) 0 1px, transparent 1px 104px),
+                        repeating-linear-gradient(0deg, rgba(236,228,207,0.012) 0 1px, transparent 1px 104px); }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { background: var(--bg); scroll-behavior: smooth; }
-    body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--cream);
-      -webkit-font-smoothing: antialiased;
-    }
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+    .trust-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px;
+      font-size: var(--fs-eyebrow); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+    .trust-strip .sep { width: 1px; height: 11px; background: var(--line-2); }
+    .hero-facts { display: flex; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-8);
+      padding-top: var(--sp-5); border-top: 1px solid var(--line); }
+    .fact-k { font-size: var(--fs-eyebrow); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+    .fact-v { font-size: var(--fs-base); color: var(--text); text-decoration: none; }
+    .vrule { width: 1px; background: var(--line); align-self: stretch; }
 
-    /* NAV */
-    #nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 72px; display: flex; align-items: center;
-      justify-content: space-between; padding: 0 48px;
-      transition: background 0.4s ease, border-color 0.4s ease;
-      border-bottom: 1px solid transparent;
-    }
-    .nav-blur { backdrop-filter: blur(24px) saturate(1.5); -webkit-backdrop-filter: blur(24px) saturate(1.5); }
-    .nav-link {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(232,223,200,0.58);
-      text-decoration: none; position: relative; padding-bottom: 3px;
-      transition: color 0.2s ease;
-    }
-    .nav-link::after {
-      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
-      background: var(--green-mid); transition: width 0.25s ease;
-    }
-    .nav-link:hover, .nav-link.active { color: var(--cream); }
-    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    /* trust accordion */
+    .tbar { background: var(--surface); border-top: 1px solid var(--line); overflow-x: auto; }
+    .tbar-inner { min-width: 680px; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--sp-6);
+      display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: center; }
+    .tbar-item { display: flex; align-items: center; gap: 8px; padding: 22px 12px; cursor: pointer; transition: opacity 0.25s var(--ease); white-space: nowrap; }
+    .tbar-item:hover { opacity: 0.75; }
+    .tbar-item.active .tbar-label { color: var(--gold); }
+    .tbar-item.active .tbar-chev { transform: rotate(180deg); }
+    .tbar-label { font-size: var(--fs-eyebrow); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); transition: color 0.25s var(--ease); }
+    .tbar-chev { transition: transform 0.3s var(--ease); opacity: 0.4; flex-shrink: 0; }
+    .tbar-panel { max-height: 0; overflow: hidden; opacity: 0; background: var(--card); border-bottom: 1px solid var(--line);
+      transition: max-height 0.2s var(--ease), opacity 0.15s var(--ease); }
+    .tbar-panel.open { max-height: 460px; opacity: 1; transition: max-height 0.45s var(--ease), opacity 0.35s var(--ease); }
+    .tbar-panel-inner { max-width: var(--maxw); margin: 0 auto; padding: var(--sp-4) var(--sp-6); }
+    .tbar-panel-inner p { font-size: var(--fs-sm); line-height: 1.8; color: var(--text-2); max-width: 620px; }
+    #map-frame { width: 100%; height: 280px; border: none; filter: invert(0.9) hue-rotate(150deg) brightness(0.82) saturate(0.7); display: block; }
 
-    /* BUTTONS */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 32px; background: var(--cream); color: var(--bg);
-      font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase; border: none;
-      cursor: pointer; text-decoration: none;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    }
-    .btn-primary:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 8px 32px rgba(232,223,200,0.15); }
-    .btn-primary:active { transform: none; }
-
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 32px; background: transparent; color: var(--cream);
-      font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      border: 1px solid rgba(232,223,200,0.25); cursor: pointer; text-decoration: none;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
-    }
-    .btn-outline:hover { border-color: var(--cream); background: rgba(232,223,200,0.05); transform: translateY(-1px); }
-    .btn-outline:active { transform: none; }
-
-    .btn-green {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 22px; background: var(--green); color: var(--cream);
-      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase; border: none;
-      cursor: pointer; text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-green:hover { background: var(--green-mid); transform: translateY(-1px); }
-    .btn-green:active { transform: none; }
-
-    /* TYPOGRAPHY */
-    .display { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; }
-    .display-i { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 300; letter-spacing: -0.01em; line-height: 1.08; }
-    .eyebrow { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-mid); }
-    .divider { width: 40px; height: 1px; background: var(--green-mid); flex-shrink: 0; }
-
-    /* slightly stronger body contrast */
-    .cream-dim-2 { color: #B8AE96; }
-    small, .small { font-size: 13px; color: #B8AE96; }
-
-    /* GLOBAL FILM GRAIN — fixed, very subtle, sits above content but is click-through */
-    body::after {
-      content: ""; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-      opacity: 0.055; mix-blend-mode: overlay;
-    }
-
-    /* CARDS */
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      transition: border-color 0.55s cubic-bezier(0.4,0,0.2,1),
-                  transform 0.55s cubic-bezier(0.4,0,0.2,1),
-                  box-shadow 0.55s cubic-bezier(0.4,0,0.2,1);
-    }
-    .card:hover {
-      border-color: rgba(232,223,200,0.18);
-      transform: translateY(-6px);
-      box-shadow: 0 32px 80px rgba(0,0,0,0.55),
-                  0 8px 24px rgba(0,0,0,0.3),
-                  0 0 0 1px rgba(12,69,53,0.35);
-    }
-
-    /* CATEGORY ASYMMETRY — break the three-clones look */
-    .cat-grid { align-items: start; }
+    /* categories */
+    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); align-items: start; }
+    .cat-plate { aspect-ratio: 16/11; }
     .cat-card:nth-child(2) { transform: translateY(28px); }
     .cat-card:nth-child(2):hover { transform: translateY(22px); }
-    .cat-card:nth-child(2) .cat-img { aspect-ratio: 4/3; }
-    .cat-card:nth-child(1) .cat-img { aspect-ratio: 16/11; }
-    .cat-card:nth-child(3) .cat-img { aspect-ratio: 5/4; }
-    .cat-card:nth-child(2) .cat-body { padding: 36px 32px 40px !important; }
+    .cat-card:nth-child(2) .cat-plate { aspect-ratio: 4/3; }
+    .cat-card:nth-child(3) .cat-plate { aspect-ratio: 5/4; }
+
+    /* process */
+    .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); position: relative; }
+    .proc-num { font-family: var(--serif); font-size: 80px; font-weight: 300; line-height: 1; color: rgba(28,113,82,0.22); margin-bottom: 8px; }
+    .proc-icon { width: 56px; height: 56px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-3); color: var(--green-hi); }
+
+    /* ledger */
+    .ledger-grid { display: grid; grid-template-columns: 1.15fr 0.85fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .ledger-cell { background: var(--surface); padding: var(--sp-4); min-height: 240px; display: flex; flex-direction: column; justify-content: space-between; }
+    .ledger-label { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-hi); margin-bottom: var(--sp-3); display: flex; align-items: center; gap: 10px; }
+    .ledger-label::before { content: ""; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    .ledger-item { font-family: var(--serif); font-size: var(--fs-md); line-height: 1.3; color: var(--text); letter-spacing: -0.01em; }
+    .ledger-meta { font-size: var(--fs-xs); color: var(--text-3); margin-top: 6px; }
+    .ledger-foot { font-size: var(--fs-eyebrow); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); margin-top: var(--sp-3); }
+
+    .test-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
+
+    .cta-band { position: relative; overflow: hidden; background: var(--green-dark); border-top: 1px solid var(--line); }
+    .cta-band .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(28,113,82,0.28) 0%, transparent 70%); }
+
     @media (max-width: 900px) {
-      .cat-card:nth-child(2),
-      .cat-card:nth-child(2):hover { transform: none; }
+      .cat-grid, .proc-grid, .test-grid { grid-template-columns: 1fr; }
+      .cat-card:nth-child(2), .cat-card:nth-child(2):hover { transform: none; }
+      .ledger-grid { grid-template-columns: 1fr; }
+      .ledger-cell { min-height: 0; }
+      .hero-facts { gap: var(--sp-4); }
+      .vrule { display: none; }
     }
-
-    /* NOISE */
-    .noise {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.025; mix-blend-mode: overlay;
-    }
-
-    /* FADE IN */
-    .fi { opacity: 0; transform: translateY(22px); transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1); }
-    .fi.v { opacity: 1; transform: none; }
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--green-hi); outline-offset: 3px; border-radius: 1px; }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-      .fi { opacity: 1 !important; transform: none !important; }
-      .scroll-indicator { animation: none !important; }
-    }
-
-    /* GOLD DOT */
-    .gold-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
-
-    /* TESTIMONIAL */
-    .tcard { background: var(--card); border: 1px solid var(--border); padding: 44px; position: relative; }
-    .tcard::before {
-      content: '\201C'; position: absolute; top: 14px; left: 32px;
-      font-family: 'Cormorant Garamond', serif; font-size: 100px; line-height: 1;
-      color: var(--green-mid); opacity: 0.3; pointer-events: none;
-    }
-
-    /* FOOTER */
-    .fl { font-size: 13px; color: var(--cream-dim); text-decoration: none; transition: color 0.2s; letter-spacing: 0.02em; }
-    .fl:hover { color: var(--cream); }
-
-    /* MOBILE MENU */
-    #mmenu {
-      display: none; position: fixed; inset: 0; background: var(--bg);
-      z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
-    }
-    #mmenu.open { display: flex; }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      #nav { padding: 0 24px; }
-      .dnav { display: none !important; }
-      .mbtn { display: flex !important; }
-      .cat-grid { grid-template-columns: 1fr !important; }
-      .proc-grid { grid-template-columns: 1fr !important; }
-      .test-grid { grid-template-columns: 1fr !important; }
-      .stat-row { gap: 32px !important; }
-    }
-    @media (min-width: 901px) { .mbtn { display: none !important; } }
-    @media (max-width: 640px) {
-      .footer-grid { grid-template-columns: 1fr 1fr !important; }
+    @media (max-width: 560px) {
       .hero-btns { flex-direction: column; align-items: stretch; }
-      .hero-btns .btn-primary, .hero-btns .btn-outline { justify-content: center; }
-    }
-
-    @keyframes scrollBounce {
-      0%, 100% { transform: translateY(0); opacity: 0.4; }
-      50% { transform: translateY(6px); opacity: 0.8; }
-    }
-    .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
-
-    /* category card image clip */
-    .cat-img-wrap { overflow: hidden; }
-    .cat-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; filter: brightness(0.78); transition: filter 0.5s ease, transform 0.5s ease; }
-    .cat-card:hover .cat-img { filter: brightness(0.92); transform: scale(1.04); }
-
-    .stars { color: var(--gold); font-size: 13px; letter-spacing: 2px; }
-
-    /* process connector */
-    .proc-line {
-      position: absolute; top: 40px; left: calc(100%/6 + 40px); right: calc(100%/6 + 40px);
-      height: 1px; background: linear-gradient(90deg, transparent, var(--green), transparent);
     }
   </style>
 </head>
 <body>
 
-<!-- ===== NAVIGATION ===== -->
-<nav id="nav" class="nav-blur">
-  <a href="index.html" style="flex-shrink:0;">
-    <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;">
-  </a>
+<div id="progress"></div>
 
-  <div class="dnav" style="display:flex;align-items:center;gap:36px;position:absolute;left:50%;transform:translateX(-50%);">
+<!-- ===== NAV ===== -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo" aria-label="Bland & Co — home">
+    <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers">
+    <span class="wordmark">Bland <span>&amp;</span> Co</span>
+  </a>
+  <div class="dnav">
     <a href="index.html" class="nav-link active">Home</a>
     <a href="inventory.html" class="nav-link">Inventory</a>
     <a href="sell.html" class="nav-link">Sell / Value</a>
@@ -231,675 +109,398 @@
     <a href="faq.html" class="nav-link">FAQ</a>
     <a href="contact.html" class="nav-link">Contact</a>
   </div>
-
-  <div style="display:flex;align-items:center;gap:12px;">
-    <a href="consultation.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
-    <button class="mbtn" id="mToggle" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu">
-      <svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/>
-      </svg>
+  <div class="nav-right">
+    <a href="consultation.html" class="btn-green">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" aria-label="Open menu">
+      <svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg>
     </button>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
+<!-- ===== MOBILE MENU ===== -->
 <div id="mmenu" role="dialog" aria-modal="true">
-  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu">
-    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>
-    </svg>
+  <button class="mclose" onclick="toggleMenu()" aria-label="Close menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
   </button>
-  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
-  <a href="index.html" class="nav-link active" style="font-size:14px;" onclick="toggleMenu()">Home</a>
-  <a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a>
-  <a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a>
-  <a href="about.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">About</a>
-  <a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a>
-  <a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a>
-  <a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <span class="wordmark serif" style="font-size:1.75rem;color:var(--text);">Bland <span style="font-style:italic;color:var(--gold-hi);">&amp;</span> Co</span>
+  <a href="index.html" class="nav-link active" onclick="toggleMenu()">Home</a>
+  <a href="inventory.html" class="nav-link" onclick="toggleMenu()">Inventory</a>
+  <a href="sell.html" class="nav-link" onclick="toggleMenu()">Sell / Value</a>
+  <a href="about.html" class="nav-link" onclick="toggleMenu()">About</a>
+  <a href="testimonials.html" class="nav-link" onclick="toggleMenu()">Testimonials</a>
+  <a href="faq.html" class="nav-link" onclick="toggleMenu()">FAQ</a>
+  <a href="contact.html" class="nav-link" onclick="toggleMenu()">Contact</a>
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
 <!-- ===== HERO ===== -->
-<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:var(--bg);">
-  <!-- Video background — src set dynamically from admin settings -->
-  <video id="hero-video" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:none;">
-    <source id="hero-video-src" src="" type="video/mp4">
-  </video>
-  <!-- Dark overlay over video -->
-  <div style="position:absolute;inset:0;background:rgba(6,10,8,0.68);z-index:0;"></div>
-  <!-- Gradient layers — softened ~40% to dial back foggy AI glow -->
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 80% at 15% 55%,rgba(12,69,53,0.22) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 80% 20%,rgba(7,61,42,0.13) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 65% 85%,rgba(22,102,73,0.07) 0%,transparent 50%);z-index:0;"></div>
-  <!-- Vignette for stronger dark contrast -->
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 90% at 50% 50%,transparent 55%,rgba(0,0,0,0.55) 100%);z-index:0;pointer-events:none;"></div>
-  <!-- Grid lines -->
-  <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(232,223,200,0.012) 0,rgba(232,223,200,0.012) 1px,transparent 1px,transparent 100px),repeating-linear-gradient(0deg,rgba(232,223,200,0.012) 0,rgba(232,223,200,0.012) 1px,transparent 1px,transparent 100px);pointer-events:none;z-index:0;"></div>
-  <!-- Hero-localised heavier grain — adds tactility on top of global film grain -->
-  <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0.045;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
+<section class="hero">
+  <div class="hero-bg">
+    <video id="hero-video" class="hero-video" autoplay muted loop playsinline style="display:none;">
+      <source id="hero-video-src" src="" type="video/mp4">
+    </video>
+    <div class="hero-veil"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-vignette"></div>
+  </div>
 
-  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:104px 48px 64px;width:100%;pointer-events:auto;">
-    <!-- Eyebrow -->
-    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:36px;">
+  <div class="wrap" style="position:relative;z-index:1;padding-top:120px;padding-bottom:var(--sp-8);">
+    <div class="fi eyebrow-row" style="margin-bottom:var(--sp-5);">
       <div class="divider"></div>
       <span class="eyebrow">Hatton Garden · London EC1</span>
     </div>
 
-    <!-- Headline — editorial line breaks, tighter line-height -->
-    <h1 class="display fi" style="font-size:clamp(48px,7.6vw,92px);line-height:0.98;color:var(--cream);max-width:920px;margin-bottom:36px;transition-delay:0.08s;">
+    <h1 class="display h-hero fi fi-1" style="max-width:14ch;margin-bottom:var(--sp-5);">
       Watches, gold,<br>
       and jewellery —<br>
-      <span class="display-i" style="font-size:0.96em;color:#D9CFB6;">bought, sold,</span><br>
+      <span class="display-i" style="font-size:0.95em;color:var(--gold-hi);">bought, sold,</span><br>
       and fairly valued.
     </h1>
 
-    <!-- Sub -->
-    <p class="fi" style="font-size:clamp(15px,1.7vw,17px);line-height:1.75;color:#B8AE96;max-width:520px;margin-bottom:36px;font-weight:300;transition-delay:0.22s;">
-      A working jeweller in Hatton Garden. Walk in, ring us, or send photos — we'll give you a straight answer.
+    <p class="lede fi fi-2" style="max-width:50ch;margin-bottom:var(--sp-5);">
+      A working jeweller in Hatton Garden. Walk in, ring us, or send photos — and you'll get a straight answer, the same day.
     </p>
 
-    <!-- Trust strip — small, editorial, no fake numbers -->
-    <div class="fi" style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-bottom:40px;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:#9E9583;transition-delay:0.26s;">
-      <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted by collectors across Hatton Garden</span>
-      <span style="width:1px;height:11px;background:rgba(232,223,200,0.15);"></span>
-      <span>Authenticated in-house</span>
-      <span style="width:1px;height:11px;background:rgba(232,223,200,0.15);"></span>
-      <span>Walk-ins welcome</span>
+    <div class="trust-strip fi fi-3" style="margin-bottom:var(--sp-5);">
+      <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted across Hatton Garden</span>
+      <span class="sep"></span><span>Authenticated in-house</span>
+      <span class="sep"></span><span>Walk-ins welcome</span>
     </div>
 
-    <!-- CTAs -->
-    <div class="fi hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;transition-delay:0.3s;">
-      <a href="inventory.html" class="btn-primary">
-        See What's In
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+    <div class="fi fi-4 hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;">
+      <a href="inventory.html" class="btn-primary">See what's in
+        <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
       </a>
-      <a href="sell.html" class="btn-outline">Free Valuation</a>
+      <a href="sell.html" class="btn-outline">Free valuation</a>
     </div>
 
-    <!-- Hours / location strip — replaces round-number stats -->
-    <div class="fi stat-row" style="display:flex;flex-wrap:wrap;gap:48px;margin-top:64px;padding-top:40px;border-top:1px solid rgba(232,223,200,0.07);transition-delay:0.38s;">
+    <div class="hero-facts fi fi-5">
       <div>
-        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:8px;">Showroom</div>
-        <div style="font-size:15px;color:var(--cream);">Hatton Garden, EC1</div>
+        <div class="fact-k">Showroom</div>
+        <div class="fact-v">Hatton Garden, EC1</div>
       </div>
-      <div style="width:1px;background:rgba(232,223,200,0.1);"></div>
+      <div class="vrule"></div>
       <div>
-        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:8px;">Hours</div>
-        <div style="font-size:15px;color:var(--cream);">Mon–Fri 9–6, Sat 10–4</div>
+        <div class="fact-k">Hours</div>
+        <div class="fact-v">Mon–Fri 9–6 · Sat 10–4</div>
       </div>
-      <div style="width:1px;background:rgba(232,223,200,0.1);"></div>
+      <div class="vrule"></div>
       <div>
-        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:8px;">Direct line</div>
-        <a href="tel:+447399426893" style="font-size:15px;color:var(--cream);text-decoration:none;">07399 426893</a>
+        <div class="fact-k">Direct line</div>
+        <a href="tel:+447399426893" class="fact-v">07399 426893</a>
       </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="scroll-indicator" style="position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0.35;">
-    <span style="font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--cream);">Scroll</span>
-    <svg width="14" height="20" fill="none" stroke="var(--cream)" stroke-width="1">
-      <rect x="1" y="1" width="12" height="18" rx="6"/>
-      <circle cx="7" cy="6" r="2" fill="var(--cream)" opacity="0.6"/>
-    </svg>
+  <div class="scroll-indicator" style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <span style="font-size:9.5px;letter-spacing:0.24em;text-transform:uppercase;color:var(--text);opacity:0.6;">Scroll</span>
+    <svg width="14" height="20" fill="none" stroke="var(--text)" stroke-width="1" opacity="0.5"><rect x="1" y="1" width="12" height="18" rx="6"/><circle cx="7" cy="6" r="2" fill="var(--text)"/></svg>
   </div>
 </section>
 
-<!-- ===== TRUST BAR ===== -->
-<style>
-  .tbar-item {
-    display: flex; align-items: center; gap: 8px; padding: 20px 12px;
-    cursor: pointer; transition: opacity 0.2s;
-    position: relative; white-space: nowrap;
-  }
-  .tbar-item:hover { opacity: 0.75; }
-  .tbar-item.active .tbar-label { color: var(--green-hi); }
-  .tbar-item.active .tbar-chevron { transform: rotate(180deg); }
-  .tbar-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); transition: color 0.2s; }
-  .tbar-chevron { transition: transform 0.25s ease; opacity: 0.4; flex-shrink: 0; }
-
-  .tbar-panel {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.18s ease, opacity 0.15s ease;
-    opacity: 0;
-    background: var(--elevated);
-    border-bottom: 1px solid var(--border);
-  }
-  .tbar-panel.open {
-    max-height: 420px; opacity: 1;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-  }
-  .tbar-panel-inner { max-width: 1200px; margin: 0 auto; padding: 32px 48px; }
-  .tbar-panel-inner p { font-size: 14px; line-height: 1.8; color: var(--cream-dim); max-width: 600px; }
-  .tbar-panel-inner a.tbar-cta {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--green-hi); text-decoration: none; transition: gap 0.2s;
-  }
-  .tbar-panel-inner a.tbar-cta:hover { gap: 12px; }
-
-  #map-frame { width: 100%; height: 280px; border: none; filter: invert(0.88) hue-rotate(140deg) brightness(0.85) saturate(0.7); display: block; }
-</style>
-
-<section style="background:var(--surface);border-top:1px solid var(--border);overflow-x:auto;">
-  <div style="min-width:700px;max-width:1200px;margin:0 auto;padding:0 48px;display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;">
-
+<!-- ===== TRUST ACCORDION ===== -->
+<section class="tbar">
+  <div class="tbar-inner">
     <div class="tbar-item" onclick="togglePanel('val')" id="tb-val">
-      <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 2"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 2"/></svg>
       <span class="tbar-label">How we value</span>
-      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
+      <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
-    <div style="width:1px;height:36px;background:var(--border);"></div>
-
+    <div style="width:1px;height:36px;background:var(--line);"></div>
     <div class="tbar-item" onclick="togglePanel('loc')" id="tb-loc">
-      <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
       <span class="tbar-label">Find the showroom</span>
-      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
+      <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
-    <div style="width:1px;height:36px;background:var(--border);"></div>
-
+    <div style="width:1px;height:36px;background:var(--line);"></div>
     <div class="tbar-item" onclick="togglePanel('resp')" id="tb-resp">
-      <svg width="15" height="15" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 4l6 5 6-5"/><rect x="2" y="4" width="12" height="9" rx="1"/></svg>
+      <svg width="15" height="15" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 4l6 5 6-5"/><rect x="2" y="4" width="12" height="9" rx="1"/></svg>
       <span class="tbar-label">When you'll hear back</span>
-      <svg class="tbar-chevron" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
+      <svg class="tbar-chev" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
-
   </div>
 </section>
 
-<!-- Panel: How we value -->
 <div class="tbar-panel" id="panel-val">
   <div class="tbar-panel-inner">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Valuations</span></div>
-    <p>We work off live auction prices, dealer sheets, and what the market is actually paying that week. We'll tell you what we'd buy it for, and roughly what it'll sell for — not one figure dressed up as both. Free and no obligation.</p>
-    <a href="sell.html" class="tbar-cta">Send a piece for valuation <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    <div class="eyebrow-row" style="margin-bottom:14px;"><div class="divider" style="width:32px;"></div><span class="eyebrow">Valuations</span></div>
+    <p>We work off live auction prices, dealer sheets, and what the market is actually paying that week. We'll tell you what we'd buy it for, and roughly what it'll sell for — not one figure dressed up as both. Free, with no obligation.</p>
+    <a href="sell.html" class="link-rev" style="margin-top:20px;">Send a piece for valuation <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
   </div>
 </div>
-
-<!-- Panel: Find the showroom -->
 <div class="tbar-panel" id="panel-loc">
   <div class="tbar-panel-inner" style="padding-bottom:0;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Hatton Garden, EC1</span></div>
-    <p style="margin-bottom:20px;">Walk-ins welcome during opening hours; appointments help us pull pieces and clear time. <strong style="color:var(--cream);">Mon–Fri 9am–6pm, Sat 10am–4pm.</strong></p>
+    <div class="eyebrow-row" style="margin-bottom:14px;"><div class="divider" style="width:32px;"></div><span class="eyebrow">Hatton Garden, EC1</span></div>
+    <p style="margin-bottom:20px;">Walk-ins welcome during opening hours; appointments help us pull pieces and clear time. <strong style="color:var(--text);">Mon–Fri 9am–6pm, Sat 10am–4pm.</strong></p>
   </div>
-  <iframe id="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.4!2d-0.1094!3d51.5194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b4f0a4e4c4b%3A0x0!2sHatton+Garden%2C+London+EC1N!5e0!3m2!1sen!2suk!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <iframe id="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.4!2d-0.1094!3d51.5194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b4f0a4e4c4b%3A0x0!2sHatton+Garden%2C+London+EC1N!5e0!3m2!1sen!2suk!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Hatton Garden showroom"></iframe>
 </div>
-
-<!-- Panel: When you'll hear back -->
 <div class="tbar-panel" id="panel-resp">
   <div class="tbar-panel-inner">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:32px;height:1px;background:var(--green-mid);"></div><span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-mid);">Response time</span></div>
+    <div class="eyebrow-row" style="margin-bottom:14px;"><div class="divider" style="width:32px;"></div><span class="eyebrow">Response time</span></div>
     <p>Email or WhatsApp before 5pm on a weekday and you'll hear back the same day. It's a small team — when you message us, you message us, not a queue.</p>
-    <a href="contact.html" class="tbar-cta">Get in touch <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    <a href="contact.html" class="link-rev" style="margin-top:20px;">Get in touch <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
   </div>
 </div>
 
-<script>
-  const PANELS  = { val:'panel-val', loc:'panel-loc', resp:'panel-resp' };
-  const BUTTONS = { val:'tb-val',    loc:'tb-loc',    resp:'tb-resp'    };
-  let activePanel = null;
-  let transitioning = false;
-
-  function togglePanel(key) {
-    if (transitioning) return;
-
-    if (activePanel === key) {
-      // Just close the open one
-      closePanel(activePanel);
-      activePanel = null;
-      return;
-    }
-
-    if (activePanel) {
-      // Close current first, then open next after transition finishes
-      transitioning = true;
-      const prev = activePanel;
-      activePanel = null;
-      closePanel(prev);
-      setTimeout(() => {
-        transitioning = false;
-        openPanel(key);
-      }, 190);
-    } else {
-      openPanel(key);
-    }
-  }
-
-  function openPanel(key) {
-    document.getElementById(PANELS[key]).classList.add('open');
-    document.getElementById(BUTTONS[key]).classList.add('active');
-    activePanel = key;
-    setTimeout(() => document.getElementById(PANELS[key]).scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-  }
-
-  function closePanel(key) {
-    document.getElementById(PANELS[key]).classList.remove('open');
-    document.getElementById(BUTTONS[key]).classList.remove('active');
-  }
-</script>
-
 <!-- ===== CATEGORIES ===== -->
-<section style="padding:112px 0;background:var(--bg);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="fi" style="margin-bottom:64px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-        <div class="divider"></div>
-        <span class="eyebrow">What we deal in</span>
-      </div>
-      <h2 class="display" style="font-size:clamp(38px,5vw,64px);color:var(--cream);max-width:520px;">
-        Three categories. No filler.
-      </h2>
+<section class="section">
+  <div class="wrap">
+    <div class="fi" style="margin-bottom:var(--sp-8);">
+      <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">What we deal in</span></div>
+      <h2 class="display h-2" style="max-width:11ch;">Three categories. No filler.</h2>
     </div>
 
-    <div class="cat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-
-      <!-- Watches -->
-      <div class="card cat-card" style="overflow:hidden;cursor:pointer;" onclick="location.href='inventory.html'">
-        <div class="cat-img-wrap">
-          <img src="https://placehold.co/600x400/0D1511/166649?text=Luxury+Watches" alt="Luxury Watches" class="cat-img">
-        </div>
-        <div class="cat-body" style="padding:32px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <div class="gold-dot"></div>
-            <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Buy &amp; sell</span>
-          </div>
-          <h3 class="display" style="font-size:30px;color:var(--cream);margin-bottom:10px;">Watches</h3>
-          <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);margin-bottom:24px;">Rolex, Patek, AP, Omega, JLC and the rest. Authenticated in-house before anything goes on the shelf.</p>
-          <a href="inventory.html" style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='6px'">
-            View Collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
-          </a>
+    <div class="cat-grid">
+      <div class="card cat-card fi" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
+        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Buy &amp; sell</span></div>
+        <div style="padding:var(--sp-4);">
+          <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Watches</h3>
+          <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Rolex, Patek, AP, Omega, JLC and the rest. Authenticated in-house before anything goes on the shelf.</p>
+          <span class="link-rev">View collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></span>
         </div>
       </div>
 
-      <!-- Precious Metals -->
-      <div class="card cat-card" style="overflow:hidden;cursor:pointer;" onclick="location.href='inventory.html'">
-        <div class="cat-img-wrap">
-          <img src="https://placehold.co/600x400/0D1511/C4962E?text=Precious+Metals" alt="Precious Metals" class="cat-img">
-        </div>
-        <div class="cat-body" style="padding:32px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <div class="gold-dot"></div>
-            <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Spot priced</span>
-          </div>
-          <h3 class="display" style="font-size:30px;color:var(--cream);margin-bottom:10px;">Gold &amp; silver</h3>
-          <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);margin-bottom:24px;">Bars, coins, bullion. We post the day's spot and our spread; what you see is what we pay or charge.</p>
-          <a href="inventory.html" style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='6px'">
-            View Collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
-          </a>
+      <div class="card cat-card fi fi-1" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
+        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Spot priced</span></div>
+        <div style="padding:var(--sp-5) var(--sp-4) var(--sp-5);">
+          <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Gold &amp; silver</h3>
+          <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Bars, coins, bullion. We post the day's spot and our spread; what you see is what we pay or charge.</p>
+          <span class="link-rev">View collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></span>
         </div>
       </div>
 
-      <!-- Custom Jewellery -->
-      <div class="card cat-card" style="overflow:hidden;cursor:pointer;" onclick="location.href='inventory.html'">
-        <div class="cat-img-wrap">
-          <img src="https://placehold.co/600x400/0D1511/9E9583?text=Custom+Jewellery" alt="Custom Jewellery" class="cat-img">
-        </div>
-        <div class="cat-body" style="padding:32px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <div class="gold-dot"></div>
-            <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);">Made to order</span>
-          </div>
-          <h3 class="display" style="font-size:30px;color:var(--cream);margin-bottom:10px;">Jewellery</h3>
-          <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);margin-bottom:24px;">Engagement rings, diamond pieces, gold chains. Pre-owned in stock, or made to order with a Hatton Garden bench.</p>
-          <a href="inventory.html" style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='6px'">
-            View Collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
-          </a>
+      <div class="card cat-card fi fi-2" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
+        <div class="plate cat-plate img-wrap"><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Made to order</span></div>
+        <div style="padding:var(--sp-4);">
+          <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Jewellery</h3>
+          <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Engagement rings, diamond pieces, gold chains. Pre-owned in stock, or made to order with a Hatton Garden bench.</p>
+          <span class="link-rev">View collection <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <!-- ===== PROCESS ===== -->
-<section style="padding:112px 0;background:var(--surface);border-top:1px solid var(--border);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="fi" style="text-align:center;margin-bottom:80px;">
-      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;">
-        <div class="divider"></div>
-        <span class="eyebrow">How it works</span>
-        <div class="divider"></div>
-      </div>
-      <h2 class="display" style="font-size:clamp(34px,4.5vw,56px);color:var(--cream);">
-        Three steps. No theatre.
-      </h2>
+<section class="section bg-surface border-t">
+  <div class="wrap">
+    <div class="fi center" style="margin-bottom:var(--sp-10);">
+      <div class="eyebrow-row" style="justify-content:center;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">How it works</span><div class="divider"></div></div>
+      <h2 class="display h-2">Three steps. No theatre.</h2>
     </div>
 
-    <div class="proc-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;position:relative;">
-      <div class="proc-line" style="display:none;"></div>
-
-      <div class="fi" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:1;color:rgba(22,102,73,0.2);margin-bottom:8px;">01</div>
-        <div style="width:52px;height:52px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
-        </div>
-        <h3 class="display" style="font-size:26px;color:var(--cream);margin-bottom:12px;">01 — Send the details</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">Photos, hallmarks, papers if you have them. Or tell us what you're looking for. Reply usually inside the working day.</p>
+    <div class="proc-grid">
+      <div class="fi center" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="proc-num">01</div>
+        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></div>
+        <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">Send the details</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Photos, hallmarks, papers if you have them. Or tell us what you're looking for. Reply usually inside the working day.</p>
       </div>
-
-      <div class="fi" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:1;color:rgba(22,102,73,0.2);margin-bottom:8px;">02</div>
-        <div style="width:52px;height:52px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <h3 class="display" style="font-size:26px;color:var(--cream);margin-bottom:12px;">02 — In person or by post</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">Come into the showroom or send the piece insured. We authenticate, weigh, test, and price it in front of you.</p>
+      <div class="fi fi-1 center" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="proc-num">02</div>
+        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">In person or by post</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Come into the showroom or send the piece insured. We authenticate, weigh, test, and price it in front of you.</p>
       </div>
-
-      <div class="fi" style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:1;color:rgba(22,102,73,0.2);margin-bottom:8px;">03</div>
-        <div style="width:52px;height:52px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-          <svg width="22" height="22" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        </div>
-        <h3 class="display" style="font-size:26px;color:var(--cream);margin-bottom:12px;">03 — Same-day payment</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">Selling: bank transfer the same day, or cash to the threshold. Buying: receipt, certificate, and the piece in your hand.</p>
+      <div class="fi fi-2 center" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="proc-num">03</div>
+        <div class="proc-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <h3 class="display" style="font-size:var(--fs-lg);margin-bottom:12px;">Same-day payment</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;max-width:34ch;">Selling: bank transfer the same day, or cash to the threshold. Buying: receipt, certificate, and the piece in your hand.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== TESTIMONIALS PREVIEW ===== -->
-<section style="padding:112px 0;background:var(--bg);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;flex-wrap:wrap;gap:24px;">
+<section class="section">
+  <div class="wrap">
+    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--sp-8);flex-wrap:wrap;gap:var(--sp-3);">
       <div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-          <div class="divider"></div>
-          <span class="eyebrow">What clients say</span>
-        </div>
-        <h2 class="display" style="font-size:clamp(34px,4.5vw,56px);color:var(--cream);">
-          A few words from regulars.
-        </h2>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">What clients say</span></div>
+        <h2 class="display h-2">A few words from regulars.</h2>
       </div>
       <a href="testimonials.html" class="btn-outline">Read more reviews</a>
     </div>
 
-    <div class="test-grid" id="tPreview" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
-
-      <!-- Placeholder stand-ins, written to read like real walk-in feedback rather than the AI fake-review pattern. Owner: swap for two genuine quotes (with permission to publish first name + neighbourhood). Keep them mundane and specific — that's what reads as real. -->
+    <div class="test-grid" id="tPreview">
       <div class="tcard fi">
-        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">I'd had two lowball offers on a gold chain before I walked in. They weighed it in front of me, showed me the day's spot on the screen, and beat both — without me having to haggle.</p>
+        <p class="display-i" style="font-size:var(--fs-md);line-height:1.6;color:var(--text);margin:28px 0 var(--sp-4);padding-top:18px;">I'd had two lowball offers on a gold chain before I walked in. They weighed it in front of me, showed me the day's spot on the screen, and beat both — without me having to haggle.</p>
         <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">AC</div>
-          <div>
-            <div style="font-size:14px;font-weight:500;color:var(--cream);">Ade, Clerkenwell</div>
-            <div style="font-size:12px;color:var(--cream-dim);">Sold an 18ct chain</div>
-          </div>
+          <div class="avatar">A</div>
+          <div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">Ade, Clerkenwell</div><div class="meta">Sold an 18ct chain</div></div>
         </div>
       </div>
-
-      <div class="tcard fi">
-        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">I came in for a valuation on my mum's ring and wasn't planning to sell. They were straight about what it would and wouldn't fetch, so I trusted them with it. Money was in my account by the evening.</p>
+      <div class="tcard fi fi-1">
+        <p class="display-i" style="font-size:var(--fs-md);line-height:1.6;color:var(--text);margin:28px 0 var(--sp-4);padding-top:18px;">I came in for a valuation on my mum's ring and wasn't planning to sell. They were straight about what it would and wouldn't fetch, so I trusted them with it. Money was in my account by the evening.</p>
         <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">DF</div>
-          <div>
-            <div style="font-size:14px;font-weight:500;color:var(--cream);">Dawn, Finsbury</div>
-            <div style="font-size:12px;color:var(--cream-dim);">Sold an inherited ring</div>
-          </div>
+          <div class="avatar">D</div>
+          <div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">Dawn, Finsbury</div><div class="meta">Sold an inherited ring</div></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ===== FROM THE BENCH — human / real business signals ===== -->
-<style>
-  .ledger-grid { display: grid; grid-template-columns: 1.15fr 0.85fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .ledger-cell { background: var(--surface); padding: 36px 32px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; }
-  .ledger-label { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-  .ledger-label::before { content: ""; width: 6px; height: 6px; background: var(--green-mid); border-radius: 50%; flex-shrink: 0; }
-  .ledger-item { font-family: 'Cormorant Garamond', serif; font-size: 22px; line-height: 1.3; color: var(--cream); letter-spacing: -0.01em; }
-  .ledger-meta { font-size: 12px; color: #B0A68F; margin-top: 6px; letter-spacing: 0.02em; font-family: 'DM Sans', sans-serif; }
-  .ledger-footnote { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8170; margin-top: 22px; }
-  .ledger-spot { font-family: 'Cormorant Garamond', serif; font-size: 38px; line-height: 1.1; color: var(--cream); letter-spacing: -0.01em; }
-  .ledger-spot small { font-size: 13px; color: #B0A68F; margin-left: 6px; font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em; }
-  .ledger-spot-delta-up   { color: #6FB994; }
-  .ledger-spot-delta-down { color: #C97A5C; }
-  @media (max-width: 900px) {
-    .ledger-grid { grid-template-columns: 1fr; }
-    .ledger-cell { min-height: 0; }
-  }
-</style>
-<section style="padding:96px 0;background:var(--bg);border-top:1px solid var(--border);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-
-    <!-- Asymmetric header — eyebrow + heading on the left, small note on the right -->
-    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:48px;">
+<!-- ===== FROM THE BENCH ===== -->
+<section class="section-sm bg-alt border-t">
+  <div class="wrap">
+    <div class="fi" style="display:flex;justify-content:space-between;align-items:flex-end;gap:var(--sp-4);flex-wrap:wrap;margin-bottom:var(--sp-6);">
       <div style="max-width:560px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-          <div class="divider"></div>
-          <span class="eyebrow">From the bench</span>
-        </div>
-        <h2 class="display" style="font-size:clamp(32px,4.2vw,52px);color:var(--cream);line-height:1.02;">
-          A few things from<br><span class="display-i" style="color:#D9CFB6;">the past week.</span>
-        </h2>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">From the bench</span></div>
+        <h2 class="display h-3" style="line-height:1.02;">A few things from<br><span class="display-i" style="color:var(--gold-hi);">the past week.</span></h2>
       </div>
-      <p style="font-size:13px;color:#B0A68F;max-width:280px;line-height:1.7;text-align:right;">
-        Updated by hand on Mondays. Stock moves quickly — call ahead if you want to see a specific piece.
-      </p>
+      <p class="meta" style="max-width:280px;line-height:1.7;text-align:right;">Updated by hand on Mondays. Stock moves quickly — call ahead if you want to see a specific piece.</p>
     </div>
 
-    <!-- TODO (owner): update the three columns below by hand each week. The whole point of this block is real activity — placeholder figures undermine it. -->
     <div class="ledger-grid fi">
-
-      <!-- Recently sourced -->
       <div class="ledger-cell">
         <div>
           <div class="ledger-label">Recently sourced</div>
           <div style="display:flex;flex-direction:column;gap:18px;">
-            <div>
-              <div class="ledger-item">Rolex Submariner 16610LV — Kermit</div>
-              <div class="ledger-meta">Full set · 2005 · in for service</div>
-            </div>
-            <div>
-              <div class="ledger-item">Patek Calatrava 5196G</div>
-              <div class="ledger-meta">Manual · papers · on the shelf Tuesday</div>
-            </div>
-            <div>
-              <div class="ledger-item">Cartier Tank Louis, 18k</div>
-              <div class="ledger-meta">Period strap · estate piece</div>
-            </div>
+            <div><div class="ledger-item">Rolex Submariner 16610LV — Kermit</div><div class="ledger-meta">Full set · 2005 · in for service</div></div>
+            <div><div class="ledger-item">Patek Calatrava 5196G</div><div class="ledger-meta">Manual · papers · on the shelf Tuesday</div></div>
+            <div><div class="ledger-item">Cartier Tank Louis, 18k</div><div class="ledger-meta">Period strap · estate piece</div></div>
           </div>
         </div>
-        <div class="ledger-footnote">Last three intakes</div>
+        <div class="ledger-foot">Last three intakes</div>
       </div>
 
-      <!-- Today's spot — quoted live, never a static number. A fixed price on a page that doesn't
-           update is a lie that goes stale by lunchtime, so this stays honest: we quote on the day. -->
       <div class="ledger-cell">
         <div>
           <div class="ledger-label">Today's spot</div>
           <div style="display:flex;flex-direction:column;gap:14px;">
-            <div class="ledger-spot" style="font-size:30px;line-height:1.15;">Quoted live against<br>the London fix.</div>
+            <div class="display" style="font-size:var(--fs-lg);line-height:1.15;">Quoted live against the London fix.</div>
             <div class="ledger-meta">Gold and silver move by the hour. We'll give you the day's figure — and our spread — when you call or walk in.</div>
           </div>
         </div>
-        <a href="contact.html" class="ledger-footnote" style="text-decoration:none;color:var(--green-mid);display:inline-flex;align-items:center;gap:8px;transition:gap 0.2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">Ask today's price <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        <a href="contact.html" class="link-rev">Ask today's price <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
       </div>
 
-      <!-- This week -->
       <div class="ledger-cell">
         <div>
           <div class="ledger-label">This week in the shop</div>
           <div style="display:flex;flex-direction:column;gap:18px;">
-            <div>
-              <div class="ledger-item">14 valuations completed</div>
-              <div class="ledger-meta">Walk-in, post, and WhatsApp combined</div>
-            </div>
-            <div>
-              <div class="ledger-item">3 engagement rings to the bench</div>
-              <div class="ledger-meta">Bespoke commissions, EC1 workshop</div>
-            </div>
-            <div>
-              <div class="ledger-item">1 vintage chronograph restored</div>
-              <div class="ledger-meta">Out of service, back in the case</div>
-            </div>
+            <div><div class="ledger-item">14 valuations completed</div><div class="ledger-meta">Walk-in, post, and WhatsApp combined</div></div>
+            <div><div class="ledger-item">3 engagement rings to the bench</div><div class="ledger-meta">Bespoke commissions, EC1 workshop</div></div>
+            <div><div class="ledger-item">1 vintage chronograph restored</div><div class="ledger-meta">Out of service, back in the case</div></div>
           </div>
         </div>
-        <div class="ledger-footnote">Week of 4 May</div>
+        <div class="ledger-foot">Week of 4 May</div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ===== CTA BANNER ===== -->
-<section style="padding:112px 0;background:var(--green-dark);position:relative;overflow:hidden;border-top:1px solid rgba(232,223,200,0.07);">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(22,102,73,0.28) 0%,transparent 70%);"></div>
+<!-- ===== CTA BAND ===== -->
+<section class="section cta-band">
+  <div class="glow"></div>
   <div class="noise"></div>
-  <div style="position:relative;z-index:1;max-width:760px;margin:0 auto;text-align:center;padding:0 48px;">
-    <h2 class="display fi" style="font-size:clamp(38px,5.5vw,72px);color:var(--cream);margin-bottom:20px;">
-      Bring it in, send a photo, or come and look.
-    </h2>
-    <p class="fi" style="font-size:16px;line-height:1.8;color:rgba(232,223,200,0.6);margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto;">
-      Free valuation, no pressure to sell. Walk in any weekday between 10 and 6, or book a slot if you'd rather have it to yourself.
+  <div class="wrap center" style="position:relative;z-index:1;max-width:760px;">
+    <h2 class="display fi" style="font-size:clamp(2.4rem,5.5vw,4.5rem);margin-bottom:20px;">Bring it in, send a photo, or come and look.</h2>
+    <p class="fi fi-1" style="font-size:var(--fs-base);line-height:1.8;color:rgba(236,228,207,0.66);margin:0 auto var(--sp-6);max-width:48ch;">
+      Free valuation, no pressure to sell. Walk in any weekday between 9 and 6, or book a slot if you'd rather have it to yourself.
     </p>
-    <div class="fi" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+    <div class="fi fi-2" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
       <a href="sell.html" class="btn-primary">Free valuation</a>
-      <a href="consultation.html" class="btn-outline" style="border-color:rgba(232,223,200,0.25);">Book a slot</a>
+      <a href="consultation.html" class="btn-outline">Book a slot</a>
     </div>
   </div>
 </section>
 
 <!-- ===== FOOTER ===== -->
-<footer style="background:#04070604;border-top:1px solid var(--border);padding:72px 48px 36px;">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="footer-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
-
+<footer class="site-footer">
+  <div class="wrap" style="padding:0;">
+    <div class="footer-grid">
       <div>
-        <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;">
-        <p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;margin-bottom:28px;">A working jeweller in Hatton Garden, London. Watches, gold, and jewellery — bought, sold, valued.</p>
+        <a href="index.html" class="nav-logo" style="margin-bottom:var(--sp-3);"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers"><span class="wordmark">Bland <span>&amp;</span> Co</span></a>
+        <p class="text-3" style="font-size:var(--fs-sm);line-height:1.8;max-width:260px;margin-bottom:var(--sp-3);">A working jeweller in Hatton Garden, London. Watches, gold, and jewellery — bought, sold, valued.</p>
         <div style="display:flex;gap:10px;">
-          <a href="#" style="width:34px;height:34px;border:1px solid rgba(232,223,200,0.1);display:flex;align-items:center;justify-content:center;color:var(--cream-dim);text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='var(--green-mid)';this.style.color='var(--cream)'" onmouseout="this.style.borderColor='rgba(232,223,200,0.1)';this.style.color='var(--cream-dim)'" aria-label="Instagram">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="9" height="9" rx="2.5"/><circle cx="6.5" cy="6.5" r="2"/><circle cx="9.2" cy="3.8" r="0.4" fill="currentColor"/></svg>
-          </a>
-          <a href="contact.html" style="width:34px;height:34px;border:1px solid rgba(232,223,200,0.1);display:flex;align-items:center;justify-content:center;color:var(--cream-dim);text-decoration:none;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='var(--green-mid)';this.style.color='var(--cream)'" onmouseout="this.style.borderColor='rgba(232,223,200,0.1)';this.style.color='var(--cream-dim)'" aria-label="WhatsApp">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><path d="M4.5 6c.3.6.8 1.2 1.5 1.5l.7-.7c.2-.2.4-.2.6 0l.9.9c.2.2.2.4 0 .6-.5.4-1.1.7-1.7.5C5 8.4 3.7 7 3.5 5.5c-.1-.6.2-1.2.6-1.6.2-.2.4-.2.6 0l.9.9c.2.2.2.4 0 .6L5 5.8z"/></svg>
-          </a>
+          <a href="https://instagram.com" class="social-btn" aria-label="Instagram"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="10" height="10" rx="2.5"/><circle cx="7" cy="7" r="2.2"/><circle cx="9.8" cy="4.2" r="0.5" fill="currentColor"/></svg></a>
+          <a href="contact.html" class="social-btn" aria-label="WhatsApp"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.4"/><path d="M4.8 6.2c.3.7.9 1.3 1.6 1.6l.8-.7c.2-.2.4-.2.6 0l1 1c.2.2.2.4 0 .6-.5.4-1.2.7-1.8.5C5.3 8.9 3.9 7.5 3.6 5.9c-.1-.6.2-1.3.6-1.7.2-.2.4-.2.6 0l1 1c.2.2.2.4 0 .6z"/></svg></a>
         </div>
       </div>
-
       <div>
-        <h4 style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4>
-        <div style="display:flex;flex-direction:column;gap:11px;">
-          <a href="index.html" class="fl">Home</a>
-          <a href="inventory.html" class="fl">Inventory</a>
-          <a href="sell.html" class="fl">Sell / Value</a>
-          <a href="about.html" class="fl">About Us</a>
-          <a href="testimonials.html" class="fl">Testimonials</a>
+        <h4 class="footer-h">Navigate</h4>
+        <div class="footer-col">
+          <a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a>
         </div>
       </div>
-
       <div>
-        <h4 style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4>
-        <div style="display:flex;flex-direction:column;gap:11px;">
-          <a href="inventory.html" class="fl">Buy Watches</a>
-          <a href="sell.html" class="fl">Sell Watches</a>
-          <a href="inventory.html" class="fl">Precious Metals</a>
-          <a href="inventory.html" class="fl">Custom Jewellery</a>
-          <a href="sell.html" class="fl">Free Valuation</a>
+        <h4 class="footer-h">Services</h4>
+        <div class="footer-col">
+          <a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="inventory.html" class="fl">Custom Jewellery</a><a href="sell.html" class="fl">Free Valuation</a>
         </div>
       </div>
-
       <div>
-        <h4 style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Contact</h4>
-        <div style="display:flex;flex-direction:column;gap:11px;">
-          <span class="fl" style="cursor:default;">Hatton Garden, London</span>
-          <a href="tel:+447399426893" class="fl">07399 426893</a>
-          <a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a>
-          <a href="contact.html" class="fl">Contact Us</a>
-          <a href="faq.html" class="fl">FAQ</a>
+        <h4 class="footer-h">Contact</h4>
+        <div class="footer-col">
+          <span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a>
         </div>
       </div>
-
     </div>
-
-    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
-      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2026 Bland &amp; Co Jewellers.</p>
-      <div style="display:flex;gap:24px;">
-        <a href="#" class="fl" style="font-size:12px;">Privacy Policy</a>
-        <a href="#" class="fl" style="font-size:12px;">Terms of Service</a>
-      </div>
+    <div class="footer-bottom">
+      <p class="meta">&copy; 2026 Bland &amp; Co Jewellers.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:var(--fs-xs);">Privacy Policy</a><a href="#" class="fl" style="font-size:var(--fs-xs);">Terms of Service</a></div>
     </div>
   </div>
 </footer>
 
+<script src="assets/site.js"></script>
 <script>
-  // Navbar scroll
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      nav.style.background = 'rgba(6,10,8,0.92)';
-      nav.style.borderColor = 'rgba(232,223,200,0.07)';
-    } else {
-      nav.style.background = 'transparent';
-      nav.style.borderColor = 'transparent';
-    }
-  }, { passive: true });
-
-  // Mobile menu
-  function toggleMenu() {
-    const m = document.getElementById('mmenu');
-    m.classList.toggle('open');
-    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
-  }
-
-  // Fade-in observer
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('v'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0.12 });
-
-  document.querySelectorAll('.fi').forEach((el, i) => {
-    observer.observe(el);
-  });
-
-  // Trigger initial hero elements
-  setTimeout(() => {
-    document.querySelectorAll('.fi').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) el.classList.add('v');
-    });
-  }, 80);
-
-  // Load hero video URL from admin settings
-  fetch('/api/site').then(r => r.ok ? r.json() : {}).then(s => {
-    if (s.heroVideoUrl) {
-      const vid = document.getElementById('hero-video');
-      document.getElementById('hero-video-src').src = s.heroVideoUrl;
-      vid.style.display = 'block';
-      vid.load();
-    }
-  }).catch(() => {});
-
-  // Testimonials come from the backend (admin → /api/testimonials). When visible entries
-  // exist they replace the curated fallback pair below; otherwise the fallback stays.
+  /* ---- trust accordion ---- */
   (function () {
-    function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-    function initials(name){return (String(name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase())||'·';}
-    function card(t){
-      const quote = escHtml(t.content || t.quote || '');
-      const name  = escHtml(t.name || '');
-      const sub   = escHtml(t.role || t.item || '');
-      return `<div class="tcard fi">
-        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">${quote}</p>
-        <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">${initials(t.name)}</div>
-          <div>
-            <div style="font-size:14px;font-weight:500;color:var(--cream);">${name}</div>
-            <div style="font-size:12px;color:var(--cream-dim);">${sub}</div>
-          </div>
-        </div>
-      </div>`;
+    var PANELS = { val: 'panel-val', loc: 'panel-loc', resp: 'panel-resp' };
+    var BTNS   = { val: 'tb-val', loc: 'tb-loc', resp: 'tb-resp' };
+    var active = null, busy = false;
+    function open(k) {
+      document.getElementById(PANELS[k]).classList.add('open');
+      document.getElementById(BTNS[k]).classList.add('active');
+      active = k;
+      setTimeout(function () { document.getElementById(PANELS[k]).scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
     }
-    fetch('/api/testimonials').then(r => r.ok ? r.json() : []).then(all => {
-      const visible = Array.isArray(all) ? all.filter(t => t && t.visible !== false && (t.content || t.quote)) : [];
+    function close(k) {
+      document.getElementById(PANELS[k]).classList.remove('open');
+      document.getElementById(BTNS[k]).classList.remove('active');
+    }
+    window.togglePanel = function (k) {
+      if (busy) return;
+      if (active === k) { close(active); active = null; return; }
+      if (active) { busy = true; var prev = active; active = null; close(prev); setTimeout(function () { busy = false; open(k); }, 200); }
+      else open(k);
+    };
+  })();
+
+  /* ---- hero video from admin settings ---- */
+  fetch('/api/site').then(function (r) { return r.ok ? r.json() : {}; }).then(function (s) {
+    if (s && s.heroVideoUrl) {
+      var vid = document.getElementById('hero-video');
+      document.getElementById('hero-video-src').src = s.heroVideoUrl;
+      vid.style.display = 'block'; vid.load();
+    }
+  }).catch(function () {});
+
+  /* ---- testimonials from backend (replace fallback pair when present) ---- */
+  (function () {
+    function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+    function initial(name){var p=String(name||'').trim().split(/\s+/)[0];return (p&&p[0]?p[0]:'·').toUpperCase();}
+    function card(t){
+      return '<div class="tcard fi">'
+        + '<p class="display-i" style="font-size:var(--fs-md);line-height:1.6;color:var(--text);margin:28px 0 var(--sp-4);padding-top:18px;">' + esc(t.content || t.quote || '') + '</p>'
+        + '<div style="display:flex;align-items:center;gap:16px;">'
+        + '<div class="avatar">' + initial(t.name) + '</div>'
+        + '<div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">' + esc(t.name || '') + '</div>'
+        + '<div class="meta">' + esc(t.role || t.item || '') + '</div></div></div></div>';
+    }
+    fetch('/api/testimonials').then(function (r) { return r.ok ? r.json() : []; }).then(function (all) {
+      var visible = Array.isArray(all) ? all.filter(function (t) { return t && t.visible !== false && (t.content || t.quote); }) : [];
       if (!visible.length) return;
-      const grid = document.getElementById('tPreview');
+      var grid = document.getElementById('tPreview');
       grid.innerHTML = visible.slice(0, 2).map(card).join('');
-      grid.querySelectorAll('.fi').forEach(el => { observer.observe(el); const rect = el.getBoundingClientRect(); if (rect.top < window.innerHeight) el.classList.add('v'); });
-    }).catch(() => {});
+      window.revealScan(grid);
+    }).catch(function () {});
   })();
 </script>
 </body>
