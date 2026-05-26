@@ -69,9 +69,10 @@ let adminCfg;
 try {
   adminCfg = JSON.parse(await readFile(CONFIG_PATH, 'utf8'));
 } catch {
-  // First run — generate secure defaults
+  // First run — generate secure defaults. No password is committed to the repo:
+  // use ADMIN_PASSWORD from the environment, or a random one printed below for local use.
   const salt = randomBytes(32).toString('hex');
-  const defaultPw = 'BlandAdmin2024!';
+  const defaultPw = process.env.ADMIN_PASSWORD || randomBytes(9).toString('base64url');
   adminCfg = {
     passwordHash:  pbkdf2Sync(defaultPw, salt, 100_000, 64, 'sha512').toString('hex'),
     passwordSalt:  salt,
@@ -261,10 +262,10 @@ const server = createServer(async (req, res) => {
     if (method !== 'GET' && method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
     const resourceType = (req.url.split('?')[1] || '').includes('kind=video') ? 'video' : 'image';
     if (resourceType === 'video' && !checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
-    const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME || 'dshvvjpsg';
+    const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME;
     const KEY    = process.env.CLOUDINARY_API_KEY;
     const SECRET = process.env.CLOUDINARY_API_SECRET;
-    const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET || 'bland_co_unsigned';
+    const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
     const folder = resourceType === 'video' ? 'bland-co/site' : 'bland-co/valuations';
     if (KEY && SECRET) {
       const timestamp = Math.round(Date.now() / 1000);

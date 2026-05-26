@@ -1,5 +1,5 @@
-const { checkSession } = require('./_lib/auth');
-const { kvGet, kvSet } = require('./_lib/kv');
+const { checkSession }          = require('./_lib/auth');
+const { kvGet, kvSet }          = require('./_lib/convex');
 const { cors, json, parseBody } = require('./_lib/helpers');
 
 module.exports = async (req, res) => {

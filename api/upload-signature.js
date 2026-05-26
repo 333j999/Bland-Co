@@ -14,13 +14,13 @@ const crypto = require('crypto');
 const { checkSession } = require('./_lib/auth');
 const { cors, json } = require('./_lib/helpers');
 
-const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME || 'dshvvjpsg';
+// All Cloudinary config comes from env vars — nothing is hard-coded here, since this is
+// a public repo. Prefer signed mode (KEY + SECRET); CLOUDINARY_UPLOAD_PRESET is an
+// optional unsigned fallback.
+const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME;
 const KEY    = process.env.CLOUDINARY_API_KEY;
 const SECRET = process.env.CLOUDINARY_API_SECRET;
-// Unsigned preset kept server-side as a working default so uploads don't break before
-// the signed-mode secret is configured. An unsigned preset is not a secret, but it now
-// lives on the backend rather than in client code. Prefer signed mode in production.
-const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET || 'bland_co_unsigned';
+const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); return res.status(204).end(); }
@@ -34,6 +34,10 @@ module.exports = async (req, res) => {
   // Video upload is part of admin settings — require a valid session.
   if (resourceType === 'video' && !checkSession(req)) {
     return json(res, 401, { error: 'Unauthorised' });
+  }
+
+  if (!CLOUD) {
+    return json(res, 500, { error: 'Uploads are not configured. Set CLOUDINARY_CLOUD_NAME.' });
   }
 
   // Scope uploads to predictable folders so they can't sprawl across the account.

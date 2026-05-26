@@ -1,16 +1,15 @@
 const { checkSession } = require('./_lib/auth');
-const { kvGet }        = require('./_lib/kv');
+const { listRecords }  = require('./_lib/convex');
 const { cors, json }   = require('./_lib/helpers');
 
 const RESOURCES = ['inventory', 'enquiries', 'valuations', 'testimonials', 'consultations'];
-const read = async r => (await kvGet(`data:${r}`)) ?? [];
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); return res.status(204).end(); }
   if (!checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
 
-  const [inv, enq, val, tes, con] = await Promise.all(RESOURCES.map(read));
+  const [inv, enq, val, tes, con] = await Promise.all(RESOURCES.map(listRecords));
   json(res, 200, {
     inventory:     { total: inv.length, available: inv.filter(i=>i.status==='available').length, reserved: inv.filter(i=>i.status==='reserved').length, sold: inv.filter(i=>i.status==='sold').length },
     enquiries:     { total: enq.length, new: enq.filter(e=>e.status==='new').length, contacted: enq.filter(e=>e.status==='contacted').length, closed: enq.filter(e=>e.status==='closed').length },

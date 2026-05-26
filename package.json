@@ -1,7 +1,17 @@
 {
   "name": "bland-co",
   "version": "1.0.0",
+  "private": true,
   "engines": {
     "node": "20.x"
+  },
+  "scripts": {
+    "dev": "node serve.mjs",
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy",
+    "migrate": "node scripts/migrate-to-convex.mjs"
+  },
+  "dependencies": {
+    "convex": "^1.21.0"
   }
 }
