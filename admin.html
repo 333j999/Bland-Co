@@ -676,7 +676,7 @@ function renderInventory() {
   if (!items.length) { grid.innerHTML = `<div class="empty"><p>No items match this filter.</p></div>`; return; }
   grid.innerHTML = `<div class="inv-grid">${items.map(item => `
     <div class="inv-card">
-      <img src="${esc(item.imageUrl)}" class="inv-img" alt="${esc(item.name)}" onerror="this.src='https://placehold.co/500x375/111917/166649?text=No+Image'">
+      <img src="${esc(item.imageUrl)}" class="inv-img" alt="${esc(item.name)}" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22500%22%20height=%22375%22%3E%3Crect%20width=%22500%22%20height=%22375%22%20fill=%22%230C1512%22/%3E%3Ctext%20x=%22250%22%20y=%22230%22%20font-family=%22Georgia,serif%22%20font-size=%22150%22%20fill=%22%23ECE4CF%22%20fill-opacity=%220.1%22%20text-anchor=%22middle%22%20font-style=%22italic%22%3EB%3C/text%3E%3C/svg%3E'">
       <div class="inv-body">
         <div class="inv-meta"><span class="inv-cat">${cap(item.category)}</span>${badge(item.status)}</div>
         <div class="inv-name">${esc(item.name)}</div>

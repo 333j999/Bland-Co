@@ -5,190 +5,188 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us | Bland & Co Jewellers</title>
   <meta name="description" content="London's trusted luxury reseller. Based in Hatton Garden since day one — discover our story, values, and expertise.">
+  <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
   <style>
-    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{background:var(--bg);scroll-behavior:smooth;}
-    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
-    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
-    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-bottom:1px solid var(--border);}
-    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
-    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
-    .nav-link:hover,.nav-link.active{color:var(--cream);}
-    .nav-link:hover::after,.nav-link.active::after{width:100%;}
-    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
-    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
-    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
-    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
-    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
-    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
-    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
-    .fi{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);}
-    a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #1E8560;outline-offset:3px;border-radius:1px;}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}.fi{opacity:1!important;transform:none!important;}}
-    .fi.v{opacity:1;transform:none;}
-    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
-    .fl:hover{color:var(--cream);}
-    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
-    #mmenu.open{display:flex;}
-    .value-card{background:var(--card);border:1px solid var(--border);padding:36px;transition:border-color .3s,transform .3s;}
-    .value-card:hover{border-color:rgba(232,223,200,.14);transform:translateY(-3px);}
-    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split{grid-template-columns:1fr!important;}.val-grid{grid-template-columns:1fr 1fr!important;}}
-    @media(min-width:901px){.mbtn{display:none!important;}}
-    @media(max-width:600px){.val-grid{grid-template-columns:1fr!important;}.fg{grid-template-columns:1fr 1fr!important;gap:28px!important;}}
-    @media(max-width:480px){.fg{grid-template-columns:1fr!important;}}
+    .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
+    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 25% 50%, rgba(28,113,82,0.26) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 85% 30%, rgba(7,61,42,0.18) 0%, transparent 50%); }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--sp-5), 6vw, var(--sp-10)); align-items: center; }
+    .split-media { position: relative; }
+    .split-media .plate-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(6,10,8,0.55) 100%); pointer-events: none; z-index: 2; }
+
+    .val-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
+    .value-card { padding: var(--sp-5); }
+    .value-num { font-family: var(--serif); font-size: var(--fs-3xl); font-weight: 300; line-height: 1; color: rgba(28,113,82,0.3); margin-bottom: var(--sp-3); }
+
+    .cta-strip { position: relative; overflow: hidden; background: var(--green-dark); border-top: 1px solid var(--line); }
+    .cta-strip .cta-inner { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: var(--sp-5); align-items: center; justify-content: space-between; }
+
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; gap: var(--sp-5); }
+      .split-media[data-order] { order: -1; }
+      .val-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .val-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<nav id="nav">
-  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
-  <div class="dnav" style="display:flex;align-items:center;gap:36px;position:absolute;left:50%;transform:translateX(-50%);">
-    <a href="index.html" class="nav-link">Home</a><a href="inventory.html" class="nav-link">Inventory</a><a href="sell.html" class="nav-link">Sell / Value</a><a href="about.html" class="nav-link active">About</a><a href="testimonials.html" class="nav-link">Testimonials</a><a href="faq.html" class="nav-link">FAQ</a><a href="contact.html" class="nav-link">Contact</a>
+<div id="progress"></div>
+
+<nav id="nav" class="scrolled">
+  <a href="index.html" class="nav-logo" aria-label="Bland & Co — home"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers"><span class="wordmark">Bland <span>&amp;</span> Co</span></a>
+  <div class="dnav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="inventory.html" class="nav-link">Inventory</a>
+    <a href="sell.html" class="nav-link">Sell / Value</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="testimonials.html" class="nav-link">Testimonials</a>
+    <a href="faq.html" class="nav-link">FAQ</a>
+    <a href="contact.html" class="nav-link">Contact</a>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <a href="consultation.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
-    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
+  <div class="nav-right">
+    <a href="consultation.html" class="btn-green">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
   </div>
 </nav>
 
 <div id="mmenu" role="dialog" aria-modal="true">
-  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
-  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
-  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a><a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a><a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a><a href="about.html" class="nav-link active" style="font-size:14px;" onclick="toggleMenu()">About</a><a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a><a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a><a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <button class="mclose" onclick="toggleMenu()" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <span class="wordmark serif" style="font-size:1.75rem;color:var(--text);">Bland <span style="font-style:italic;color:var(--gold-hi);">&amp;</span> Co</span>
+  <a href="index.html" class="nav-link" onclick="toggleMenu()">Home</a>
+  <a href="inventory.html" class="nav-link" onclick="toggleMenu()">Inventory</a>
+  <a href="sell.html" class="nav-link" onclick="toggleMenu()">Sell / Value</a>
+  <a href="about.html" class="nav-link active" onclick="toggleMenu()">About</a>
+  <a href="testimonials.html" class="nav-link" onclick="toggleMenu()">Testimonials</a>
+  <a href="faq.html" class="nav-link" onclick="toggleMenu()">FAQ</a>
+  <a href="contact.html" class="nav-link" onclick="toggleMenu()">Contact</a>
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- HERO -->
-<section style="padding:140px 48px 96px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(12,69,53,.22) 0%,transparent 60%);"></div>
+<!-- PAGE HEAD -->
+<section class="page-head border-b">
+  <div class="glow"></div>
   <div class="noise"></div>
-  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
-    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">About</span></div>
-    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:760px;">A small Hatton Garden jeweller, dealing the way the trade used to.</h1>
-    <p class="fi" style="font-size:17px;line-height:1.8;color:var(--cream-dim);max-width:540px;margin-top:20px;font-weight:300;">No call centres, no script, no markup dressed up as service. Just the people who'll be valuing your piece, on the other end of the phone.</p>
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div class="eyebrow-row fi" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">About</span></div>
+    <h1 class="display h-1 fi fi-1" style="max-width:18ch;">A small Hatton Garden jeweller, dealing the way the trade used to.</h1>
+    <p class="lede fi fi-2" style="max-width:540px;margin-top:var(--sp-2);">No call centres, no script, no markup dressed up as service. Just the people who'll be valuing your piece, on the other end of the phone.</p>
   </div>
 </section>
 
 <!-- BRAND STORY -->
-<section style="padding:96px 0;background:var(--bg);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+<section class="section">
+  <div class="wrap">
+    <div class="split">
       <div class="fi">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Who we are</span></div>
-        <h2 class="display" style="font-size:clamp(34px,4vw,52px);color:var(--cream);margin-bottom:28px;">A small team. One Hatton Garden showroom.</h2>
-        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">We deal in pre-owned watches, gold, and jewellery. Most of our work comes from people who've used us before, or been sent by someone who has.</p>
-        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">When you ring us, you speak to the person who'll value your piece — not a switchboard. When you visit, the door is round the back of a real bench, not a glass-fronted office. That's the trade we wanted to keep.</p>
-        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);">We'll tell you what something is worth even if it means you walk out and sell it elsewhere. That's what brings the next person back.</p>
+        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Who we are</span></div>
+        <h2 class="display h-2" style="margin-bottom:var(--sp-4);">A small team. One Hatton Garden showroom.</h2>
+        <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">We deal in pre-owned watches, gold, and jewellery. Most of our work comes from people who've used us before, or been sent by someone who has.</p>
+        <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">When you ring us, you speak to the person who'll value your piece — not a switchboard. When you visit, the door is round the back of a real bench, not a glass-fronted office. That's the trade we wanted to keep.</p>
+        <p class="text-2" style="line-height:1.85;">We'll tell you what something is worth even if it means you walk out and sell it elsewhere. That's what brings the next person back.</p>
       </div>
-      <div class="fi">
-        <div style="position:relative;">
-          <img src="https://placehold.co/560x680/111917/166649?text=Hatton+Garden" alt="Hatton Garden London" style="width:100%;height:480px;object-fit:cover;display:block;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(6,10,8,.6) 100%);"></div>
-          <!-- TODO: drop a real photo of the bench / showroom / shopfront in here. The stat overlay below was deliberately removed — round numbers ("15+ years", "500+ transactions") read as filler. Add real numbers only if they're specific and provable. -->
+      <div class="fi fi-1 split-media" data-order>
+        <div class="plate" style="aspect-ratio:4/5;">
+          <div class="monogram">B</div>
+          <span class="plate-tag"><span class="gold-dot"></span>Hatton Garden, EC1</span>
         </div>
+        <div class="plate-overlay"></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- HATTON GARDEN SECTION -->
-<section style="padding:96px 0;background:var(--surface);border-top:1px solid var(--border);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
-      <div class="fi" style="order:2;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">The street</span></div>
-        <h2 class="display" style="font-size:clamp(34px,4vw,52px);color:var(--cream);margin-bottom:28px;">Why Hatton Garden matters.</h2>
-        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:20px;">Most of London's jewellery trade still passes through these few streets. The benches are next to each other, the testing kit is shared, and reputation gets around quickly — which is the point.</p>
-        <p style="font-size:15px;line-height:1.85;color:var(--cream-dim);margin-bottom:32px;">If we quote you wrongly on a piece, the dealer ten doors down will tell you. So we don't.</p>
-        <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-mid);text-decoration:none;transition:gap .2s;" onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
-          Come and find us <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
-        </a>
+<section class="section bg-surface border-t">
+  <div class="wrap">
+    <div class="split">
+      <div class="fi fi-1 split-media" data-order style="order:2;">
+        <div class="plate" style="aspect-ratio:5/4;">
+          <div class="monogram">B</div>
+          <span class="plate-tag"><span class="gold-dot"></span>The street, EC1N</span>
+        </div>
       </div>
       <div class="fi" style="order:1;">
-        <img src="https://placehold.co/560x480/0D1511/C4962E?text=Hatton+Garden+EC1N" alt="Hatton Garden Location" style="width:100%;height:420px;object-fit:cover;display:block;">
+        <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">The street</span></div>
+        <h2 class="display h-2" style="margin-bottom:var(--sp-4);">Why Hatton Garden matters.</h2>
+        <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-3);">Most of London's jewellery trade still passes through these few streets. The benches are next to each other, the testing kit is shared, and reputation gets around quickly — which is the point.</p>
+        <p class="text-2" style="line-height:1.85;margin-bottom:var(--sp-4);">If we quote you wrongly on a piece, the dealer ten doors down will tell you. So we don't.</p>
+        <a href="contact.html" class="link-rev">Come and find us <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- VALUES GRID -->
-<section style="padding:96px 0;background:var(--bg);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="fi" style="margin-bottom:64px;max-width:680px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">How we work</span></div>
-      <h2 class="display" style="font-size:clamp(32px,4vw,48px);color:var(--cream);">Three things we won't budge on.</h2>
+<section class="section">
+  <div class="wrap">
+    <div class="fi" style="margin-bottom:var(--sp-8);max-width:680px;">
+      <div class="eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">How we work</span></div>
+      <h2 class="display h-2">Three things we won't budge on.</h2>
     </div>
 
-    <div class="val-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-
-      <div class="value-card fi">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;line-height:1;color:rgba(22,102,73,0.35);margin-bottom:20px;">01</div>
-        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">We tell you the buy price <em>and</em> the resale price.</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">If we're buying from you, you'll see what we'd offer and roughly what we'd ask for it on the shelf. Same numbers we use internally. No mystery.</p>
+    <div class="val-grid">
+      <div class="value-card card fi fi-1">
+        <div class="value-num">01</div>
+        <h3 class="display h-4" style="margin-bottom:12px;">We tell you the buy price <em>and</em> the resale price.</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;">If we're buying from you, you'll see what we'd offer and roughly what we'd ask for it on the shelf. Same numbers we use internally. No mystery.</p>
       </div>
 
-      <div class="value-card fi">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;line-height:1;color:rgba(22,102,73,0.35);margin-bottom:20px;">02</div>
-        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">We don't list anything we can't authenticate.</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">If a watch is missing papers and we can't verify the movement, it doesn't go in the case. If gold isn't acid-tested and weighed in front of you, we don't quote on it.</p>
+      <div class="value-card card fi fi-2">
+        <div class="value-num">02</div>
+        <h3 class="display h-4" style="margin-bottom:12px;">We don't list anything we can't authenticate.</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;">If a watch is missing papers and we can't verify the movement, it doesn't go in the case. If gold isn't acid-tested and weighed in front of you, we don't quote on it.</p>
       </div>
 
-      <div class="value-card fi">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;line-height:1;color:rgba(22,102,73,0.35);margin-bottom:20px;">03</div>
-        <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:12px;">When you ring, you speak to us.</h3>
-        <p style="font-size:14px;line-height:1.75;color:var(--cream-dim);">No call queue, no chatbot, no junior reading from a script. The number on the contact page is the number on the bench.</p>
+      <div class="value-card card fi fi-3">
+        <div class="value-num">03</div>
+        <h3 class="display h-4" style="margin-bottom:12px;">When you ring, you speak to us.</h3>
+        <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;">No call queue, no chatbot, no junior reading from a script. The number on the contact page is the number on the bench.</p>
       </div>
-
     </div>
   </div>
 </section>
 
 <!-- CTA STRIP -->
-<section style="padding:80px 48px;background:var(--green-dark);border-top:1px solid rgba(232,223,200,.07);position:relative;overflow:hidden;">
+<section class="section-sm cta-strip">
   <div class="noise"></div>
-  <div style="position:relative;z-index:1;max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;align-items:center;justify-content:space-between;">
+  <div class="wrap cta-inner">
     <div>
-      <h2 class="display fi" style="font-size:clamp(30px,3.5vw,44px);color:var(--cream);margin-bottom:12px;">Got a piece in mind?</h2>
-      <p class="fi" style="font-size:15px;color:rgba(232,223,200,.6);max-width:420px;line-height:1.7;">Send a photo, ring the bench, or pop by between 10 and 6.</p>
+      <h2 class="display h-3 fi" style="margin-bottom:12px;">Got a piece in mind?</h2>
+      <p class="fi fi-1" style="color:rgba(236,228,207,0.6);max-width:420px;line-height:1.7;">Send a photo, ring the bench, or pop by between 10 and 6.</p>
     </div>
-    <div class="fi" style="display:flex;flex-wrap:wrap;gap:12px;">
-      <a href="sell.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .15s;" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='var(--cream)';this.style.transform='none'">Free valuation</a>
-      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:transparent;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(232,223,200,.25);text-decoration:none;transition:border-color .2s,background .2s,transform .15s;" onmouseover="this.style.borderColor='var(--cream)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(232,223,200,.25)';this.style.transform='none'">Contact</a>
+    <div class="fi fi-2" style="display:flex;flex-wrap:wrap;gap:12px;">
+      <a href="sell.html" class="btn-primary">Free valuation <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a href="contact.html" class="btn-outline">Contact</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
-      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">A working jeweller in Hatton Garden, London.</p></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a></div></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Contact</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a></div></div>
+<footer class="site-footer">
+  <div class="wrap" style="padding:0;">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo" style="margin-bottom:var(--sp-3);"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers"><span class="wordmark">Bland <span>&amp;</span> Co</span></a>
+        <p class="text-3" style="font-size:var(--fs-sm);line-height:1.8;max-width:260px;">A working jeweller in Hatton Garden, London.</p>
+      </div>
+      <div><h4 class="footer-h">Navigate</h4><div class="footer-col"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 class="footer-h">Services</h4><div class="footer-col"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="inventory.html" class="fl">Custom Jewellery</a><a href="sell.html" class="fl">Free Valuation</a></div></div>
+      <div><h4 class="footer-h">Contact</h4><div class="footer-col"><span class="fl" style="cursor:default;">Hatton Garden, London</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="contact.html" class="fl">Contact Us</a><a href="faq.html" class="fl">FAQ</a></div></div>
     </div>
-    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
-      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2026 Bland &amp; Co Jewellers.</p>
-      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
+    <div class="footer-bottom">
+      <p class="meta">&copy; 2026 Bland &amp; Co Jewellers.</p>
+      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:var(--fs-xs);">Privacy Policy</a><a href="#" class="fl" style="font-size:var(--fs-xs);">Terms</a></div>
     </div>
   </div>
 </footer>
 
-<style>
-  @media(max-width:900px){.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}.split{order:unset!important;}[style*="order:1"]{order:unset!important;}[style*="order:2"]{order:unset!important;}}
-  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
-</style>
-
-<script>
-  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}}),{threshold:.08});
-  document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
-  setTimeout(()=>{document.querySelectorAll('.fi').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('v');});},80);
-</script>
+<script src="assets/site.js"></script>
 </body>
 </html>
