@@ -8,401 +8,247 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="assets/theme.css">
   <style>
-    /* ── Flatpickr brand theme ── */
-    .flatpickr-calendar{background:var(--card)!important;border:1px solid rgba(232,223,200,.12)!important;border-radius:0!important;box-shadow:0 24px 64px rgba(0,0,0,.5)!important;font-family:'DM Sans',sans-serif!important;color:var(--cream)!important;}
-    .flatpickr-months{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;padding:10px 0!important;}
-    .flatpickr-month{color:var(--cream)!important;fill:var(--cream)!important;}
-    .flatpickr-current-month{font-family:'Cormorant Garamond',serif!important;font-size:18px!important;font-weight:400!important;color:var(--cream)!important;letter-spacing:.02em!important;}
-    .flatpickr-current-month .numInputWrapper input{color:var(--cream)!important;}
-    .flatpickr-current-month select{color:var(--cream)!important;background:transparent!important;}
-    .flatpickr-prev-month,.flatpickr-next-month{color:var(--cream-dim)!important;fill:var(--cream-dim)!important;transition:color .2s!important;}
-    .flatpickr-prev-month:hover,.flatpickr-next-month:hover{color:var(--cream)!important;fill:var(--cream)!important;background:none!important;}
-    .flatpickr-prev-month svg,.flatpickr-next-month svg{fill:var(--cream-dim)!important;transition:fill .2s!important;}
-    .flatpickr-prev-month:hover svg,.flatpickr-next-month:hover svg{fill:var(--cream)!important;}
-    .flatpickr-weekdays{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;}
-    span.flatpickr-weekday{color:var(--cream-dim)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important;font-weight:500!important;background:transparent!important;}
-    .flatpickr-days{border:none!important;}
-    .dayContainer{border:none!important;}
-    .flatpickr-day{color:var(--cream)!important;border-radius:0!important;border:1px solid transparent!important;font-size:13px!important;transition:background .15s,border-color .15s,color .15s!important;}
-    .flatpickr-day:hover{background:rgba(22,102,73,.2)!important;border-color:var(--green-mid)!important;color:var(--cream)!important;}
-    .flatpickr-day.today{border-color:rgba(22,102,73,.4)!important;background:transparent!important;}
-    .flatpickr-day.today:hover{background:rgba(22,102,73,.2)!important;}
-    .flatpickr-day.selected,.flatpickr-day.selected:hover{background:var(--green-mid)!important;border-color:var(--green-mid)!important;color:var(--cream)!important;}
-    .flatpickr-day.flatpickr-disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:rgba(232,223,200,.2)!important;}
-    .flatpickr-day.flatpickr-disabled:hover{background:transparent!important;border-color:transparent!important;}
-    .numInputWrapper:hover{background:transparent!important;}
-    .numInputWrapper span{border:none!important;right:0!important;}
-    .numInputWrapper span svg{fill:var(--cream-dim)!important;}
-    .flatpickr-input{background:var(--elevated)!important;color:var(--cream)!important;}
-  </style>
-  <style>
-    :root{--bg:#060A08;--surface:#0D1511;--card:#111917;--elevated:#162019;--green:#0C4535;--green-dark:#073D2A;--green-mid:#166649;--green-hi:#1E8560;--cream:#E8DFC8;--cream-dim:#9E9583;--gold:#C4962E;--border:rgba(232,223,200,0.07);}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{background:var(--bg);scroll-behavior:smooth;}
-    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased;}
-    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px}
+    .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
+    .page-head .glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(28,113,82,0.22) 0%, transparent 60%); }
+    .split { display: grid; grid-template-columns: 1fr 360px; gap: var(--sp-6); align-items: start; }
+    .form-card { background: var(--card); border: 1px solid var(--line); padding: var(--sp-6); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+    .stack { display: flex; flex-direction: column; gap: var(--sp-3); }
+    .input.invalid, .time-btn.invalid { border-color: rgba(201,162,75,0.6); }
 
-    #nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);background:rgba(6,10,8,0.92);border-bottom:1px solid var(--border);}
-    .nav-link{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,223,200,.58);text-decoration:none;position:relative;padding-bottom:3px;transition:color .2s;}
-    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green-mid);transition:width .25s;}
-    .nav-link:hover,.nav-link.active{color:var(--cream);}
-    .nav-link:hover::after,.nav-link.active::after{width:100%;}
-    .btn-green{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
-    .btn-green:hover{background:var(--green-mid);transform:translateY(-1px);}
-    .display{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:-.02em;line-height:1.05;}
-    .display-i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;letter-spacing:-.01em;line-height:1.08;}
-    .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
-    .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
-    .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
-    .fi{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);}
-    a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #1E8560;outline-offset:3px;border-radius:1px;}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}.fi{opacity:1!important;transform:none!important;}}
-    .fi.v{opacity:1;transform:none;}
-    .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
-    .fl:hover{color:var(--cream);}
-    #mmenu{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
-    #mmenu.open{display:flex;}
+    /* purpose cards */
+    .purpose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .purpose-card { position: relative; }
+    .purpose-card input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .purpose-label { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 22px 12px; background: var(--card-2); border: 1px solid var(--line); text-align: center; cursor: pointer; transition: border-color 0.3s var(--ease), background 0.3s var(--ease); height: 140px; }
+    .purpose-card input:checked + .purpose-label { border-color: var(--green-hi); background: rgba(28,113,82,0.12); }
+    .purpose-card input:checked + .purpose-label svg { stroke: var(--text); }
+    .purpose-card input:focus-visible + .purpose-label { outline: 2px solid var(--green-hi); outline-offset: 3px; }
+    .purpose-label:hover { border-color: var(--line-2); }
+    .purpose-title { font-size: var(--fs-eyebrow); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); font-weight: 500; }
+    .purpose-sub { font-size: var(--fs-eyebrow); color: var(--text-3); line-height: 1.4; }
 
-    /* Form */
-    .form-group{display:flex;flex-direction:column;gap:7px;}
-    .form-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);font-weight:500;}
-    .form-input{background:var(--elevated);border:1px solid rgba(232,223,200,.1);color:var(--cream);padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,background .2s;width:100%;-webkit-appearance:none;}
-    .form-input::placeholder{color:var(--cream-dim);opacity:.45;}
-    .form-input:focus{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
-    textarea.form-input{resize:vertical;min-height:120px;line-height:1.6;}
-    select.form-input option{background:var(--elevated);color:var(--cream);}
+    /* time dropdown */
+    .time-wrap { position: relative; }
+    .time-btn { width: 100%; background: var(--card-2); border: 1px solid var(--line); color: #6E6857; padding: 15px 16px; font-family: var(--sans); font-size: var(--fs-base); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease); text-align: left; }
+    .time-btn.selected { color: var(--text); }
+    .time-btn.open { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,0.16); }
+    .time-btn svg { flex-shrink: 0; transition: transform 0.3s var(--ease); opacity: 0.6; }
+    .time-btn.open svg { transform: rotate(180deg); }
+    .time-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #141E18; border: 1px solid var(--line-2); z-index: 50; max-height: 260px; overflow-y: auto; display: none; box-shadow: var(--shadow-card); }
+    .time-list.open { display: block; }
+    .time-opt { padding: 11px 16px; font-size: var(--fs-sm); color: var(--text-2); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); }
+    .time-opt:hover { background: rgba(28,113,82,0.18); color: var(--text); }
+    .time-opt.active { background: var(--green-mid); color: var(--text); }
+    .time-opt.disabled { opacity: 0.25; cursor: default; pointer-events: none; }
 
-    /* Purpose cards */
-    .purpose-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-    .purpose-card{position:relative;cursor:pointer;}
-    .purpose-card input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
-    .purpose-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px 12px;background:var(--elevated);border:1px solid rgba(232,223,200,.1);text-align:center;cursor:pointer;transition:border-color .2s,background .2s;height:140px;}
-    .purpose-card input:checked + .purpose-label{border-color:var(--green-mid);background:rgba(22,102,73,.1);}
-    .purpose-card input:checked + .purpose-label .purpose-icon svg{stroke:var(--cream);}
-    .purpose-label:hover{border-color:rgba(232,223,200,.2);}
-    .purpose-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .purpose-icon svg{width:26px;height:26px;}
-    .purpose-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);font-weight:500;}
-    .purpose-sub{font-size:11px;color:var(--cream-dim);line-height:1.4;}
+    .info-block { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-4); }
+    .num-badge { width: 28px; height: 28px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: var(--fs-eyebrow); color: var(--green-hi); font-weight: 500; margin-top: 1px; }
+    .contact-method { display: flex; align-items: flex-start; gap: 14px; padding: 16px; background: var(--card); border: 1px solid var(--line); transition: border-color 0.3s var(--ease); }
+    .contact-method:hover { border-color: var(--line-2); }
+    .contact-icon { width: 40px; height: 40px; border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #25D366; font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.3s var(--ease), transform 0.3s var(--ease); }
+    .btn-whatsapp:hover { background: rgba(37,211,102,0.2); transform: translateY(-2px); }
 
-    /* Custom time dropdown */
-    .time-dropdown-wrap{position:relative;}
-    .time-btn{width:100%;background:var(--elevated);border:1px solid rgba(232,223,200,.1);color:var(--cream-dim);padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s,background .2s;-webkit-appearance:none;text-align:left;}
-    .time-btn.selected{color:var(--cream);}
-    .time-btn:focus,.time-btn.open{border-color:var(--green-mid);background:rgba(22,102,73,.06);}
-    .time-btn svg{flex-shrink:0;transition:transform .2s;color:var(--cream-dim);}
-    .time-btn.open svg{transform:rotate(180deg);}
-    .time-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid rgba(232,223,200,.12);z-index:50;max-height:260px;overflow-y:auto;display:none;box-shadow:0 16px 40px rgba(0,0,0,.5);}
-    .time-list.open{display:block;}
-    .time-list::-webkit-scrollbar{width:4px;}
-    .time-list::-webkit-scrollbar-track{background:var(--card);}
-    .time-list::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px;}
-    .time-opt{padding:11px 18px;font-size:13px;color:var(--cream-dim);cursor:pointer;transition:background .15s,color .15s;letter-spacing:.02em;}
-    .time-opt:hover{background:rgba(22,102,73,.2);color:var(--cream);}
-    .time-opt.active{background:var(--green-mid);color:var(--cream);}
-    .time-opt.disabled{opacity:.25;cursor:default;pointer-events:none;}
+    /* flatpickr brand theme */
+    .flatpickr-calendar { background: var(--card) !important; border: 1px solid var(--line-2) !important; border-radius: 0 !important; box-shadow: var(--shadow-card) !important; font-family: var(--sans) !important; color: var(--text) !important; }
+    .flatpickr-months { background: var(--surface) !important; border-bottom: 1px solid var(--line) !important; padding: 10px 0 !important; }
+    .flatpickr-month, .flatpickr-current-month .numInputWrapper input { color: var(--text) !important; fill: var(--text) !important; }
+    .flatpickr-current-month { font-family: var(--serif) !important; font-size: 18px !important; font-weight: 400 !important; color: var(--text) !important; }
+    .flatpickr-current-month select { color: var(--text) !important; background: transparent !important; }
+    .flatpickr-prev-month, .flatpickr-next-month { color: var(--text-3) !important; fill: var(--text-3) !important; }
+    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: var(--gold) !important; }
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--text-3) !important; transition: fill 0.2s !important; }
+    .flatpickr-weekdays { background: var(--surface) !important; border-bottom: 1px solid var(--line) !important; }
+    span.flatpickr-weekday { color: var(--text-3) !important; font-size: 10px !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; font-weight: 500 !important; background: transparent !important; }
+    .flatpickr-days, .dayContainer { border: none !important; }
+    .flatpickr-day { color: var(--text) !important; border-radius: 0 !important; border: 1px solid transparent !important; font-size: 13px !important; transition: background 0.15s, border-color 0.15s !important; }
+    .flatpickr-day:hover { background: rgba(28,113,82,0.2) !important; border-color: var(--green-hi) !important; }
+    .flatpickr-day.today { border-color: rgba(28,113,82,0.4) !important; background: transparent !important; }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--green-mid) !important; border-color: var(--green-mid) !important; color: var(--text) !important; }
+    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(236,228,207,0.2) !important; }
+    .numInputWrapper span { border: none !important; }
 
-    /* Step indicator */
-    .step-dot{width:8px;height:8px;border-radius:50%;background:var(--green);transition:background .3s;}
-    .step-dot.active{background:var(--green-mid);}
-
-    /* Info sidebar */
-    .info-block{background:var(--surface);border:1px solid var(--border);padding:32px;}
-    .contact-method{display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--card);border:1px solid var(--border);transition:border-color .2s;}
-    .contact-method:hover{border-color:rgba(232,223,200,.14);}
-    .contact-icon{width:40px;height:40px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .btn-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,border-color .2s,transform .15s;}
-    .btn-whatsapp:hover{background:rgba(37,211,102,.2);border-color:rgba(37,211,102,.5);transform:translateY(-1px);}
-
-    @media(max-width:900px){#nav{padding:0 24px;}.dnav{display:none!important;}.mbtn{display:flex!important;}.split{grid-template-columns:1fr!important;}.form-row{grid-template-columns:1fr!important;}.purpose-grid{grid-template-columns:repeat(2,1fr)!important;}}
-    @media(min-width:901px){.mbtn{display:none!important;}}
-    @media(max-width:480px){.purpose-grid{grid-template-columns:1fr 1fr!important;}.fg{grid-template-columns:1fr!important;}}
+    @media (max-width: 900px) { .split { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .purpose-grid { grid-template-columns: repeat(2, 1fr); } .form-card { padding: var(--sp-4); } }
+    @media (max-width: 480px) { .purpose-grid { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
 <body>
 
-<nav id="nav">
-  <a href="index.html" style="flex-shrink:0;"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:42px;width:42px;object-fit:cover;display:block;"></a>
-  <div class="dnav" style="display:flex;align-items:center;gap:36px;position:absolute;left:50%;transform:translateX(-50%);">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="inventory.html" class="nav-link">Inventory</a>
-    <a href="sell.html" class="nav-link">Sell / Value</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="testimonials.html" class="nav-link">Testimonials</a>
-    <a href="faq.html" class="nav-link">FAQ</a>
-    <a href="contact.html" class="nav-link">Contact</a>
+<div id="progress"></div>
+
+<nav id="nav" class="scrolled">
+  <a href="index.html" class="nav-logo" aria-label="Bland & Co — home"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers"><span class="wordmark">Bland <span>&amp;</span> Co</span></a>
+  <div class="dnav">
+    <a href="index.html" class="nav-link">Home</a><a href="inventory.html" class="nav-link">Inventory</a><a href="sell.html" class="nav-link">Sell / Value</a><a href="about.html" class="nav-link">About</a><a href="testimonials.html" class="nav-link">Testimonials</a><a href="faq.html" class="nav-link">FAQ</a><a href="contact.html" class="nav-link">Contact</a>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <a href="consultation.html" class="btn-green" style="white-space:nowrap;">Book Consultation</a>
-    <button class="mbtn" onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--cream);display:flex;align-items:center;" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
+  <div class="nav-right">
+    <a href="consultation.html" class="btn-green">Book Consultation</a>
+    <button class="mbtn" onclick="toggleMenu()" aria-label="Open menu"><svg width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="2" x2="22" y2="2"/><line x1="0" y1="8" x2="22" y2="8"/><line x1="0" y1="14" x2="22" y2="14"/></svg></button>
   </div>
 </nav>
 
 <div id="mmenu" role="dialog" aria-modal="true">
-  <button onclick="toggleMenu()" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;color:var(--cream);" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
-  <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:52px;width:52px;object-fit:cover;">
-  <a href="index.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Home</a>
-  <a href="inventory.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Inventory</a>
-  <a href="sell.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Sell / Value</a>
-  <a href="about.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">About</a>
-  <a href="testimonials.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Testimonials</a>
-  <a href="faq.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">FAQ</a>
-  <a href="contact.html" class="nav-link" style="font-size:14px;" onclick="toggleMenu()">Contact</a>
+  <button class="mclose" onclick="toggleMenu()" aria-label="Close menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+  <span class="wordmark serif" style="font-size:1.75rem;color:var(--text);">Bland <span style="font-style:italic;color:var(--gold-hi);">&amp;</span> Co</span>
+  <a href="index.html" class="nav-link" onclick="toggleMenu()">Home</a><a href="inventory.html" class="nav-link" onclick="toggleMenu()">Inventory</a><a href="sell.html" class="nav-link" onclick="toggleMenu()">Sell / Value</a><a href="about.html" class="nav-link" onclick="toggleMenu()">About</a><a href="testimonials.html" class="nav-link" onclick="toggleMenu()">Testimonials</a><a href="faq.html" class="nav-link" onclick="toggleMenu()">FAQ</a><a href="contact.html" class="nav-link" onclick="toggleMenu()">Contact</a>
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- HERO -->
-<section style="padding:140px 48px 80px;background:var(--bg);position:relative;overflow:hidden;border-bottom:1px solid var(--border);">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(12,69,53,.22) 0%,transparent 60%);"></div>
+<!-- HEAD -->
+<section class="page-head border-b">
+  <div class="glow"></div>
   <div class="noise"></div>
-  <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
-    <div class="fi" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Book a slot</span></div>
-    <h1 class="display fi" style="font-size:clamp(44px,6.5vw,84px);color:var(--cream);max-width:760px;">Pick a time. We'll keep the bench clear for you.</h1>
-    <p class="fi" style="font-size:16px;line-height:1.8;color:var(--cream-dim);max-width:520px;margin-top:18px;font-weight:300;">Walk-ins are fine, but booking means we've pulled the pieces, cleared the workspace, and won't be on the phone when you arrive.</p>
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div class="fi eyebrow-row" style="margin-bottom:18px;"><div class="divider"></div><span class="eyebrow">Book a slot</span></div>
+    <h1 class="display h-1 fi fi-1" style="max-width:16ch;">Pick a time. We'll keep the bench clear for you.</h1>
+    <p class="lede fi fi-2" style="max-width:52ch;margin-top:18px;">Walk-ins are fine, but booking means we've pulled the pieces, cleared the workspace, and won't be on the phone when you arrive.</p>
   </div>
 </section>
 
 <!-- MAIN -->
-<section style="padding:80px 0 112px;background:var(--bg);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
-    <div class="split" style="display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start;">
-
-      <!-- BOOKING FORM -->
+<section class="section-sm">
+  <div class="wrap">
+    <div class="split">
       <div class="fi">
-        <div style="background:var(--card);border:1px solid var(--border);padding:52px;">
-          <h2 class="display" style="font-size:36px;color:var(--cream);margin-bottom:8px;">Tell us when works.</h2>
-          <p style="font-size:14px;color:var(--cream-dim);margin-bottom:44px;line-height:1.7;">We'll come back to confirm or suggest the next slot, usually inside the working day.</p>
+        <div class="form-card">
+          <h2 class="display h-3" style="margin-bottom:8px;">Tell us when works.</h2>
+          <p class="text-2" style="font-size:var(--fs-sm);margin-bottom:var(--sp-5);line-height:1.7;">We'll come back to confirm or suggest the next slot, usually inside the working day.</p>
 
           <form id="consultationForm" onsubmit="handleSubmit(event)" novalidate>
-            <div style="display:flex;flex-direction:column;gap:24px;">
+            <div class="stack" style="gap:var(--sp-4);">
 
-              <!-- Purpose -->
-              <div class="form-group">
-                <label class="form-label">Purpose of Visit *</label>
+              <div class="field">
+                <label class="label">Purpose of visit <span class="req">*</span></label>
                 <div class="purpose-grid" id="purposeGrid">
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-buying" value="buying" checked>
-                    <label class="purpose-label" for="p-buying">
-                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><polyline points="12 9.5 12 12 13.5 13.5"/><path d="M15 4.5H9M15 19.5H9"/></svg></span>
-                      <span class="purpose-title">Buying</span>
-                      <span class="purpose-sub">Browse & acquire watches or jewellery</span>
-                    </label>
+                    <label class="purpose-label" for="p-buying"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><polyline points="12 9.5 12 12 13.5 13.5"/><path d="M15 4.5H9M15 19.5H9"/></svg><span class="purpose-title">Buying</span><span class="purpose-sub">Browse &amp; acquire watches or jewellery</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-selling" value="selling">
-                    <label class="purpose-label" for="p-selling">
-                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
-                      <span class="purpose-title">Selling</span>
-                      <span class="purpose-sub">Get a fair offer for your pieces</span>
-                    </label>
+                    <label class="purpose-label" for="p-selling"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span class="purpose-title">Selling</span><span class="purpose-sub">Get a fair offer for your pieces</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-valuation" value="valuation">
-                    <label class="purpose-label" for="p-valuation">
-                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg></span>
-                      <span class="purpose-title">Valuation</span>
-                      <span class="purpose-sub">Professional assessment & report</span>
-                    </label>
+                    <label class="purpose-label" for="p-valuation"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><path d="M16 8h-5a2 2 0 000 4h4a2 2 0 010 4H8"/></svg><span class="purpose-title">Valuation</span><span class="purpose-sub">Professional assessment &amp; report</span></label>
                   </div>
                   <div class="purpose-card">
                     <input type="radio" name="purpose" id="p-general" value="general">
-                    <label class="purpose-label" for="p-general">
-                      <span class="purpose-icon"><svg width="26" height="26" fill="none" stroke="var(--green-mid)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
-                      <span class="purpose-title">General</span>
-                      <span class="purpose-sub">Chat with a specialist about options</span>
-                    </label>
+                    <label class="purpose-label" for="p-general"><svg width="26" height="26" fill="none" stroke="var(--green-hi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="purpose-title">General</span><span class="purpose-sub">Chat with a specialist about options</span></label>
                   </div>
                 </div>
               </div>
 
-              <!-- Name & Phone -->
-              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                <div class="form-group">
-                  <label class="form-label" for="name">Full Name *</label>
-                  <input type="text" id="name" name="name" class="form-input" placeholder="James Harrison" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="phone">Phone Number</label>
-                  <input type="tel" id="phone" name="phone" class="form-input" placeholder="+44 7700 900000">
-                </div>
+              <div class="form-row">
+                <div class="field"><label class="label" for="name">Full name <span class="req">*</span></label><input type="text" id="name" name="name" class="input" placeholder="James Harrison" required></div>
+                <div class="field"><label class="label" for="phone">Phone number</label><input type="tel" id="phone" name="phone" class="input" placeholder="+44 7700 900000"></div>
               </div>
 
-              <!-- Email -->
-              <div class="form-group">
-                <label class="form-label" for="email">Email Address *</label>
-                <input type="email" id="email" name="email" class="form-input" placeholder="james@example.com" required>
-              </div>
+              <div class="field"><label class="label" for="email">Email address <span class="req">*</span></label><input type="email" id="email" name="email" class="input" placeholder="james@example.com" required></div>
 
-              <!-- Date & Time -->
-              <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                <div class="form-group">
-                  <label class="form-label" for="preferredDate">Preferred Date *</label>
-                  <div id="datepicker-wrap" style="position:relative;">
-                    <input type="text" id="preferredDate" name="preferredDate" class="form-input" placeholder="Select a date" readonly required style="cursor:pointer;">
-                  </div>
+              <div class="form-row">
+                <div class="field">
+                  <label class="label" for="preferredDate">Preferred date <span class="req">*</span></label>
+                  <input type="text" id="preferredDate" name="preferredDate" class="input" placeholder="Select a date" readonly required style="cursor:pointer;">
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Preferred Time *</label>
+                <div class="field">
+                  <label class="label">Preferred time <span class="req">*</span></label>
                   <input type="hidden" id="preferredTime" name="preferredTime" required>
-                  <div class="time-dropdown-wrap">
-                    <button type="button" class="time-btn" id="timeBtnDisplay" onclick="toggleTimeDropdown()">
-                      <span id="timeBtnLabel">Select a time</span>
-                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                    </button>
+                  <div class="time-wrap">
+                    <button type="button" class="time-btn" id="timeBtnDisplay" onclick="toggleTimeDropdown()"><span id="timeBtnLabel">Select a time</span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
                     <div class="time-list" id="timeList"></div>
                   </div>
                 </div>
               </div>
 
-              <!-- Note about Saturday -->
-              <div id="satNote" style="display:none;padding:12px 16px;background:rgba(196,150,46,.06);border:1px solid rgba(196,150,46,.2);">
-                <p style="font-size:12px;color:var(--gold);line-height:1.6;">Saturday appointments run 10:00 AM – 4:00 PM. Times outside this window will be adjusted.</p>
+              <div id="satNote" style="display:none;padding:12px 16px;background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.2);">
+                <p style="font-size:var(--fs-xs);color:var(--gold);line-height:1.6;">Saturday appointments run 10:00 AM – 4:00 PM. Times outside this window will be adjusted.</p>
               </div>
 
-              <!-- Message -->
-              <div class="form-group">
-                <label class="form-label" for="message">Tell Us More <span style="opacity:.5;font-size:9px;letter-spacing:.1em;">(optional)</span></label>
-                <textarea id="message" name="message" class="form-input" placeholder="Describe what you're bringing, what you're looking for, or any questions you have…"></textarea>
+              <div class="field"><label class="label" for="message">Tell us more <span style="opacity:0.5;text-transform:none;letter-spacing:0;">(optional)</span></label><textarea id="message" name="message" class="input" placeholder="Describe what you're bringing, what you're looking for, or any questions you have…"></textarea></div>
+
+              <div class="check-row" style="padding:16px;background:var(--surface);border:1px solid var(--line);">
+                <input type="checkbox" id="privacy" name="privacy">
+                <label for="privacy">I agree to the <a href="#">Privacy Policy</a> and consent to Bland &amp; Co Jewellers contacting me to confirm this appointment.</label>
               </div>
 
-              <!-- Privacy -->
-              <div style="display:flex;align-items:flex-start;gap:10px;padding:16px;background:var(--surface);border:1px solid var(--border);">
-                <input type="checkbox" id="privacy" name="privacy" style="margin-top:3px;accent-color:var(--green-mid);flex-shrink:0;">
-                <label for="privacy" style="font-size:12px;color:var(--cream-dim);line-height:1.6;cursor:pointer;">I agree to the <a href="#" style="color:var(--green-mid);text-decoration:none;">Privacy Policy</a> and consent to Bland &amp; Co Jewellers contacting me to confirm this appointment.</label>
-              </div>
-
-              <button type="submit" id="submitBtn" style="width:100%;padding:16px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s,box-shadow .2s;" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 32px rgba(232,223,200,.15)'" onmouseout="this.style.background='var(--cream)';this.style.transform='none';this.style.boxShadow='none'">
-                Request Appointment
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
-              </button>
-
-              <div id="successMsg" style="display:none;padding:28px;background:rgba(12,69,53,.25);border:1px solid var(--green-mid);text-align:center;">
-                <div style="width:48px;height:48px;border:1px solid var(--green-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                  <svg width="20" height="20" fill="none" stroke="var(--green-mid)" stroke-width="1.5"><polyline points="4 10 8 14 16 6"/></svg>
-                </div>
-                <p class="display" style="font-size:22px;color:var(--cream);margin-bottom:8px;">Got it.</p>
-                <p style="font-size:14px;color:var(--cream-dim);line-height:1.7;">We'll confirm by email inside the working day. Check your inbox (and spam, just in case).</p>
-              </div>
-
+              <button type="submit" id="submitBtn" class="btn-primary" style="width:100%;">Request appointment <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></button>
             </div>
           </form>
+
+          <div id="successMsg" class="success-panel" style="display:none;">
+            <div class="tick"><svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+            <p class="display" style="font-size:var(--fs-lg);margin-bottom:6px;">Got it.</p>
+            <p class="text-2" style="font-size:var(--fs-sm);line-height:1.7;">We'll confirm by email inside the working day. Check your inbox (and spam, just in case).</p>
+          </div>
         </div>
       </div>
 
       <!-- SIDEBAR -->
-      <div style="display:flex;flex-direction:column;gap:20px;" class="fi">
-
-        <!-- What to expect -->
+      <div class="stack fi">
         <div class="info-block">
-          <h3 class="display" style="font-size:24px;color:var(--cream);margin-bottom:20px;">What happens next</h3>
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div style="display:flex;gap:14px;align-items:flex-start;">
-              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">1</div>
-              <div>
-                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">We confirm</div>
-                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Same-day reply on weekdays — your slot, or the nearest one we can do.</div>
-              </div>
-            </div>
-            <div style="height:1px;background:var(--border);margin-left:42px;"></div>
-            <div style="display:flex;gap:14px;align-items:flex-start;">
-              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">2</div>
-              <div>
-                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">You come in</div>
-                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">Bring whatever you want assessed — papers, photos of bigger pieces, the watch on your wrist. Tea's on the side.</div>
-              </div>
-            </div>
-            <div style="height:1px;background:var(--border);margin-left:42px;"></div>
-            <div style="display:flex;gap:14px;align-items:flex-start;">
-              <div style="width:28px;height:28px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--green-mid);font-weight:500;margin-top:1px;">3</div>
-              <div>
-                <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">Walk away if you want</div>
-                <div style="font-size:12px;color:var(--cream-dim);line-height:1.6;">No fee, no follow-up sales call. We're here when you need us.</div>
-              </div>
-            </div>
+          <h3 class="display" style="font-size:var(--fs-md);margin-bottom:var(--sp-3);">What happens next</h3>
+          <div class="stack">
+            <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">1</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">We confirm</div><div class="meta" style="line-height:1.6;">Same-day reply on weekdays — your slot, or the nearest one we can do.</div></div></div>
+            <div style="height:1px;background:var(--line);margin-left:42px;"></div>
+            <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">2</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">You come in</div><div class="meta" style="line-height:1.6;">Bring whatever you want assessed — papers, photos of bigger pieces, the watch on your wrist. Tea's on the side.</div></div></div>
+            <div style="height:1px;background:var(--line);margin-left:42px;"></div>
+            <div style="display:flex;gap:14px;align-items:flex-start;"><div class="num-badge">3</div><div><div style="font-size:var(--fs-xs);color:var(--text);font-weight:500;margin-bottom:4px;">Walk away if you want</div><div class="meta" style="line-height:1.6;">No fee, no follow-up sales call. We're here when you need us.</div></div></div>
           </div>
         </div>
 
-        <!-- Location -->
         <div class="info-block">
-          <h3 class="display" style="font-size:22px;color:var(--cream);margin-bottom:18px;">Where to find us</h3>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            <div class="contact-method">
-              <div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
-              <div>
-                <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:4px;">Address</div>
-                <div style="font-size:13px;color:var(--cream);line-height:1.6;">Hatton Garden<br>London, EC1N</div>
-              </div>
-            </div>
-            <div class="contact-method">
-              <div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-mid)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div>
-              <div>
-                <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:4px;">Phone</div>
-                <a href="tel:+447399426893" style="font-size:13px;color:var(--cream);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--green-mid)'" onmouseout="this.style.color='var(--cream)'">07399 426893</a>
-                <div style="font-size:11px;color:var(--cream-dim);margin-top:2px;">Mon–Fri 9–6, Sat 10–4</div>
-              </div>
-            </div>
+          <h3 class="display" style="font-size:var(--fs-md);margin-bottom:var(--sp-3);">Where to find us</h3>
+          <div class="stack" style="gap:12px;">
+            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><div class="label" style="margin-bottom:4px;">Address</div><div style="font-size:var(--fs-xs);color:var(--text);line-height:1.6;">Hatton Garden<br>London, EC1N</div></div></div>
+            <div class="contact-method"><div class="contact-icon"><svg width="16" height="16" fill="none" stroke="var(--green-hi)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div><div><div class="label" style="margin-bottom:4px;">Phone</div><a href="tel:+447399426893" style="font-size:var(--fs-xs);color:var(--text);text-decoration:none;">07399 426893</a><div class="meta" style="margin-top:2px;">Mon–Fri 9–6, Sat 10–4</div></div></div>
           </div>
         </div>
 
-        <!-- WhatsApp -->
-        <div style="background:var(--green-dark);border:1px solid rgba(232,223,200,.08);padding:28px;text-align:center;position:relative;overflow:hidden;">
+        <div class="info-block center" style="background:var(--green-dark);position:relative;overflow:hidden;">
           <div class="noise"></div>
           <div style="position:relative;z-index:1;">
-            <div style="width:44px;height:44px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-              <svg width="20" height="20" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <div style="width:44px;height:44px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-2);">
+              <svg width="20" height="20" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
             </div>
-            <h3 class="display" style="font-size:20px;color:var(--cream);margin-bottom:8px;">Or just message us.</h3>
-            <p style="font-size:12px;color:rgba(232,223,200,.6);line-height:1.7;margin-bottom:18px;">Photos go through faster than email.</p>
+            <h3 class="display" style="font-size:var(--fs-md);margin-bottom:8px;">Or just message us.</h3>
+            <p style="font-size:var(--fs-xs);color:rgba(236,228,207,0.66);line-height:1.7;margin-bottom:var(--sp-3);">Photos go through faster than email.</p>
             <a href="https://wa.me/447399426893" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
-              <svg width="14" height="14" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <svg width="14" height="14" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
               Message on WhatsApp
             </a>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="background:var(--bg);border-top:1px solid var(--border);padding:72px 48px 36px;">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="fg" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:64px;">
-      <div><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers" style="height:46px;width:46px;object-fit:cover;margin-bottom:24px;display:block;"><p style="font-size:14px;line-height:1.8;color:var(--cream-dim);max-width:260px;">A working jeweller in Hatton Garden, London.</p></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Navigate</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Services</h4><div style="display:flex;flex-direction:column;gap:11px;"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a><a href="consultation.html" class="fl">Book Consultation</a></div></div>
-      <div><h4 style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);margin-bottom:22px;font-weight:500;">Info</h4><div style="display:flex;flex-direction:column;gap:11px;"><span class="fl" style="cursor:default;">Hatton Garden, EC1N</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="faq.html" class="fl">FAQ</a></div></div>
+<footer class="site-footer">
+  <div class="wrap" style="padding:0;">
+    <div class="footer-grid">
+      <div><a href="index.html" class="nav-logo" style="margin-bottom:var(--sp-3);"><img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers"><span class="wordmark">Bland <span>&amp;</span> Co</span></a><p class="text-3" style="font-size:var(--fs-sm);line-height:1.8;max-width:260px;">A working jeweller in Hatton Garden, London.</p></div>
+      <div><h4 class="footer-h">Navigate</h4><div class="footer-col"><a href="index.html" class="fl">Home</a><a href="inventory.html" class="fl">Inventory</a><a href="sell.html" class="fl">Sell / Value</a><a href="about.html" class="fl">About Us</a><a href="testimonials.html" class="fl">Testimonials</a></div></div>
+      <div><h4 class="footer-h">Services</h4><div class="footer-col"><a href="inventory.html" class="fl">Buy Watches</a><a href="sell.html" class="fl">Sell Watches</a><a href="inventory.html" class="fl">Precious Metals</a><a href="sell.html" class="fl">Free Valuation</a><a href="consultation.html" class="fl">Book Consultation</a></div></div>
+      <div><h4 class="footer-h">Info</h4><div class="footer-col"><span class="fl" style="cursor:default;">Hatton Garden, EC1N</span><a href="tel:+447399426893" class="fl">07399 426893</a><a href="mailto:bland.jewellers@gmail.com" class="fl">bland.jewellers@gmail.com</a><a href="faq.html" class="fl">FAQ</a></div></div>
     </div>
-    <div style="border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
-      <p style="font-size:12px;color:var(--cream-dim);">&copy; 2026 Bland &amp; Co Jewellers.</p>
-      <div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:12px;">Privacy Policy</a><a href="#" class="fl" style="font-size:12px;">Terms</a></div>
-    </div>
+    <div class="footer-bottom"><p class="meta">&copy; 2026 Bland &amp; Co Jewellers.</p><div style="display:flex;gap:24px;"><a href="#" class="fl" style="font-size:var(--fs-xs);">Privacy Policy</a><a href="#" class="fl" style="font-size:var(--fs-xs);">Terms</a></div></div>
   </div>
 </footer>
 
-<style>
-  @media(max-width:900px){.fg{grid-template-columns:1fr 1fr!important;gap:32px!important;}}
-  @media(max-width:600px){.fg{grid-template-columns:1fr!important;}}
-</style>
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="assets/site.js"></script>
 <script>
-  function toggleMenu(){const m=document.getElementById('mmenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
-
-  // ── Time slots ──────────────────────────────────────────────
   const ALL_SLOTS = [
-    {v:'09:00',l:'9:00 AM'},{v:'09:30',l:'9:30 AM'},
-    {v:'10:00',l:'10:00 AM'},{v:'10:30',l:'10:30 AM'},
-    {v:'11:00',l:'11:00 AM'},{v:'11:30',l:'11:30 AM'},
-    {v:'12:00',l:'12:00 PM'},{v:'12:30',l:'12:30 PM'},
-    {v:'13:00',l:'1:00 PM'},{v:'13:30',l:'1:30 PM'},
-    {v:'14:00',l:'2:00 PM'},{v:'14:30',l:'2:30 PM'},
-    {v:'15:00',l:'3:00 PM'},{v:'15:30',l:'3:30 PM'},
-    {v:'16:00',l:'4:00 PM'},{v:'16:30',l:'4:30 PM'},
+    {v:'09:00',l:'9:00 AM'},{v:'09:30',l:'9:30 AM'},{v:'10:00',l:'10:00 AM'},{v:'10:30',l:'10:30 AM'},
+    {v:'11:00',l:'11:00 AM'},{v:'11:30',l:'11:30 AM'},{v:'12:00',l:'12:00 PM'},{v:'12:30',l:'12:30 PM'},
+    {v:'13:00',l:'1:00 PM'},{v:'13:30',l:'1:30 PM'},{v:'14:00',l:'2:00 PM'},{v:'14:30',l:'2:30 PM'},
+    {v:'15:00',l:'3:00 PM'},{v:'15:30',l:'3:30 PM'},{v:'16:00',l:'4:00 PM'},{v:'16:30',l:'4:30 PM'},
     {v:'17:00',l:'5:00 PM'},{v:'17:30',l:'5:30 PM'},
   ];
   let isSaturday = false;
@@ -420,9 +266,9 @@
 
   function selectTime(v, l) {
     document.getElementById('preferredTime').value = v;
-    const btn = document.getElementById('timeBtnDisplay');
     document.getElementById('timeBtnLabel').textContent = l;
-    btn.classList.add('selected');
+    document.getElementById('timeBtnDisplay').classList.add('selected');
+    document.getElementById('timeBtnDisplay').classList.remove('invalid');
     closeTimeDropdown();
     buildTimeList();
   }
@@ -430,12 +276,8 @@
   function toggleTimeDropdown() {
     const btn = document.getElementById('timeBtnDisplay');
     const list = document.getElementById('timeList');
-    const open = list.classList.contains('open');
-    if (open) { closeTimeDropdown(); } else {
-      buildTimeList();
-      list.classList.add('open');
-      btn.classList.add('open');
-    }
+    if (list.classList.contains('open')) { closeTimeDropdown(); }
+    else { buildTimeList(); list.classList.add('open'); btn.classList.add('open'); }
   }
 
   function closeTimeDropdown() {
@@ -443,24 +285,17 @@
     document.getElementById('timeBtnDisplay').classList.remove('open');
   }
 
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.time-dropdown-wrap')) closeTimeDropdown();
-  });
+  document.addEventListener('click', e => { if (!e.target.closest('.time-wrap')) closeTimeDropdown(); });
 
-  // ── Flatpickr date picker ────────────────────────────────────
-  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
   const fp = flatpickr('#preferredDate', {
-    minDate: tomorrow,
-    dateFormat: 'd M Y',
-    disableMobile: true,
+    minDate: tomorrow, dateFormat: 'd M Y', disableMobile: true,
     disable: [d => d.getDay() === 0],
     onChange(dates) {
       const d = dates[0];
       if (!d) return;
       isSaturday = d.getDay() === 6;
-      const note = document.getElementById('satNote');
-      note.style.display = isSaturday ? 'block' : 'none';
-      // If a Saturday-disabled time is selected, clear it
+      document.getElementById('satNote').style.display = isSaturday ? 'block' : 'none';
       if (isSaturday && document.getElementById('preferredTime').value) {
         const [h] = document.getElementById('preferredTime').value.split(':').map(Number);
         if (h < 10 || h >= 16) {
@@ -473,60 +308,38 @@
     }
   });
 
-  // Fade-in on scroll
-  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('v'); }), {threshold:0.12});
-  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
-
   async function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-
     const privacy = document.getElementById('privacy');
-    if (!privacy.checked) {
-      privacy.style.outline = '1px solid rgba(196,150,46,.6)';
-      return;
-    }
+    if (!privacy.checked) { privacy.style.outline = '1px solid rgba(201,162,75,0.6)'; return; }
 
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const phoneRe = /^[\+\d][\d\s\-\(\)\.]{6,19}$/;
 
-    const required = form.querySelectorAll('[required]');
     let valid = true;
-    required.forEach(field => {
+    form.querySelectorAll('[required]').forEach(field => {
       const val = field.value.trim();
-      const empty = !val;
-      let fieldValid = !empty;
-
-      if (!empty && field.id === 'email') fieldValid = emailRe.test(val);
-
-      if (field.type === 'hidden') {
-        document.getElementById('timeBtnDisplay').style.borderColor = empty ? 'rgba(196,150,46,.6)' : 'rgba(232,223,200,.1)';
-      } else {
-        field.style.borderColor = fieldValid ? 'rgba(232,223,200,.1)' : 'rgba(196,150,46,.6)';
-      }
-      if (!fieldValid) valid = false;
+      let ok = !!val;
+      if (val && field.id === 'email') ok = emailRe.test(val);
+      if (field.type === 'hidden') document.getElementById('timeBtnDisplay').classList.toggle('invalid', !ok);
+      else field.classList.toggle('invalid', !ok);
+      if (!ok) valid = false;
     });
 
-    // Phone is optional but validate format if filled
     const phoneEl = document.getElementById('phone');
     const phoneVal = phoneEl.value.trim();
-    if (phoneVal && !phoneRe.test(phoneVal)) {
-      phoneEl.style.borderColor = 'rgba(196,150,46,.6)';
-      valid = false;
-    } else if (phoneVal) {
-      phoneEl.style.borderColor = 'rgba(232,223,200,.1)';
-    }
+    if (phoneVal && !phoneRe.test(phoneVal)) { phoneEl.classList.add('invalid'); valid = false; }
+    else { phoneEl.classList.remove('invalid'); }
 
     if (!valid) return;
 
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    btn.innerHTML = 'Sending… <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
+    const original = btn.innerHTML;
+    btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Sending…';
 
     try {
       const purpose = document.querySelector('input[name="purpose"]:checked').value;
-
       await fetch('/api/consultations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -541,15 +354,12 @@
           status:        'pending',
         }),
       });
-
       form.style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
       document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
       console.error(err);
-      btn.disabled = false;
-      btn.style.opacity = '1';
-      btn.innerHTML = 'Request Appointment <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
+      btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = original;
     }
   }
 </script>
