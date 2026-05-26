@@ -328,19 +328,31 @@
     }
   }
 
-  const CLOUDINARY_CLOUD  = 'dshvvjpsg';   // replace with your Cloudinary cloud name
-  const CLOUDINARY_PRESET = 'bland_co_unsigned'; // replace with your unsigned upload preset name
+  // Uploads are authorised by our own backend (/api/upload-signature), which holds
+  // all Cloudinary credentials. No key, secret, or preset is stored in the front-end.
+  async function uploadOne(file, kind, headers) {
+    const sigRes = await fetch(`/api/upload-signature?kind=${kind}`, { headers: headers || {} });
+    if (!sigRes.ok) throw new Error('Upload not authorised');
+    const cfg = await sigRes.json();
+    const fd = new FormData();
+    fd.append('file', file);
+    if (cfg.mode === 'signed') {
+      fd.append('api_key', cfg.apiKey);
+      fd.append('timestamp', cfg.timestamp);
+      fd.append('signature', cfg.signature);
+      if (cfg.folder) fd.append('folder', cfg.folder);
+    } else {
+      fd.append('upload_preset', cfg.uploadPreset);
+    }
+    const r = await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`, { method: 'POST', body: fd });
+    const data = await r.json();
+    if (!data.secure_url) throw new Error((data.error && data.error.message) || 'Upload failed');
+    return data.secure_url;
+  }
 
   async function uploadImages(files) {
     const urls = [];
-    for (const file of files) {
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('upload_preset', CLOUDINARY_PRESET);
-      const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
-      const data = await r.json();
-      if (data.secure_url) urls.push(data.secure_url);
-    }
+    for (const file of files) urls.push(await uploadOne(file, 'image'));
     return urls;
   }
 

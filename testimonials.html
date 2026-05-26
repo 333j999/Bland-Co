@@ -86,7 +86,7 @@
          Owner: replace each with a real quote you have permission to publish (first name +
          neighbourhood + what they bought/sold). The homepage has its own separate pair of quotes. -->
 
-    <div class="tgrid fi" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+    <div class="tgrid fi" id="tGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
 
       <div class="tcard fi">
         <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Sold a Tudor I'd stopped wearing. They told me the buy price and what they'd put it on the shelf for in the same breath — no dealer's ever done that for me. Paid the same day.</p>
@@ -154,6 +154,35 @@
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}}),{threshold:.08});
   document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
   setTimeout(()=>{document.querySelectorAll('.fi').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight)el.classList.add('v');});},80);
+
+  // Testimonials are managed in the backend (admin → /api/testimonials). When the backend
+  // has visible entries, they replace the curated fallback cards baked into the markup.
+  function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function tInitials(name){return (String(name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase())||'·';}
+  function tCard(t){
+    const quote = escHtml(t.content || t.quote || '');
+    const name  = escHtml(t.name || '');
+    const sub   = escHtml(t.role || t.item || '');
+    return `<div class="tcard fi">
+      <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">${quote}</p>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">${tInitials(t.name)}</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--cream);">${name}</div><div style="font-size:12px;color:var(--cream-dim);">${sub}</div></div>
+      </div>
+    </div>`;
+  }
+  (async () => {
+    try {
+      const r = await fetch('/api/testimonials');
+      if (!r.ok) return;
+      const all = await r.json();
+      const visible = Array.isArray(all) ? all.filter(t => t && t.visible !== false && (t.content || t.quote)) : [];
+      if (!visible.length) return; // keep the baked-in fallback cards
+      const grid = document.getElementById('tGrid');
+      grid.innerHTML = visible.map(tCard).join('');
+      grid.querySelectorAll('.fi').forEach(el => { obs.observe(el); const rect = el.getBoundingClientRect(); if (rect.top < window.innerHeight) el.classList.add('v'); });
+    } catch {}
+  })();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir }                           from 'fs/promise
 import { extname, join }                                        from 'path';
 import { fileURLToPath }                                        from 'url';
 import { randomUUID, pbkdf2Sync, randomBytes,
-         createHmac, timingSafeEqual }                          from 'crypto';
+         createHmac, createHash, timingSafeEqual }              from 'crypto';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PORT      = 3000;
@@ -252,6 +252,26 @@ const server = createServer(async (req, res) => {
     }
 
     return json(res, 404, { error: 'Unknown auth route' });
+  }
+
+  // ── Upload authorisation (/api/upload-signature) — mirrors api/upload-signature.js ──
+  // Credentials live here, not in the browser. Image uploads are public (valuation form),
+  // video uploads require an admin session.
+  if (urlPath === '/api/upload-signature') {
+    if (method !== 'GET' && method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
+    const resourceType = (req.url.split('?')[1] || '').includes('kind=video') ? 'video' : 'image';
+    if (resourceType === 'video' && !checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
+    const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME || 'dshvvjpsg';
+    const KEY    = process.env.CLOUDINARY_API_KEY;
+    const SECRET = process.env.CLOUDINARY_API_SECRET;
+    const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET || 'bland_co_unsigned';
+    const folder = resourceType === 'video' ? 'bland-co/site' : 'bland-co/valuations';
+    if (KEY && SECRET) {
+      const timestamp = Math.round(Date.now() / 1000);
+      const signature = createHash('sha1').update(`folder=${folder}&timestamp=${timestamp}` + SECRET).digest('hex');
+      return json(res, 200, { mode: 'signed', cloudName: CLOUD, apiKey: KEY, timestamp, folder, signature, resourceType });
+    }
+    return json(res, 200, { mode: 'unsigned', cloudName: CLOUD, uploadPreset: PRESET, folder, resourceType });
   }
 
   // ── Protected API (/api/*) — session required ─────────────────────────────

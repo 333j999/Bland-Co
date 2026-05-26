@@ -613,7 +613,7 @@
       <a href="testimonials.html" class="btn-outline">Read more reviews</a>
     </div>
 
-    <div class="test-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+    <div class="test-grid" id="tPreview" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
 
       <!-- Placeholder stand-ins, written to read like real walk-in feedback rather than the AI fake-review pattern. Owner: swap for two genuine quotes (with permission to publish first name + neighbourhood). Keep them mundane and specific — that's what reads as real. -->
       <div class="tcard fi">
@@ -872,6 +872,35 @@
       vid.load();
     }
   }).catch(() => {});
+
+  // Testimonials come from the backend (admin → /api/testimonials). When visible entries
+  // exist they replace the curated fallback pair below; otherwise the fallback stays.
+  (function () {
+    function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function initials(name){return (String(name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase())||'·';}
+    function card(t){
+      const quote = escHtml(t.content || t.quote || '');
+      const name  = escHtml(t.name || '');
+      const sub   = escHtml(t.role || t.item || '');
+      return `<div class="tcard fi">
+        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">${quote}</p>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">${initials(t.name)}</div>
+          <div>
+            <div style="font-size:14px;font-weight:500;color:var(--cream);">${name}</div>
+            <div style="font-size:12px;color:var(--cream-dim);">${sub}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+    fetch('/api/testimonials').then(r => r.ok ? r.json() : []).then(all => {
+      const visible = Array.isArray(all) ? all.filter(t => t && t.visible !== false && (t.content || t.quote)) : [];
+      if (!visible.length) return;
+      const grid = document.getElementById('tPreview');
+      grid.innerHTML = visible.slice(0, 2).map(card).join('');
+      grid.querySelectorAll('.fi').forEach(el => { observer.observe(el); const rect = el.getBoundingClientRect(); if (rect.top < window.innerHeight) el.classList.add('v'); });
+    }).catch(() => {});
+  })();
 </script>
 </body>
 </html>

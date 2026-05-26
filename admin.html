@@ -1190,9 +1190,6 @@ document.addEventListener('keydown', e => {
 // ══════════════════════════════════════════════════════════════════════
 // Settings — Hero Video
 // ══════════════════════════════════════════════════════════════════════
-const CLOUDINARY_CLOUD  = 'dshvvjpsg';
-const CLOUDINARY_PRESET = 'bland_co_unsigned';
-
 let siteSettings = {};
 
 async function loadSettings() {
@@ -1243,13 +1240,26 @@ async function handleVideoFile(file) {
   setUploadProgress(0);
 
   try {
+    // Backend issues the Cloudinary authorisation (admin session required for video);
+    // credentials never live in this page.
+    const sigRes = await fetch('/api/upload-signature?kind=video', { headers: authHeaders() });
+    if (!sigRes.ok) throw new Error(sigRes.status === 401 ? 'Session expired — log in again' : 'Upload not authorised');
+    const cfg = await sigRes.json();
+
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('upload_preset', CLOUDINARY_PRESET);
+    if (cfg.mode === 'signed') {
+      fd.append('api_key', cfg.apiKey);
+      fd.append('timestamp', cfg.timestamp);
+      fd.append('signature', cfg.signature);
+      if (cfg.folder) fd.append('folder', cfg.folder);
+    } else {
+      fd.append('upload_preset', cfg.uploadPreset);
+    }
 
     const xhr = new XMLHttpRequest();
     const url = await new Promise((resolve, reject) => {
-      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/video/upload`);
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`);
       xhr.upload.onprogress = e => { if (e.lengthComputable) setUploadProgress(e.loaded / e.total * 90); };
       xhr.onload = () => {
         const data = JSON.parse(xhr.responseText);
