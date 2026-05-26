@@ -10,18 +10,20 @@
   <style>
     :root {
       --bg:        #060A08;
-      --surface:   #0D1511;
+      --surface:   #0C120F;
       --card:      #111917;
-      --elevated:  #162019;
+      --elevated:  #16201A;
       --green:     #0C4535;
       --green-dark:#073D2A;
-      --green-mid: #166649;
-      --green-hi:  #1E8560;
-      --cream:     #E8DFC8;
-      --cream-dim: #9E9583;
-      --gold:      #C4962E;
-      --border:    rgba(232,223,200,0.07);
+      --green-mid: #1C7152;
+      --green-hi:  #2E9A73;
+      --cream:     #ECE4CF;
+      --cream-dim: #C2B89F;
+      --gold:      #C9A24B;
+      --gold-hi:   #E2C57E;
+      --border:    rgba(232,223,200,0.08);
       --red:       #C0392B;
+      --ease:      cubic-bezier(0.4, 0, 0.2, 1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -60,6 +62,7 @@
       background: var(--card);
       border: 1px solid var(--border);
       padding: 48px 44px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,162,75,0.06);
     }
 
     .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
@@ -98,7 +101,7 @@
       -webkit-appearance: none;
     }
     .form-input::placeholder { color: var(--cream-dim); opacity: .4; }
-    .form-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .form-input:focus { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,.16); }
     .form-input.error { border-color: var(--red) !important; }
     .eye-btn {
       position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -122,7 +125,7 @@
     }
     .totp-input::-webkit-outer-spin-button,
     .totp-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .totp-input:focus { border-color: var(--green-mid); background: rgba(22,102,73,.07); }
+    .totp-input:focus { border-color: var(--green-hi); background: #18221C; box-shadow: 0 0 0 3px rgba(28,113,82,.16); }
     .totp-input.error { border-color: var(--red) !important; }
 
     /* ── Submit btn ── */
@@ -199,7 +202,7 @@
     <div class="logo-wrap">
       <img src="brand_assets/Bland%26CI.jpg" alt="Bland & Co Jewellers">
       <div class="logo-text">
-        <div class="logo-name">Bland &amp; Co</div>
+        <div class="logo-name">Bland <span style="font-style:italic;color:var(--gold-hi);">&amp;</span> Co</div>
         <div class="logo-sub">Admin Portal</div>
       </div>
     </div>
