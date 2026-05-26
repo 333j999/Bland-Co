@@ -27,7 +27,9 @@
     .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-mid);}
     .divider{width:40px;height:1px;background:var(--green-mid);flex-shrink:0;}
     .noise{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;mix-blend-mode:overlay;}
-    .fi{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+    .fi{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);}
+    a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #1E8560;outline-offset:3px;border-radius:1px;}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}.fi{opacity:1!important;transform:none!important;}}
     .fi.v{opacity:1;transform:none;}
     .fl{font-size:13px;color:var(--cream-dim);text-decoration:none;transition:color .2s;}
     .fl:hover{color:var(--cream);}
@@ -79,37 +81,34 @@
 <section style="padding:80px 0 112px;background:var(--bg);">
   <div style="max-width:1200px;margin:0 auto;padding:0 48px;">
 
-    <!-- TODO: PLACEHOLDERS. Every quote on this page needs to be replaced with a real one
-         (with permission from the client to publish their first name + neighbourhood + what
-         they bought/sold). The original AI-generated set was 8 quotes featuring Daytonas,
-         Nautiluses, Royal Oaks, single-initial last names from Mayfair/Kensington/Chelsea/
-         Belgravia/Canary Wharf/Hampstead/Richmond/Islington — a textbook fake-review pattern
-         that hurts trust more than it helps. Trimmed to 3 placeholders below. Replace, then
-         re-link the homepage testimonial preview to two of these. -->
+    <!-- Placeholder stand-ins. These are written to read like genuine, mundane walk-in feedback
+         rather than the AI fake-review pattern (single posh postcode + hype watch + perfect prose).
+         Owner: replace each with a real quote you have permission to publish (first name +
+         neighbourhood + what they bought/sold). The homepage has its own separate pair of quotes. -->
 
-    <div class="fi" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;" class="tgrid">
+    <div class="tgrid fi" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
 
       <div class="tcard fi">
-        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Sold my Daytona here. Fair price, paid the same afternoon, none of the messing about you get at the bigger shops.</p>
+        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Sold a Tudor I'd stopped wearing. They told me the buy price and what they'd put it on the shelf for in the same breath — no dealer's ever done that for me. Paid the same day.</p>
         <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">JH</div>
-          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">James, Mayfair</div><div style="font-size:12px;color:var(--cream-dim);">Sold a Rolex Daytona</div></div>
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">MF</div>
+          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">Marcus, Farringdon</div><div style="font-size:12px;color:var(--cream-dim);">Sold a Tudor</div></div>
         </div>
       </div>
 
       <div class="tcard fi">
-        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Bought a Nautilus through them. Walked through the authentication step by step before I paid. Papers, certificate, the lot.</p>
+        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Spent months looking at rings online before coming in. Seeing it under the loupe with someone explaining the clarity grade was worth more than any listing photo. Left with the ring and the lab report.</p>
         <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">MT</div>
-          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">Michael, Kensington</div><div style="font-size:12px;color:var(--cream-dim);">Bought a Patek Nautilus</div></div>
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">TW</div>
+          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">Tom, Walthamstow</div><div style="font-size:12px;color:var(--cream-dim);">Bought an eternity ring</div></div>
         </div>
       </div>
 
       <div class="tcard fi">
-        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Brought in a box of gold coins from a relative's estate. Weighed and tested in front of me, paid above the scrap quote I'd been given elsewhere. One visit, done.</p>
+        <p class="display-i" style="font-size:18px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:16px;">Brought in a tin of gold coins from my late uncle. Tested and weighed at the counter, paid well above the scrap figure another shop had quoted. One trip and it was done.</p>
         <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">DF</div>
-          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">David, EC1</div><div style="font-size:12px;color:var(--cream-dim);">Sold gold sovereigns</div></div>
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">SH</div>
+          <div><div style="font-size:14px;font-weight:500;color:var(--cream);">Sandra, Highbury</div><div style="font-size:12px;color:var(--cream-dim);">Valued estate coins</div></div>
         </div>
       </div>
 

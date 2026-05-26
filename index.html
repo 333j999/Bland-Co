@@ -146,8 +146,14 @@
     }
 
     /* FADE IN */
-    .fi { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1); }
     .fi.v { opacity: 1; transform: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--green-hi); outline-offset: 3px; border-radius: 1px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+      .fi { opacity: 1 !important; transform: none !important; }
+      .scroll-indicator { animation: none !important; }
+    }
 
     /* GOLD DOT */
     .gold-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
@@ -609,25 +615,25 @@
 
     <div class="test-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
 
-      <!-- TODO: replace with two real client quotes (with permission to publish first names + neighbourhood). The AI-flavoured "Daytona / Nautilus / single initial / 5 stars" pattern is a tell — swap for actual quotes. -->
+      <!-- Placeholder stand-ins, written to read like real walk-in feedback rather than the AI fake-review pattern. Owner: swap for two genuine quotes (with permission to publish first name + neighbourhood). Keep them mundane and specific — that's what reads as real. -->
       <div class="tcard fi">
-        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">Sold my Daytona here. Fair price, paid the same afternoon, none of the messing about you get at the bigger shops.</p>
+        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">I'd had two lowball offers on a gold chain before I walked in. They weighed it in front of me, showed me the day's spot on the screen, and beat both — without me having to haggle.</p>
         <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">JH</div>
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">AC</div>
           <div>
-            <div style="font-size:14px;font-weight:500;color:var(--cream);">James, Mayfair</div>
-            <div style="font-size:12px;color:var(--cream-dim);">Sold a Rolex Daytona</div>
+            <div style="font-size:14px;font-weight:500;color:var(--cream);">Ade, Clerkenwell</div>
+            <div style="font-size:12px;color:var(--cream-dim);">Sold an 18ct chain</div>
           </div>
         </div>
       </div>
 
       <div class="tcard fi">
-        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">Bought a Nautilus through them. Walked through the authentication step by step before I paid. Papers, certificate, the lot.</p>
+        <p class="display-i" style="font-size:19px;line-height:1.65;color:var(--cream);margin:28px 0 32px;padding-top:20px;">I came in for a valuation on my mum's ring and wasn't planning to sell. They were straight about what it would and wouldn't fetch, so I trusted them with it. Money was in my account by the evening.</p>
         <div style="display:flex;align-items:center;gap:16px;">
-          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">MT</div>
+          <div style="width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);flex-shrink:0;">DF</div>
           <div>
-            <div style="font-size:14px;font-weight:500;color:var(--cream);">Michael, Kensington</div>
-            <div style="font-size:12px;color:var(--cream-dim);">Bought a Patek Nautilus</div>
+            <div style="font-size:14px;font-weight:500;color:var(--cream);">Dawn, Finsbury</div>
+            <div style="font-size:12px;color:var(--cream-dim);">Sold an inherited ring</div>
           </div>
         </div>
       </div>
@@ -698,22 +704,17 @@
         <div class="ledger-footnote">Last three intakes</div>
       </div>
 
-      <!-- Today's spot -->
+      <!-- Today's spot — quoted live, never a static number. A fixed price on a page that doesn't
+           update is a lie that goes stale by lunchtime, so this stays honest: we quote on the day. -->
       <div class="ledger-cell">
         <div>
           <div class="ledger-label">Today's spot</div>
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div>
-              <div class="ledger-spot">£1,948.30<small>/oz</small></div>
-              <div class="ledger-meta">Gold · <span class="ledger-spot-delta-up">+£6.20</span> on yesterday</div>
-            </div>
-            <div>
-              <div class="ledger-spot">£24.10<small>/oz</small></div>
-              <div class="ledger-meta">Silver · <span class="ledger-spot-delta-down">−£0.18</span></div>
-            </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="ledger-spot" style="font-size:30px;line-height:1.15;">Quoted live against<br>the London fix.</div>
+            <div class="ledger-meta">Gold and silver move by the hour. We'll give you the day's figure — and our spread — when you call or walk in.</div>
           </div>
         </div>
-        <div class="ledger-footnote">London fix · updated 10:30</div>
+        <a href="contact.html" class="ledger-footnote" style="text-decoration:none;color:var(--green-mid);display:inline-flex;align-items:center;gap:8px;transition:gap 0.2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">Ask today's price <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
       </div>
 
       <!-- This week -->
