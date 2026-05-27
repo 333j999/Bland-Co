@@ -6,7 +6,7 @@ import { randomUUID, pbkdf2Sync, randomBytes,
          createHmac, createHash, timingSafeEqual }              from 'crypto';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const PORT      = 3000;
+const PORT      = process.env.PORT || 3000;
 const DATA_DIR  = join(__dirname, 'data');
 
 await mkdir(DATA_DIR, { recursive: true });
