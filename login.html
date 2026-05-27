@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login | Bland & Co Jewellers</title>
   <link rel="icon" type="image/jpeg" href="brand_assets/Bland%26CI.jpg">
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,700,1,2&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:        #14120E;
@@ -30,7 +31,7 @@
       height: 100%;
       background: var(--bg);
       color: var(--cream);
-      font-family: 'General Sans', system-ui, sans-serif;
+      font-family: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -68,7 +69,7 @@
     .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
     .logo-wrap img { width: 40px; height: 40px; object-fit: cover; }
     .logo-text { line-height: 1.2; }
-    .logo-name { font-family: 'Zodiak', serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
+    .logo-name { font-family: 'Fraunces', Georgia, serif; font-size: 17px; color: var(--cream); letter-spacing: .04em; }
     .logo-sub  { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-dim); margin-top: 1px; }
 
     /* ── Step indicator ── */
@@ -87,7 +88,7 @@
     .step-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-dim); margin-top: 6px; white-space: nowrap; }
 
     /* ── Headings ── */
-    .card-title { font-family: 'Zodiak', serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+    .card-title { font-family: 'Fraunces', Georgia, serif; font-size: 28px; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
     .card-desc  { font-size: 13px; color: var(--cream-dim); line-height: 1.65; margin-bottom: 28px; }
 
     /* ── Form ── */
@@ -96,7 +97,7 @@
     .input-wrap { position: relative; }
     .form-input {
       width: 100%; background: var(--elevated); border: 1px solid rgba(232,223,200,.1);
-      color: var(--cream); padding: 13px 16px; font-family: 'General Sans', sans-serif;
+      color: var(--cream); padding: 13px 16px; font-family: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 14px; outline: none; transition: border-color .2s, background .2s;
       -webkit-appearance: none;
     }
@@ -116,8 +117,8 @@
     .totp-input {
       width: 48px; height: 56px; background: var(--elevated);
       border: 1px solid rgba(232,223,200,.1); color: var(--cream);
-      font-family: 'General Sans', sans-serif; font-size: 22px; font-weight: 500;
-      text-align: center; outline: none; -webkit-appearance: none;
+      font-family: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 500;
+      text-align: center; outline: none; -webkit-appearance: none; font-optical-sizing: auto;
       transition: border-color .2s, background .2s;
       border-radius: 0;
       /* hide spinner */
@@ -131,7 +132,7 @@
     /* ── Submit btn ── */
     .btn-submit {
       width: 100%; padding: 14px; background: var(--cream); color: var(--bg);
-      font-family: 'General Sans', sans-serif; font-size: 12px; font-weight: 500;
+      font-family: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 12px; font-weight: 500;
       letter-spacing: .16em; text-transform: uppercase; border: none;
       cursor: pointer; margin-top: 8px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -182,7 +183,7 @@
       font-size: 12px; color: var(--cream-dim); background: none; border: none;
       cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
       margin-top: 20px; padding: 0; transition: color .2s;
-      font-family: 'General Sans', sans-serif;
+      font-family: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
     .back-link:hover { color: var(--cream); }
 

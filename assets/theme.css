@@ -1,6 +1,6 @@
 /* ============================================================================
    BLAND & CO — DESIGN SYSTEM · "MODERN MAISON"
-   Warm charcoal + champagne/gold. Zodiak (display) · General Sans (body/UI).
+   Warm charcoal + champagne/gold. Fraunces (display) · Hanken Grotesk (body/UI).
    Single source of truth. Tokens → base → components → editorial → utilities.
    Type scale: Major Third (1.25). Spacing: strict 8-pt grid.
    Colour: 60 warm-neutral / 30 deep warm tone / 10 champagne. Motion: ease-in-out only.
@@ -56,9 +56,9 @@
   --ease-slow: cubic-bezier(0.4, 0, 0.2, 1);
   --radius: 2px;
 
-  /* ---- Fonts (Fontshare — NOT generic Google) ---- */
-  --serif: 'Zodiak', Georgia, 'Times New Roman', serif;
-  --sans:  'General Sans', system-ui, -apple-system, sans-serif;
+  /* ---- Fonts (Google Fonts variable — Fraunces display · Hanken Grotesk body) ---- */
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans:  'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* ---- Elevation ---- */
   --shadow-card: 0 32px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.32);
@@ -72,7 +72,7 @@ html { background: var(--bg); scroll-behavior: smooth; -webkit-text-size-adjust:
 body {
   font-family: var(--sans);
   font-size: var(--fs-base);
-  line-height: 1.7;
+  line-height: 1.65;
   background: var(--bg);
   color: var(--text);
   font-weight: 400;
@@ -104,24 +104,24 @@ body::after {
 }
 
 /* ============================================================================
-   TYPOGRAPHY — Zodiak display, General Sans body
+   TYPOGRAPHY — Fraunces display, Hanken Grotesk body
    ========================================================================== */
-.display   { font-family: var(--serif); font-weight: 400; letter-spacing: -0.025em; line-height: 1.0; }
-.display-i { font-family: var(--serif); font-style: italic; font-weight: 300; letter-spacing: -0.005em; line-height: 1.08; }
+.display   { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1.0; font-optical-sizing: auto; }
+.display-i { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; line-height: 1.1; font-optical-sizing: auto; }
 
 .eyebrow {
   font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500;
-  letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
 }
-.lede { font-size: clamp(1rem, 1.6vw, 1.1875rem); line-height: 1.75; color: var(--text-2); font-weight: 400; }
+.lede { font-size: clamp(1rem, 1.6vw, 1.1875rem); line-height: 1.7; color: var(--text-2); font-weight: 400; }
 .meta { font-size: var(--fs-xs); color: var(--text-3); letter-spacing: 0.04em; }
 
 /* heading sizes on the 1.25 ladder (fluid). Tighten as they grow. */
-.h-hero { font-size: clamp(3rem, 7.6vw, 5.5rem); letter-spacing: -0.03em; line-height: 0.98; }
-.h-1    { font-size: clamp(2.6rem, 6vw, var(--fs-4xl)); letter-spacing: -0.028em; }
-.h-2    { font-size: clamp(2.1rem, 4.6vw, var(--fs-3xl)); letter-spacing: -0.022em; line-height: 1.04; }
-.h-3    { font-size: clamp(1.75rem, 3.4vw, var(--fs-2xl)); letter-spacing: -0.016em; line-height: 1.08; }
-.h-4    { font-size: var(--fs-xl); letter-spacing: -0.012em; line-height: 1.12; }
+.h-hero { font-size: clamp(3rem, 7.6vw, 5.5rem); letter-spacing: -0.018em; line-height: 1.0; }
+.h-1    { font-size: clamp(2.6rem, 6vw, var(--fs-4xl)); letter-spacing: -0.016em; }
+.h-2    { font-size: clamp(2.1rem, 4.6vw, var(--fs-3xl)); letter-spacing: -0.012em; line-height: 1.06; }
+.h-3    { font-size: clamp(1.75rem, 3.4vw, var(--fs-2xl)); letter-spacing: -0.008em; line-height: 1.1; }
+.h-4    { font-size: var(--fs-xl); letter-spacing: -0.005em; line-height: 1.14; }
 
 .divider { width: 44px; height: 1px; background: var(--gold); flex-shrink: 0; }
 .eyebrow-row { display: flex; align-items: center; gap: var(--sp-2); }
@@ -153,14 +153,14 @@ body::after {
 .index-num {
   font-family: var(--serif); font-weight: 300; line-height: 1;
   font-size: clamp(2.25rem, 5vw, 3.75rem); color: var(--green-hi);
-  letter-spacing: -0.02em; font-feature-settings: "lnum" 1;
+  letter-spacing: -0.02em; font-feature-settings: "lnum" 1; font-optical-sizing: auto;
 }
 /* section header with eyebrow + index, sits on a top hairline */
 .sec-head {
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: var(--sp-4); flex-wrap: wrap; padding-top: var(--sp-3); border-top: 1px solid var(--line);
 }
-.kicker-num { font-family: var(--serif); font-size: var(--fs-md); color: var(--green-hi); font-weight: 300; letter-spacing: 0.02em; }
+.kicker-num { font-family: var(--serif); font-size: var(--fs-md); color: var(--green-hi); font-weight: 300; letter-spacing: 0.02em; font-optical-sizing: auto; }
 
 @media (max-width: 900px) {
   .split, .split-wide { grid-template-columns: 1fr; gap: var(--sp-6); }
@@ -181,8 +181,8 @@ body::after {
 #nav.scrolled { background: rgba(20,18,14,0.82); border-color: var(--line); height: 68px; }
 .nav-logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; text-decoration: none; }
 .nav-logo img { height: 38px; width: 38px; object-fit: cover; border-radius: 1px; border: 1px solid var(--line); }
-.nav-logo .wordmark { font-family: var(--serif); font-size: 1.3125rem; color: var(--text); letter-spacing: 0; line-height: 1; }
-.nav-logo .wordmark span { font-style: italic; color: var(--gold-hi); }
+.nav-logo .wordmark { font-family: var(--serif); font-size: 1.25rem; color: var(--text); letter-spacing: 0.005em; line-height: 1; }
+.nav-logo .wordmark span { font-style: italic; color: var(--gold-hi); font-weight: 500; }
 .dnav { display: flex; align-items: center; gap: var(--sp-4); position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-link {
   font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
@@ -280,8 +280,8 @@ body::after {
 }
 .plate .monogram {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-size: clamp(72px, 14vw, 132px); font-weight: 300; font-style: italic;
-  color: rgba(230,204,142,0.08); letter-spacing: -0.04em; user-select: none; line-height: 1;
+  font-family: var(--serif); font-size: clamp(72px, 14vw, 132px); font-weight: 400; font-style: italic;
+  color: rgba(230,204,142,0.08); letter-spacing: -0.02em; user-select: none; line-height: 1;
 }
 .plate .plate-tag {
   position: absolute; left: 20px; bottom: 18px; z-index: 1;
@@ -306,7 +306,7 @@ body::after {
 .tcard:hover { border-color: var(--line-2); transform: translateY(-4px); }
 .tcard::before {
   content: '\201C'; position: absolute; top: 12px; left: var(--sp-4);
-  font-family: var(--serif); font-size: 104px; line-height: 1; color: var(--gold); opacity: 0.20; pointer-events: none;
+  font-family: var(--serif); font-style: italic; font-size: 104px; line-height: 1; color: var(--gold); opacity: 0.20; pointer-events: none;
 }
 .avatar {
   width: 44px; height: 44px; background: var(--green); border: 1px solid var(--line-2); border-radius: 50%;
@@ -427,6 +427,7 @@ footer.site-footer { background: var(--bg-2); border-top: 1px solid var(--line);
    ========================================================================== */
 .text-2 { color: var(--text-2); } .text-3 { color: var(--text-3); } .text-gold { color: var(--gold); }
 .serif { font-family: var(--serif); }
+.serif, .display, .display-i, [class*="-num"] { font-optical-sizing: auto; }
 .center { text-align: center; }
 .noise {
   position: absolute; inset: 0; pointer-events: none;
