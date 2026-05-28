@@ -9,7 +9,7 @@
     "condition": "Excellent",
     "paperwork": "Full Set",
     "status": "available",
-    "imageUrl": "https://placehold.co/500x375/111917/166649?text=Rolex+Daytona",
+    "imageUrl": "",
     "createdAt": "2026-01-10T10:00:00Z"
   },
   {
@@ -22,7 +22,7 @@
     "condition": "Mint",
     "paperwork": "Full Set",
     "status": "available",
-    "imageUrl": "https://placehold.co/500x375/111917/C4962E?text=Gold+Bars+999",
+    "imageUrl": "",
     "createdAt": "2026-01-12T09:00:00Z"
   },
   {
@@ -35,7 +35,7 @@
     "condition": "Mint",
     "paperwork": "Full Set",
     "status": "available",
-    "imageUrl": "https://placehold.co/500x375/111917/9E9583?text=Silver+Coins",
+    "imageUrl": "",
     "createdAt": "2026-01-14T11:00:00Z"
   },
   {
@@ -48,7 +48,7 @@
     "condition": "Excellent",
     "paperwork": "Full Set",
     "status": "reserved",
-    "imageUrl": "https://placehold.co/500x375/111917/C4962E?text=Diamond+Ring",
+    "imageUrl": "",
     "createdAt": "2026-01-16T14:00:00Z"
   },
   {
@@ -61,7 +61,7 @@
     "condition": "Excellent",
     "paperwork": "No Box or Papers",
     "status": "available",
-    "imageUrl": "https://placehold.co/500x375/111917/E8DFC8?text=Gold+Chain",
+    "imageUrl": "",
     "createdAt": "2026-01-18T10:30:00Z"
   },
   {
@@ -74,7 +74,7 @@
     "condition": "Mint",
     "paperwork": "Full Set",
     "status": "sold",
-    "imageUrl": "https://placehold.co/500x375/111917/166649?text=Patek+Nautilus",
+    "imageUrl": "",
     "createdAt": "2026-02-01T09:00:00Z"
   }
 ]
