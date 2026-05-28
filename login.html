@@ -10,19 +10,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:        #14120E;
-      --surface:   #1C1A14;
-      --card:      #211E17;
-      --elevated:  #262219;
-      --green:     #2E2818;
-      --green-dark:#221D12;
-      --green-mid: #4A3F25;
-      --green-hi:  #8C7A4E;
-      --cream:     #ECE5D6;
-      --cream-dim: #B8AE99;
-      --gold:      #3E8B6B;
-      --gold-hi:   #6BBF95;
-      --border:    rgba(236,229,214,0.10);
+      --bg:        #0B1410;
+      --surface:   #11211B;
+      --card:      #152821;
+      --elevated:  #193127;
+      --green:     #1B3328;
+      --green-dark:#102219;
+      --green-mid: #2F5A45;
+      --green-hi:  #5FA682;
+      --cream:     #E2EEE6;
+      --cream-dim: #9FB5A6;
+      --gold:      #4FD09A;
+      --gold-hi:   #88E8B6;
+      --border:    rgba(220,235,224,0.10);
       --red:       #C0392B;
       --ease:      cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -39,8 +39,8 @@
     .bg-layer {
       position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(140,122,78,.22) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(62,139,107,.12) 0%, transparent 50%);
+        radial-gradient(ellipse 70% 70% at 15% 50%, rgba(47,90,69,.22) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 85% 30%, rgba(79,208,154,.12) 0%, transparent 50%);
     }
     .bg-grid {
       position: fixed; inset: 0; z-index: 0;
@@ -63,7 +63,7 @@
       background: var(--card);
       border: 1px solid var(--border);
       padding: 48px 44px;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(62,139,107,0.06);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(79,208,154,0.06);
     }
 
     .logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
@@ -102,7 +102,7 @@
       -webkit-appearance: none;
     }
     .form-input::placeholder { color: var(--cream-dim); opacity: .4; }
-    .form-input:focus { border-color: var(--gold); background: #262219; box-shadow: 0 0 0 3px rgba(62,139,107,.18); }
+    .form-input:focus { border-color: var(--gold); background: #193127; box-shadow: 0 0 0 3px rgba(79,208,154,.18); }
     .form-input.error { border-color: var(--red) !important; }
     .eye-btn {
       position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -126,7 +126,7 @@
     }
     .totp-input::-webkit-outer-spin-button,
     .totp-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .totp-input:focus { border-color: var(--gold); background: #262219; box-shadow: 0 0 0 3px rgba(62,139,107,.18); }
+    .totp-input:focus { border-color: var(--gold); background: #193127; box-shadow: 0 0 0 3px rgba(79,208,154,.18); }
     .totp-input.error { border-color: var(--red) !important; }
 
     /* ── Submit btn ── */

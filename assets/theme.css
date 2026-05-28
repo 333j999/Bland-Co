@@ -1,36 +1,35 @@
 /* ============================================================================
    BLAND & CO — DESIGN SYSTEM · "MODERN MAISON"
-   Warm charcoal + emerald. Fraunces (display) · Hanken Grotesk (body/UI).
+   Forest green + jewel emerald. Fraunces (display) · Hanken Grotesk (body/UI).
    Single source of truth. Tokens → base → components → editorial → utilities.
    Type scale: Major Third (1.25). Spacing: strict 8-pt grid.
-   Colour: 60 warm-neutral / 30 deep warm tone / 10 emerald. Motion: ease-in-out only.
+   Colour: 60 forest-green neutral / 30 deep green tone / 10 jewel emerald. Motion: ease-in-out only.
    ========================================================================== */
 
 :root {
-  /* ---- Neutrals (60%) — WARM CHARCOAL ---- */
-  --bg:        #14120E;   /* page base — warm near-black */
-  --bg-2:      #161410;   /* alternate section */
-  --surface:   #1C1A14;   /* raised section */
-  --card:      #211E17;   /* card surface */
-  --card-2:    #262219;   /* elevated card / input field */
-  --line:      rgba(236,229,214,0.10);   /* warm hairline */
-  --line-2:    rgba(236,229,214,0.20);   /* hover hairline */
+  /* ---- Neutrals (60%) — FOREST GREEN ---- */
+  --bg:        #0B1410;   /* page base — deep green-black */
+  --bg-2:      #0E1814;   /* alternate section */
+  --surface:   #11211B;   /* raised section */
+  --card:      #152821;   /* card surface */
+  --card-2:    #193127;   /* elevated card / input field */
+  --line:      rgba(220,235,224,0.10);   /* green-tinted hairline */
+  --line-2:    rgba(220,235,224,0.20);   /* hover hairline */
 
-  /* ---- Text (warm champagne / ivory on charcoal) ---- */
-  --text:      #ECE5D6;   /* primary ivory  — ~13.5:1 on --bg */
-  --text-2:    #B8AE99;   /* secondary body — ~7.2:1 on --bg */
-  --text-3:    #938A77;   /* meta / muted (≥14px) — ~4.7:1 on --bg */
+  /* ---- Text (cool ivory on forest green) ---- */
+  --text:      #E2EEE6;   /* primary ivory  — ~14:1 on --bg */
+  --text-2:    #9FB5A6;   /* secondary body — ~7:1 on --bg */
+  --text-3:    #8FA899;   /* meta / muted (≥14px) — ~4.5:1 on --bg */
 
-  /* ---- Deep warm tone (secondary 30%) — repurposed --green-* family.
-     Now an olive-bronze charcoal so existing inline refs stay in-palette. ---- */
-  --green:      #2E2818;   /* deep bronze-olive field */
-  --green-dark: #221D12;   /* darkest warm tone */
-  --green-mid:  #4A3F25;   /* mid bronze */
-  --green-hi:   #8C7A4E;   /* warm bronze highlight (was the bright green) */
+  /* ---- Deep green tone (secondary 30%) — the --green-* family is actually green now ---- */
+  --green:      #1B3328;   /* deep forest field */
+  --green-dark: #102219;   /* darkest green */
+  --green-mid:  #2F5A45;   /* mid green */
+  --green-hi:   #5FA682;   /* bright green highlight */
 
-  /* ---- Emerald (accent 10%) — token names kept as --gold so inline refs cascade ---- */
-  --gold:      #3E8B6B;   /* deep emerald — CTAs / active / key marks */
-  --gold-hi:   #6BBF95;   /* bright emerald — italics / highlights */
+  /* ---- Jewel emerald (accent 10%) — token names kept as --gold so inline refs cascade ---- */
+  --gold:      #4FD09A;   /* jewel emerald — CTAs / active / key marks */
+  --gold-hi:   #88E8B6;   /* bright mint-emerald — italics / highlights */
 
   /* ---- Type scale (1.25 · base 16px) ---- */
   --fs-eyebrow: 0.6875rem;  /* 11 — tracked micro-label */
@@ -83,7 +82,7 @@ body {
 img, svg, video { display: block; max-width: 100%; }
 a { color: inherit; }
 
-::selection { background: rgba(62,139,107,0.32); color: var(--text); }
+::selection { background: rgba(79,208,154,0.32); color: var(--text); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--green-mid); border-radius: 3px; }
@@ -186,7 +185,7 @@ body::after {
 .dnav { display: flex; align-items: center; gap: var(--sp-4); position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-link {
   font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(236,229,214,0.58); text-decoration: none; position: relative; padding-bottom: 4px;
+  color: rgba(220,235,224,0.58); text-decoration: none; position: relative; padding-bottom: 4px;
   transition: color 0.25s var(--ease);
 }
 .nav-link::after {
@@ -224,11 +223,11 @@ body::after {
 }
 /* PRIMARY = champagne gold — the accent doing real work */
 .btn-primary { padding: 16px 32px; background: var(--gold); color: #1A160C; border-color: var(--gold); }
-.btn-primary:hover { background: var(--gold-hi); border-color: var(--gold-hi); transform: translateY(-2px); box-shadow: 0 14px 36px rgba(62,139,107,0.28); }
+.btn-primary:hover { background: var(--gold-hi); border-color: var(--gold-hi); transform: translateY(-2px); box-shadow: 0 14px 36px rgba(79,208,154,0.28); }
 .btn-primary:active { transform: translateY(0); }
 
 .btn-outline { padding: 15px 32px; background: transparent; color: var(--text); border-color: var(--line-2); }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold-hi); background: rgba(62,139,107,0.05); transform: translateY(-2px); }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold-hi); background: rgba(79,208,154,0.05); transform: translateY(-2px); }
 .btn-outline:active { transform: translateY(0); }
 
 /* GREEN (repurposed) = quiet deep-warm utility button (nav CTA) */
@@ -261,7 +260,7 @@ body::after {
 }
 .card:hover {
   border-color: var(--line-2); transform: translateY(-6px);
-  box-shadow: var(--shadow-card), 0 0 0 1px rgba(62,139,107,0.22);
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(79,208,154,0.22);
 }
 
 /* IN-BRAND IMAGE PLATE — premium fallback instead of grey placeholders.
@@ -269,9 +268,9 @@ body::after {
 .plate {
   position: relative; overflow: hidden; width: 100%;
   background:
-    radial-gradient(ellipse 120% 100% at 28% 18%, rgba(140,122,78,0.22) 0%, transparent 58%),
+    radial-gradient(ellipse 120% 100% at 28% 18%, rgba(47,90,69,0.22) 0%, transparent 58%),
     radial-gradient(ellipse 80% 80% at 86% 92%, rgba(34,29,18,0.6) 0%, transparent 55%),
-    linear-gradient(150deg, #221E16 0%, #14120E 100%);
+    linear-gradient(150deg, #152821 0%, #0B1410 100%);
 }
 .plate::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -281,7 +280,7 @@ body::after {
 .plate .monogram {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   font-family: var(--serif); font-size: clamp(72px, 14vw, 132px); font-weight: 400; font-style: italic;
-  color: rgba(107,191,149,0.08); letter-spacing: -0.02em; user-select: none; line-height: 1;
+  color: rgba(136,232,182,0.08); letter-spacing: -0.02em; user-select: none; line-height: 1;
 }
 .plate .plate-tag {
   position: absolute; left: 20px; bottom: 18px; z-index: 1;
@@ -297,7 +296,7 @@ body::after {
 /* badge */
 .badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px;
-  background: rgba(62,139,107,0.10); border: 1px solid rgba(62,139,107,0.35);
+  background: rgba(79,208,154,0.10); border: 1px solid rgba(79,208,154,0.35);
   font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-hi);
 }
 
@@ -330,8 +329,8 @@ body::after {
 .input::placeholder, textarea.input::placeholder { color: #756B57; }
 .input:hover, textarea.input:hover { border-color: var(--line-2); }
 .input:focus, textarea.input:focus {
-  outline: none; border-color: var(--gold); background: #2B2619;
-  box-shadow: 0 0 0 3px rgba(62,139,107,0.14);
+  outline: none; border-color: var(--gold); background: #1B3429;
+  box-shadow: 0 0 0 3px rgba(79,208,154,0.14);
 }
 textarea.input { resize: vertical; min-height: 128px; line-height: 1.7; }
 
@@ -345,12 +344,12 @@ textarea.input { resize: vertical; min-height: 128px; line-height: 1.7; }
 }
 .cselect-btn:hover { border-color: var(--line-2); }
 .cselect-btn.placeholder { color: #756B57; }
-.cselect.open .cselect-btn { border-color: var(--gold); background: #2B2619; box-shadow: 0 0 0 3px rgba(62,139,107,0.14); }
+.cselect.open .cselect-btn { border-color: var(--gold); background: #1B3429; box-shadow: 0 0 0 3px rgba(79,208,154,0.14); }
 .cselect-btn .chev { transition: transform 0.3s var(--ease); flex-shrink: 0; opacity: 0.6; }
 .cselect.open .cselect-btn .chev { transform: rotate(180deg); }
 .cselect-list {
   position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 30;
-  background: #221E16; border: 1px solid var(--line-2); box-shadow: var(--shadow-card);
+  background: #152821; border: 1px solid var(--line-2); box-shadow: var(--shadow-card);
   max-height: 280px; overflow-y: auto; opacity: 0; transform: translateY(-6px); pointer-events: none;
   transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
 }
@@ -359,7 +358,7 @@ textarea.input { resize: vertical; min-height: 128px; line-height: 1.7; }
   padding: 12px 16px; font-size: var(--fs-sm); color: var(--text-2); cursor: pointer;
   transition: background 0.2s var(--ease), color 0.2s var(--ease); display: flex; align-items: center; gap: 10px;
 }
-.cselect-opt:hover, .cselect-opt.active { background: rgba(62,139,107,0.14); color: var(--text); }
+.cselect-opt:hover, .cselect-opt.active { background: rgba(79,208,154,0.14); color: var(--text); }
 .cselect-opt.active::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 .cselect-opt:not(.active)::before { content: ''; width: 5px; height: 5px; flex-shrink: 0; }
 
@@ -374,12 +373,12 @@ textarea.input { resize: vertical; min-height: 128px; line-height: 1.7; }
   position: relative; border: 1px dashed var(--line-2); padding: var(--sp-5) var(--sp-4); text-align: center;
   background: rgba(38,34,25,0.5); transition: border-color 0.3s var(--ease), background 0.3s var(--ease); cursor: pointer;
 }
-.file-zone:hover, .file-zone.drag { border-color: var(--gold); background: rgba(62,139,107,0.07); }
+.file-zone:hover, .file-zone.drag { border-color: var(--gold); background: rgba(79,208,154,0.07); }
 .file-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
 /* submit success panel */
 .success-panel {
-  padding: var(--sp-5); background: rgba(62,139,107,0.10); border: 1px solid var(--gold);
+  padding: var(--sp-5); background: rgba(79,208,154,0.10); border: 1px solid var(--gold);
   text-align: center; animation: popIn 0.5s var(--ease) both;
 }
 .success-panel .tick {
@@ -401,7 +400,7 @@ footer.site-footer { background: var(--bg-2); border-top: 1px solid var(--line);
   width: 36px; height: 36px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
   color: var(--text-3); text-decoration: none; transition: border-color 0.3s var(--ease), color 0.3s var(--ease), background 0.3s var(--ease);
 }
-.social-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(62,139,107,0.06); }
+.social-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(79,208,154,0.06); }
 .footer-bottom { border-top: 1px solid var(--line); padding-top: var(--sp-3); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-2); }
 
 /* ============================================================================

@@ -16,11 +16,11 @@
     /* PAGE HEAD — editorial split with feature plate */
     .page-head { position: relative; overflow: hidden; padding-top: var(--nav-h); }
     .page-head .ph-glow { position: absolute; inset: 0; z-index: 0;
-      background: radial-gradient(ellipse 70% 70% at 18% 50%, rgba(140,122,78,0.18) 0%, transparent 55%),
-                  radial-gradient(ellipse 45% 45% at 86% 28%, rgba(62,139,107,0.10) 0%, transparent 52%); }
+      background: radial-gradient(ellipse 70% 70% at 18% 50%, rgba(47,90,69,0.18) 0%, transparent 55%),
+                  radial-gradient(ellipse 45% 45% at 86% 28%, rgba(79,208,154,0.10) 0%, transparent 52%); }
     .page-head .ph-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      background-image: repeating-linear-gradient(90deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px),
-                        repeating-linear-gradient(0deg, rgba(236,229,214,0.014) 0 1px, transparent 1px 112px); }
+      background-image: repeating-linear-gradient(90deg, rgba(220,235,224,0.014) 0 1px, transparent 1px 112px),
+                        repeating-linear-gradient(0deg, rgba(220,235,224,0.014) 0 1px, transparent 1px 112px); }
     .ph-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.12fr 0.88fr;
       gap: clamp(var(--sp-6), 5vw, var(--sp-10)); align-items: end;
       padding-top: var(--sp-10); padding-bottom: var(--sp-8); }
@@ -28,16 +28,16 @@
 
     .ph-plate { position: relative; aspect-ratio: 4/3.4; min-height: 300px; border: 1px solid var(--line);
       background:
-        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(62,139,107,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 130% 90% at 30% 12%, rgba(79,208,154,0.16) 0%, transparent 55%),
         radial-gradient(ellipse 90% 80% at 80% 95%, rgba(34,29,18,0.7) 0%, transparent 55%),
-        linear-gradient(155deg, #2A2417 0%, #14120E 100%);
+        linear-gradient(155deg, #1A3328 0%, #0B1410 100%);
       overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: var(--sp-4); }
     .ph-plate::before { content: ""; position: absolute; inset: 0; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='phn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23phn)'/%3E%3C/svg%3E");
       opacity: 0.05; mix-blend-mode: overlay; }
     .ph-plate .hp-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
       font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(140px, 24vw, 240px);
-      color: rgba(107,191,149,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+      color: rgba(136,232,182,0.06); line-height: 1; user-select: none; letter-spacing: -0.04em; }
     .ph-plate .hp-top, .ph-plate .hp-bot { position: relative; z-index: 1; }
     .ph-plate .hp-top { display: flex; justify-content: space-between; align-items: flex-start; }
     .ph-plate .hp-tag { font-size: var(--fs-eyebrow); letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
@@ -56,7 +56,7 @@
     .group-h { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--sp-3); padding-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
     .group-h .kicker-num { font-size: var(--fs-base); color: var(--green-hi); }
     .stack { display: flex; flex-direction: column; gap: var(--sp-2); }
-    .cselect-btn.invalid, .input.invalid { border-color: rgba(62,139,107,0.6); }
+    .cselect-btn.invalid, .input.invalid { border-color: rgba(79,208,154,0.6); }
     .side-card { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-5); }
     .trust-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--card-2); border: 1px solid var(--line); transition: border-color 0.3s var(--ease); }
     .trust-item:hover { border-color: var(--line-2); }
