@@ -15,7 +15,7 @@
     /* ---- page-specific · Modern Maison ---- */
     .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
     .page-head .glow { position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(201,162,75,0.12) 0%, transparent 60%),
+      background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(62,139,107,0.12) 0%, transparent 60%),
                   radial-gradient(ellipse 50% 50% at 14% 30%, rgba(140,122,78,0.10) 0%, transparent 55%); }
     .page-head .pg-meta { font-size: var(--fs-xs); color: var(--text-3); letter-spacing: 0.04em; text-align: right; }
 
@@ -23,14 +23,14 @@
     .form-card { background: var(--card); border: 1px solid var(--line); padding: clamp(var(--sp-4), 4vw, var(--sp-6)); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
     .stack { display: flex; flex-direction: column; gap: var(--sp-3); }
-    .input.invalid, .time-btn.invalid { border-color: rgba(201,162,75,0.6); box-shadow: 0 0 0 3px rgba(201,162,75,0.10); }
+    .input.invalid, .time-btn.invalid { border-color: rgba(62,139,107,0.6); box-shadow: 0 0 0 3px rgba(62,139,107,0.10); }
 
     /* purpose cards */
     .purpose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .purpose-card { position: relative; }
     .purpose-card input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
     .purpose-label { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 22px 12px; background: var(--card-2); border: 1px solid var(--line); text-align: center; cursor: pointer; transition: border-color 0.3s var(--ease), background 0.3s var(--ease); height: 140px; }
-    .purpose-card input:checked + .purpose-label { border-color: var(--gold); background: rgba(201,162,75,0.10); }
+    .purpose-card input:checked + .purpose-label { border-color: var(--gold); background: rgba(62,139,107,0.10); }
     .purpose-card input:checked + .purpose-label svg { stroke: var(--gold-hi); }
     .purpose-card input:focus-visible + .purpose-label { outline: 2px solid var(--gold); outline-offset: 3px; }
     .purpose-label:hover { border-color: var(--line-2); }
@@ -41,14 +41,14 @@
     .time-wrap { position: relative; }
     .time-btn { width: 100%; background: var(--card-2); border: 1px solid var(--line); color: #756B57; padding: 15px 16px; font-family: var(--sans); font-size: var(--fs-base); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease); text-align: left; }
     .time-btn.selected { color: var(--text); }
-    .time-btn.open { border-color: var(--gold); background: #2B2619; box-shadow: 0 0 0 3px rgba(201,162,75,0.14); }
+    .time-btn.open { border-color: var(--gold); background: #2B2619; box-shadow: 0 0 0 3px rgba(62,139,107,0.14); }
     .time-btn svg { flex-shrink: 0; transition: transform 0.3s var(--ease); opacity: 0.6; }
     .time-btn.open svg { transform: rotate(180deg); }
     .time-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #221E16; border: 1px solid var(--line-2); z-index: 50; max-height: 260px; overflow-y: auto; display: none; box-shadow: var(--shadow-card); }
     .time-list.open { display: block; }
     .time-opt { padding: 11px 16px; font-size: var(--fs-sm); color: var(--text-2); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); }
-    .time-opt:hover { background: rgba(201,162,75,0.14); color: var(--text); }
-    .time-opt.active { background: rgba(201,162,75,0.20); color: var(--text); }
+    .time-opt:hover { background: rgba(62,139,107,0.14); color: var(--text); }
+    .time-opt.active { background: rgba(62,139,107,0.20); color: var(--text); }
     .time-opt.disabled { opacity: 0.25; cursor: default; pointer-events: none; }
 
     .info-block { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-4); }
@@ -73,7 +73,7 @@
     .flatpickr-days, .dayContainer { border: none !important; }
     .flatpickr-day { color: var(--text) !important; border-radius: 0 !important; border: 1px solid transparent !important; font-size: 13px !important; transition: background 0.15s, border-color 0.15s !important; }
     .flatpickr-day:hover { background: rgba(140,122,78,0.22) !important; border-color: var(--gold) !important; }
-    .flatpickr-day.today { border-color: rgba(201,162,75,0.4) !important; background: transparent !important; }
+    .flatpickr-day.today { border-color: rgba(62,139,107,0.4) !important; background: transparent !important; }
     .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--gold) !important; border-color: var(--gold) !important; color: #1A160C !important; }
     .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(236,229,214,0.2) !important; }
     .numInputWrapper span { border: none !important; }
@@ -178,7 +178,7 @@
                 </div>
               </div>
 
-              <div id="satNote" style="display:none;padding:12px 16px;background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.2);">
+              <div id="satNote" style="display:none;padding:12px 16px;background:rgba(62,139,107,0.06);border:1px solid rgba(62,139,107,0.2);">
                 <p style="font-size:var(--fs-xs);color:var(--gold);line-height:1.6;">Saturday appointments run 10:00 AM – 4:00 PM. Times outside this window will be adjusted.</p>
               </div>
 
@@ -325,7 +325,7 @@
     e.preventDefault();
     const form = e.target;
     const privacy = document.getElementById('privacy');
-    if (!privacy.checked) { privacy.style.outline = '1px solid rgba(201,162,75,0.6)'; return; }
+    if (!privacy.checked) { privacy.style.outline = '1px solid rgba(62,139,107,0.6)'; return; }
 
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const phoneRe = /^[\+\d][\d\s\-\(\)\.]{6,19}$/;
