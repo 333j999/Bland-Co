@@ -1395,9 +1395,73 @@ async function clearHeroVideo() {
 
 
 // ══════════════════════════════════════════════════════════════════════
+// New-lead notifications — poll quietly; toast ONLY when a genuinely new
+// enquiry / valuation / consultation arrives (never for ones already seen).
+// ══════════════════════════════════════════════════════════════════════
+const LEAD_TYPES = [
+  { r: 'enquiries',     label: 'enquiry' },
+  { r: 'valuations',    label: 'valuation request' },
+  { r: 'consultations', label: 'consultation booking' },
+];
+let _seenLeads = (() => { try { return new Set(JSON.parse(localStorage.getItem('admin_seen_leads') || '[]')); } catch { return new Set(); } })();
+// First-ever use (no stored set) → seed silently. Returning session → anything not yet
+// seen is genuinely new (arrived while you were away) and gets announced.
+let _leadBaseline = localStorage.getItem('admin_seen_leads') !== null;
+function saveSeenLeads() { try { localStorage.setItem('admin_seen_leads', JSON.stringify([..._seenLeads].slice(-800))); } catch {} }
+
+async function pollLeads() {
+  const fresh = [];
+  for (const { r, label } of LEAD_TYPES) {
+    const rows = await api.get(r).catch(() => null);
+    if (!Array.isArray(rows)) continue;
+    S[r] = rows;
+    for (const it of rows) {
+      if (!it || !it.id || _seenLeads.has(it.id)) continue;
+      _seenLeads.add(it.id);
+      if (_leadBaseline) fresh.push({ it, label, r });
+    }
+  }
+  saveSeenLeads();
+  if (!_leadBaseline) { _leadBaseline = true; return; }   // silent first-run baseline
+  if (!fresh.length) return;
+
+  if (fresh.length > 3) notifyLead(`${fresh.length} new leads`, { name: 'Open to review' }, fresh[0].r);
+  else fresh.forEach(f => notifyLead(`New ${f.label}`, f.it, f.r));
+  try { leadBeep(); } catch {}
+  const stats = await api.stats().catch(() => null);
+  if (stats) updateSidebar(stats);
+  renderSection(S.section);
+}
+function startLeadWatch() { pollLeads(); setInterval(pollLeads, 45000); }
+
+function notifyLead(title, it, resource) {
+  const wrap = document.getElementById('toast'); if (!wrap) return;
+  const el = document.createElement('div');
+  el.className = 'toast-item success';
+  el.style.cursor = 'pointer';
+  const who = esc(it.name || it.email || 'Someone');
+  const extra = it.subject ? ' · ' + esc(it.subject) : '';
+  el.innerHTML = `<strong style="display:block;margin-bottom:2px;">${esc(title)}</strong><span style="opacity:.85;font-size:12px;">${who}${extra}</span>`;
+  el.onclick = () => { nav(resource); el.remove(); };
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 9000);
+}
+
+function leadBeep() {
+  const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+  const ctx = new Ctx(), o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = 'sine'; o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+  g.gain.setValueAtTime(0.0001, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.07, ctx.currentTime + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+  o.start(); o.stop(ctx.currentTime + 0.26);
+}
+
+// ══════════════════════════════════════════════════════════════════════
 // Boot
 // ══════════════════════════════════════════════════════════════════════
 loadAll();
+startLeadWatch();
 </script>
 </body>
 </html>
