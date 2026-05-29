@@ -4,7 +4,9 @@ import { extname, join }                                        from 'path';
 import { fileURLToPath }                                        from 'url';
 import { randomUUID, pbkdf2Sync, randomBytes,
          createHmac, createHash, timingSafeEqual }              from 'crypto';
+import r2lib                                                    from './api/_lib/r2.js';
 
+const { presignR2Put, buildKey } = r2lib;
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PORT      = process.env.PORT || 3000;
 const DATA_DIR  = join(__dirname, 'data');
@@ -256,23 +258,23 @@ const server = createServer(async (req, res) => {
   }
 
   // ── Upload authorisation (/api/upload-signature) — mirrors api/upload-signature.js ──
-  // Credentials live here, not in the browser. Image uploads are public (valuation form),
-  // video uploads require an admin session.
+  // Issues a Cloudflare R2 presigned PUT URL. The R2 secret lives here, not in the browser.
+  // Image uploads are public (valuation form); video uploads require an admin session.
   if (urlPath === '/api/upload-signature') {
     if (method !== 'GET' && method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
-    const resourceType = (req.url.split('?')[1] || '').includes('kind=video') ? 'video' : 'image';
+    const params = new URL(req.url, 'http://x').searchParams;
+    const resourceType = (params.get('kind') || 'image').toLowerCase() === 'video' ? 'video' : 'image';
     if (resourceType === 'video' && !checkSession(req)) return json(res, 401, { error: 'Unauthorised' });
-    const CLOUD  = process.env.CLOUDINARY_CLOUD_NAME;
-    const KEY    = process.env.CLOUDINARY_API_KEY;
-    const SECRET = process.env.CLOUDINARY_API_SECRET;
-    const PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
-    const folder = resourceType === 'video' ? 'bland-co/site' : 'bland-co/valuations';
-    if (KEY && SECRET) {
-      const timestamp = Math.round(Date.now() / 1000);
-      const signature = createHash('sha1').update(`folder=${folder}&timestamp=${timestamp}` + SECRET).digest('hex');
-      return json(res, 200, { mode: 'signed', cloudName: CLOUD, apiKey: KEY, timestamp, folder, signature, resourceType });
+    const ACCOUNT = process.env.R2_ACCOUNT_ID, ACCESS_KEY = process.env.R2_ACCESS_KEY_ID,
+          SECRET_KEY = process.env.R2_SECRET_ACCESS_KEY, BUCKET = process.env.R2_BUCKET,
+          PUBLIC_BASE = (process.env.R2_PUBLIC_BASE_URL || '').replace(/\/+$/, '');
+    if (!ACCOUNT || !ACCESS_KEY || !SECRET_KEY || !BUCKET || !PUBLIC_BASE) {
+      return json(res, 500, { error: 'Uploads are not configured. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_BASE_URL.' });
     }
-    return json(res, 200, { mode: 'unsigned', cloudName: CLOUD, uploadPreset: PRESET, folder, resourceType });
+    const folder = resourceType === 'video' ? 'videos' : 'images';
+    const key = buildKey(folder, params.get('filename') || params.get('name') || '');
+    const uploadUrl = presignR2Put({ accountId: ACCOUNT, accessKeyId: ACCESS_KEY, secretAccessKey: SECRET_KEY, bucket: BUCKET, key, expires: 600 });
+    return json(res, 200, { provider: 'r2', method: 'PUT', uploadUrl, publicUrl: `${PUBLIC_BASE}/${key}`, key, resourceType });
   }
 
   // ── Protected API (/api/*) — session required ─────────────────────────────

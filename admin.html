@@ -1072,7 +1072,7 @@ function openInventoryModal(item, onSaveCallback) {
           <input type="file" id="media-input" accept="image/*,video/*" multiple onchange="handleMediaFiles(this.files);this.value='';">
           <svg width="30" height="30" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="opacity:.5;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
           <p style="font-size:13px;color:var(--cream-dim);margin-top:8px;">Drag &amp; drop photos / videos, or <span style="color:var(--green-mid)">browse</span></p>
-          <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:4px;">First photo is the cover · JPEG/PNG/WebP · MP4/MOV (max 50 MB)</p>
+          <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:4px;">First photo is the cover · JPEG/PNG/WebP · video best as MP4 (max 50 MB)</p>
         </div>
         <div id="media-grid" class="media-grid"></div>
         <div style="display:flex;gap:8px;margin-top:10px;">
@@ -1149,7 +1149,7 @@ async function handleMediaFiles(files) {
     if (grid) grid.appendChild(tile);
     const prog = tile.querySelector('.mt-prog');
     try {
-      const url = await uploadToCloudinary(file, isVideo ? 'video' : 'image', p => { if (prog) prog.textContent = Math.round(p) + '%'; });
+      const url = await uploadToR2(file, isVideo ? 'video' : 'image', p => { if (prog) prog.textContent = Math.round(p) + '%'; });
       if (isVideo) _media.videos.push(url); else _media.images.push(url);
     } catch (err) {
       toast(`Upload failed — ${err.message}`, 'error');
@@ -1159,36 +1159,26 @@ async function handleMediaFiles(files) {
   }
 }
 
-// Generic direct-to-Cloudinary upload. kind = 'image' | 'video'. Returns the secure URL.
-// The server issues a short-lived authorisation; no Cloudinary secret ever reaches the page.
-async function uploadToCloudinary(file, kind, onProgress) {
-  const sigRes = await fetch(`/api/upload-signature?kind=${kind}`, { headers: authHeaders() });
+// Generic direct-to-R2 upload. kind = 'image' | 'video'. Returns the public URL.
+// The server issues a short-lived presigned PUT URL; no R2 secret ever reaches the page.
+async function uploadToR2(file, kind, onProgress) {
+  const sigRes = await fetch(`/api/upload-signature?kind=${kind}&filename=${encodeURIComponent(file.name || '')}`, { headers: authHeaders() });
   if (!sigRes.ok) throw new Error(sigRes.status === 401 ? 'Session expired — log in again' : 'Upload not authorised');
   const cfg = await sigRes.json();
-  const fd = new FormData();
-  fd.append('file', file);
-  if (cfg.mode === 'signed') {
-    fd.append('api_key', cfg.apiKey);
-    fd.append('timestamp', cfg.timestamp);
-    fd.append('signature', cfg.signature);
-    if (cfg.folder) fd.append('folder', cfg.folder);
-  } else {
-    fd.append('upload_preset', cfg.uploadPreset);
-  }
-  return await new Promise((resolve, reject) => {
+  await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`);
+    xhr.open('PUT', cfg.uploadUrl);
+    if (file.type) xhr.setRequestHeader('Content-Type', file.type);
     xhr.upload.onprogress = e => { if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total * 100); };
-    xhr.onload = () => {
-      try { const d = JSON.parse(xhr.responseText); d.secure_url ? resolve(d.secure_url) : reject(new Error((d.error && d.error.message) || 'Upload failed')); }
-      catch { reject(new Error('Upload failed')); }
-    };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve() : reject(new Error(`Upload failed (${xhr.status})`));
     xhr.onerror = () => reject(new Error('Network error'));
-    xhr.send(fd);
+    xhr.send(file);
   });
+  return cfg.publicUrl;
 }
 
-// Cloudinary stores .mov as-is; request an .mp4 rendition for cross-browser <video> playback.
+// R2 serves files at their stored extension; videos are uploaded as .mp4 (the seed converts
+// .mov → .mp4). Passthrough kept so any legacy Cloudinary URLs still resolve to .mp4.
 function toMp4(url) { return /res\.cloudinary\.com/.test(url || '') ? url.replace(/\.(mov|m4v|webm|avi)$/i, '.mp4') : url; }
 
 function openTestimonialModal(item) {
@@ -1350,7 +1340,7 @@ function resetVideoZone() {
     <input type="file" id="vid-input" accept="video/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="handleVideoFile(this.files[0])">
     <svg width="36" height="36" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="margin:0 auto 14px;display:block;opacity:.4;"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
     <p style="font-size:13px;color:var(--cream-dim);">Drag &amp; drop a video here, or <span style="color:var(--green-mid)">click to browse</span></p>
-    <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:6px;">MP4, MOV, WebM accepted · Max 50 MB</p>`;
+    <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:6px;">MP4 recommended (best browser playback) · Max 50 MB</p>`;
   const uploading = document.getElementById('vid-uploading');
   if (uploading) uploading.style.display = 'none';
 }
@@ -1367,34 +1357,9 @@ async function handleVideoFile(file) {
   setUploadProgress(0);
 
   try {
-    // Backend issues the Cloudinary authorisation (admin session required for video);
-    // credentials never live in this page.
-    const sigRes = await fetch('/api/upload-signature?kind=video', { headers: authHeaders() });
-    if (!sigRes.ok) throw new Error(sigRes.status === 401 ? 'Session expired — log in again' : 'Upload not authorised');
-    const cfg = await sigRes.json();
-
-    const fd = new FormData();
-    fd.append('file', file);
-    if (cfg.mode === 'signed') {
-      fd.append('api_key', cfg.apiKey);
-      fd.append('timestamp', cfg.timestamp);
-      fd.append('signature', cfg.signature);
-      if (cfg.folder) fd.append('folder', cfg.folder);
-    } else {
-      fd.append('upload_preset', cfg.uploadPreset);
-    }
-
-    const xhr = new XMLHttpRequest();
-    const url = await new Promise((resolve, reject) => {
-      xhr.open('POST', `https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`);
-      xhr.upload.onprogress = e => { if (e.lengthComputable) setUploadProgress(e.loaded / e.total * 90); };
-      xhr.onload = () => {
-        const data = JSON.parse(xhr.responseText);
-        data.secure_url ? resolve(data.secure_url) : reject(new Error(data.error?.message || 'Upload failed'));
-      };
-      xhr.onerror = () => reject(new Error('Network error'));
-      xhr.send(fd);
-    });
+    // Direct-to-R2 upload via a server-issued presigned URL (admin session required for
+    // video); no R2 secret ever lives in this page.
+    const url = await uploadToR2(file, 'video', p => setUploadProgress(p * 0.9));
 
     setUploadProgress(95);
     await fetch('/api/site', {
