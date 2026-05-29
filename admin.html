@@ -168,6 +168,21 @@
     textarea.form-control { resize: vertical; min-height: 78px; }
     select.form-control { cursor: pointer; }
     select.form-control option { background: var(--surface); }
+    /* ── Media uploader (inventory) ── */
+    .media-drop { position: relative; border: 1px dashed var(--border); padding: 18px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+    .media-drop.drag, .media-drop:hover { border-color: var(--green-mid); background: rgba(47,90,69,0.08); }
+    .media-drop input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; margin-top: 12px; }
+    .media-grid:empty { display: none; }
+    .media-tile { position: relative; aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+    .media-tile.cover { border-color: var(--gold); }
+    .media-tile img, .media-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .media-tile .mt-x { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border: none; background: rgba(6,10,8,0.74); color: #fff; cursor: pointer; font-size: 12px; line-height: 20px; padding: 0; }
+    .media-tile .mt-tag { position: absolute; bottom: 3px; left: 3px; font-size: 9px; letter-spacing: .07em; text-transform: uppercase; padding: 2px 5px; border: none; }
+    .media-tile .mt-cover { background: var(--gold); color: #06140d; }
+    .media-tile .mt-make { background: rgba(6,10,8,0.74); color: var(--cream); cursor: pointer; }
+    .media-tile .mt-vid { position: absolute; top: 3px; left: 3px; font-size: 9px; background: rgba(6,10,8,0.74); color: var(--cream); padding: 2px 5px; }
+    .media-tile .mt-prog { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,10,8,0.62); color: var(--cream); font-size: 11px; }
 
     /* ── Toggle ── */
     .toggle { position: relative; width: 36px; height: 20px; cursor: pointer; display: inline-block; }
@@ -1028,6 +1043,12 @@ let _onInventorySave = null;
 function openInventoryModal(item, onSaveCallback) {
   _onInventorySave = onSaveCallback || null;
   const isEdit = item && item.id;
+  // Media state — supports the legacy single `imageUrl` as well as the new arrays.
+  _media = {
+    images: (Array.isArray(item?.images) && item.images.length) ? item.images.slice()
+            : (item?.imageUrl ? [item.imageUrl] : []),
+    videos: Array.isArray(item?.videos) ? item.videos.slice() : [],
+  };
   setModal(isEdit ? `Edit — ${item.name}` : 'Add Inventory Item', `
     <div class="form-grid">
       <div class="form-group form-span"><label class="form-label">Name *</label><input class="form-control" id="f-name" placeholder="e.g. Rolex Submariner" value="${esc(item?.name||'')}"></div>
@@ -1045,19 +1066,33 @@ function openInventoryModal(item, onSaveCallback) {
       <div class="form-group"><label class="form-label">Paperwork</label>
         <select class="form-control" id="f-paper">${['Full Set','Box Only','Papers Only','No Box or Papers','Unknown'].map(p=>`<option${item?.paperwork===p?' selected':''}>${p}</option>`).join('')}</select>
       </div>
-      <div class="form-group form-span"><label class="form-label">Image URL</label><input class="form-control" id="f-img" placeholder="https://…" value="${esc(item?.imageUrl||'')}"></div>
+      <div class="form-group form-span">
+        <label class="form-label">Photos &amp; Video</label>
+        <div id="media-drop" class="media-drop" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="mediaDrop(event)">
+          <input type="file" id="media-input" accept="image/*,video/*" multiple onchange="handleMediaFiles(this.files);this.value='';">
+          <svg width="30" height="30" fill="none" stroke="var(--cream-dim)" stroke-width="1" viewBox="0 0 24 24" style="opacity:.5;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <p style="font-size:13px;color:var(--cream-dim);margin-top:8px;">Drag &amp; drop photos / videos, or <span style="color:var(--green-mid)">browse</span></p>
+          <p style="font-size:11px;color:rgba(158,149,131,.45);margin-top:4px;">First photo is the cover · JPEG/PNG/WebP · MP4/MOV (max 50 MB)</p>
+        </div>
+        <div id="media-grid" class="media-grid"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <input class="form-control" id="f-img-url" placeholder="…or paste an image URL" style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();addMediaUrl();}">
+          <button type="button" class="btn btn-sm btn-outline" onclick="addMediaUrl()">Add URL</button>
+        </div>
+      </div>
       <div class="form-group form-span"><label class="form-label">Description</label><textarea class="form-control" id="f-desc" rows="3">${esc(item?.description||'')}</textarea></div>
     </div>`,
     `<button class="btn btn-outline" onclick="closeModal()">Cancel</button>
      <button class="btn btn-green" onclick="saveInventory(${isEdit?`'${item.id}'`:'null'})">${isEdit?'Save Changes':'Add Item'}</button>`
   );
+  renderMediaGrid();
 }
 
 async function saveInventory(id) {
   const name  = document.getElementById('f-name').value.trim();
   const price = document.getElementById('f-price').value;
   if (!name || !price) { toast('Name and price are required', 'error'); return; }
-  const payload = { name, category: document.getElementById('f-cat').value, status: document.getElementById('f-status').value, price: Number(price), reference: document.getElementById('f-ref').value.trim(), condition: document.getElementById('f-cond').value, paperwork: document.getElementById('f-paper').value, imageUrl: document.getElementById('f-img').value.trim(), description: document.getElementById('f-desc').value.trim() };
+  const payload = { name, category: document.getElementById('f-cat').value, status: document.getElementById('f-status').value, price: Number(price), reference: document.getElementById('f-ref').value.trim(), condition: document.getElementById('f-cond').value, paperwork: document.getElementById('f-paper').value, imageUrl: (_media.images[0] || ''), images: _media.images.slice(), videos: _media.videos.slice(), description: document.getElementById('f-desc').value.trim() };
   let newItem;
   if (id) { newItem = await api.put('inventory', id, payload); toast('Item updated'); }
   else    { newItem = await api.post('inventory', payload);    toast('Item added'); }
@@ -1065,6 +1100,96 @@ async function saveInventory(id) {
   if (_onInventorySave) { await _onInventorySave(newItem); _onInventorySave = null; }
   await reload('inventory');
 }
+
+// ── Inventory media (multiple photos + video) ─────────────────────────────────
+let _media = { images: [], videos: [] };
+
+function renderMediaGrid() {
+  const grid = document.getElementById('media-grid');
+  if (!grid) return;
+  const tiles = [];
+  _media.images.forEach((url, i) => {
+    tiles.push(`<div class="media-tile${i===0?' cover':''}">
+      <img src="${esc(url)}" alt="" onerror="this.style.opacity=.25">
+      <button class="mt-x" title="Remove" onclick="removeMedia('images',${i})">✕</button>
+      ${i===0 ? `<span class="mt-tag mt-cover">Cover</span>`
+              : `<button class="mt-tag mt-make" onclick="makeCover(${i})">Set cover</button>`}
+    </div>`);
+  });
+  _media.videos.forEach((url, i) => {
+    tiles.push(`<div class="media-tile">
+      <video src="${esc(toMp4(url))}" muted playsinline preload="metadata"></video>
+      <span class="mt-vid">▶ Video</span>
+      <button class="mt-x" title="Remove" onclick="removeMedia('videos',${i})">✕</button>
+    </div>`);
+  });
+  grid.innerHTML = tiles.join('');
+}
+
+function removeMedia(kind, i) { _media[kind].splice(i, 1); renderMediaGrid(); }
+function makeCover(i) { const [u] = _media.images.splice(i, 1); _media.images.unshift(u); renderMediaGrid(); }
+function addMediaUrl() {
+  const el = document.getElementById('f-img-url'); if (!el) return;
+  const url = el.value.trim(); if (!url) return;
+  _media.images.push(url); el.value = ''; renderMediaGrid();
+}
+function mediaDrop(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag');
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) handleMediaFiles(e.dataTransfer.files);
+}
+
+async function handleMediaFiles(files) {
+  const grid = document.getElementById('media-grid');
+  for (const file of Array.from(files)) {
+    const isVideo = (file.type || '').startsWith('video') || /\.(mov|mp4|webm|m4v)$/i.test(file.name);
+    if (isVideo && file.size > 50 * 1024 * 1024) { toast(`"${file.name}" is over 50 MB`, 'error'); continue; }
+    const tile = document.createElement('div');           // optimistic progress tile
+    tile.className = 'media-tile';
+    tile.innerHTML = `<div class="mt-prog">0%</div>`;
+    if (grid) grid.appendChild(tile);
+    const prog = tile.querySelector('.mt-prog');
+    try {
+      const url = await uploadToCloudinary(file, isVideo ? 'video' : 'image', p => { if (prog) prog.textContent = Math.round(p) + '%'; });
+      if (isVideo) _media.videos.push(url); else _media.images.push(url);
+    } catch (err) {
+      toast(`Upload failed — ${err.message}`, 'error');
+    }
+    tile.remove();
+    renderMediaGrid();
+  }
+}
+
+// Generic direct-to-Cloudinary upload. kind = 'image' | 'video'. Returns the secure URL.
+// The server issues a short-lived authorisation; no Cloudinary secret ever reaches the page.
+async function uploadToCloudinary(file, kind, onProgress) {
+  const sigRes = await fetch(`/api/upload-signature?kind=${kind}`, { headers: authHeaders() });
+  if (!sigRes.ok) throw new Error(sigRes.status === 401 ? 'Session expired — log in again' : 'Upload not authorised');
+  const cfg = await sigRes.json();
+  const fd = new FormData();
+  fd.append('file', file);
+  if (cfg.mode === 'signed') {
+    fd.append('api_key', cfg.apiKey);
+    fd.append('timestamp', cfg.timestamp);
+    fd.append('signature', cfg.signature);
+    if (cfg.folder) fd.append('folder', cfg.folder);
+  } else {
+    fd.append('upload_preset', cfg.uploadPreset);
+  }
+  return await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`);
+    xhr.upload.onprogress = e => { if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total * 100); };
+    xhr.onload = () => {
+      try { const d = JSON.parse(xhr.responseText); d.secure_url ? resolve(d.secure_url) : reject(new Error((d.error && d.error.message) || 'Upload failed')); }
+      catch { reject(new Error('Upload failed')); }
+    };
+    xhr.onerror = () => reject(new Error('Network error'));
+    xhr.send(fd);
+  });
+}
+
+// Cloudinary stores .mov as-is; request an .mp4 rendition for cross-browser <video> playback.
+function toMp4(url) { return /res\.cloudinary\.com/.test(url || '') ? url.replace(/\.(mov|m4v|webm|avi)$/i, '.mp4') : url; }
 
 function openTestimonialModal(item) {
   const isEdit = !!item;
