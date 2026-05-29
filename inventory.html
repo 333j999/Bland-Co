@@ -213,22 +213,25 @@
     const name = item.name || item.title || 'Unnamed Item';
     const ref = item.reference || item.ref || item.model || '';
     const desc = item.description || '';
-    const legacy = item.imageUrl || item.image || item.img || '';
-    const images = (Array.isArray(item.images) && item.images.length) ? item.images : (legacy ? [legacy] : []);
-    const videos = Array.isArray(item.videos) ? item.videos : [];
-    const cover  = images[0] || '';
-    const hasGallery = images.length > 1 || videos.length > 0;
-    if (hasGallery) { (window.__galleries = window.__galleries || {})[item.id] = { images, videos, name }; }
+    const legacy  = item.imageUrl || item.image || item.img || '';
+    const images  = Array.isArray(item.images) ? item.images : [];
+    const videos  = Array.isArray(item.videos) ? item.videos : [];
+    const posters = Array.isArray(item.videoPosters) ? item.videoPosters : [];
+    // Card cover prefers the small generated thumbnail (fast); falls back gracefully.
+    const cover = item.thumb || images[0] || posters[0] || legacy || '';
+    const total = images.length + videos.length;
+    const clickable = total > 0;
+    if (total > 0) { (window.__galleries = window.__galleries || {})[item.id] = { images, videos, posters, name }; }
 
     // In-brand monogram plate is always the base. A real photo (when present) sits on top;
     // if it fails to load it's hidden and the plate shows through — never a grey placeholder.
     const photo = cover
-      ? `<img src="${esc(cover)}" alt="${esc(name)}" class="img-fill" style="position:absolute;inset:0;z-index:1;" onerror="this.style.display='none'"><div style="position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(6,10,8,.5),transparent 50%);pointer-events:none;"></div>`
+      ? `<img src="${esc(cover)}" alt="${esc(name)}" class="img-fill" loading="lazy" decoding="async" style="position:absolute;inset:0;z-index:1;" onerror="this.style.display='none'"><div style="position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(6,10,8,.5),transparent 50%);pointer-events:none;"></div>`
       : '';
-    const counter = hasGallery
-      ? `<span class="media-count">${images.length>1?`<span>▦ ${images.length}</span>`:''}${videos.length?`<span>▶ ${videos.length}</span>`:''}</span>`
+    const counter = (images.length > 1 || videos.length)
+      ? `<span class="media-count">${images.length?`<span>▦ ${images.length}</span>`:''}${videos.length?`<span class="mc-vid">▶ ${videos.length}</span>`:''}</span>`
       : '';
-    const media = `<div class="plate img-wrap" style="position:relative;${hasGallery?'cursor:pointer;':''}"${hasGallery?` onclick="openLightbox('${esc(item.id)}')"`:''}><div class="monogram">B</div><span class="plate-tag" style="z-index:3;"><span class="gold-dot"></span>${esc(label)}</span>${photo}${counter}</div>`;
+    const media = `<div class="plate img-wrap" style="position:relative;${clickable?'cursor:pointer;':''}"${clickable?` onclick="openLightbox('${esc(item.id)}')"`:''}><div class="monogram">B</div><span class="plate-tag" style="z-index:3;"><span class="gold-dot"></span>${esc(label)}</span>${photo}${counter}</div>`;
 
     const el = document.createElement('div');
     el.className = 'pcard card fi';
@@ -280,62 +283,126 @@
     renderGrid('all');
   })();
 
-  // ── Media lightbox (photo gallery + video) ──────────────────────────────────
-  function toMp4(u){ return /res\.cloudinary\.com/.test(u||'') ? u.replace(/\.(mov|m4v|webm|avi)$/i,'.mp4') : u; }
+  // ── Custom media lightbox: photo gallery + bespoke video player ──────────────
   let _lb = { slides: [], idx: 0 };
   function openLightbox(id){
     const g = (window.__galleries||{})[id]; if(!g) return;
-    _lb.slides = [...g.images.map(u=>({type:'image',url:u})), ...g.videos.map(u=>({type:'video',url:toMp4(u)}))];
+    _lb.slides = [
+      ...(g.images||[]).map(u => ({ type:'image', url:u })),
+      ...(g.videos||[]).map((u,i) => ({ type:'video', url:u, poster:(g.posters||[])[i] || '' })),
+    ];
     if(!_lb.slides.length) return;
     _lb.idx = 0; renderLb();
-    document.getElementById('lightbox').classList.add('open');
+    const lb = document.getElementById('lightbox');
+    lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
   }
   function closeLightbox(){
-    document.getElementById('lightbox').classList.remove('open');
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('open'); lb.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
-    document.getElementById('lb-stage').innerHTML = '';
+    document.getElementById('lb-stage').innerHTML = '';   // also stops any playing video
   }
   function lbStep(d){ _lb.idx = (_lb.idx + d + _lb.slides.length) % _lb.slides.length; renderLb(); }
   function lbGo(i){ _lb.idx = i; renderLb(); }
+
   function renderLb(){
     const sl = _lb.slides[_lb.idx];
-    document.getElementById('lb-stage').innerHTML = sl.type==='video'
-      ? `<video src="${esc(sl.url)}" controls autoplay playsinline></video>`
-      : `<img src="${esc(sl.url)}" alt="">`;
+    const stage = document.getElementById('lb-stage');
+    stage.innerHTML = sl.type === 'video' ? videoPlayerHTML(sl)
+                                          : `<img class="lb-img" src="${esc(sl.url)}" alt="" decoding="async">`;
+    if (sl.type === 'video') wireVideoPlayer(stage.querySelector('.vp'));
     const multi = _lb.slides.length > 1;
     document.querySelectorAll('.lb-nav').forEach(b => b.style.display = multi ? 'flex' : 'none');
-    document.getElementById('lb-thumbs').innerHTML = multi
-      ? _lb.slides.map((s,i)=>`<button class="lb-thumb${i===_lb.idx?' active':''}" onclick="lbGo(${i})">${s.type==='video'?'<span class="lb-th-vid">▶</span>':`<img src="${esc(s.url)}" alt="">`}</button>`).join('')
-      : '';
+    document.getElementById('lb-count').textContent = multi ? `${_lb.idx+1} / ${_lb.slides.length}` : '';
+    document.getElementById('lb-thumbs').innerHTML = multi ? _lb.slides.map((s,i)=>{
+      const t = s.type === 'video' ? (s.poster || '') : s.url;
+      const inner = t ? `<img src="${esc(t)}" alt="" loading="lazy">` : '<span class="lb-th-vid">▶</span>';
+      return `<button class="lb-thumb${i===_lb.idx?' active':''}" onclick="lbGo(${i})">${inner}${s.type==='video'?'<span class="lb-th-play">▶</span>':''}</button>`;
+    }).join('') : '';
   }
+
+  const _ic = {
+    play:  '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>',
+    vol:   '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/></svg>',
+    muted: '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg>',
+    full:  '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>',
+  };
+  function videoPlayerHTML(sl){
+    return `<div class="vp" data-state="paused">
+      <video class="vp-video" playsinline preload="metadata" ${sl.poster?`poster="${esc(sl.poster)}"`:''} src="${esc(sl.url)}"></video>
+      <button class="vp-big" aria-label="Play">${_ic.play.replace('18" height="18','36" height="36')}</button>
+      <div class="vp-bar">
+        <button class="vp-play" aria-label="Play / pause">${_ic.play}</button>
+        <div class="vp-prog"><div class="vp-prog-fill"></div></div>
+        <span class="vp-time">0:00 / 0:00</span>
+        <button class="vp-mute" aria-label="Mute">${_ic.vol}</button>
+        <button class="vp-full" aria-label="Fullscreen">${_ic.full}</button>
+      </div>
+    </div>`;
+  }
+  const _fmt = s => { s = Math.max(0, Math.floor(s||0)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); };
+  function wireVideoPlayer(vp){
+    if(!vp) return;
+    const v=vp.querySelector('.vp-video'), big=vp.querySelector('.vp-big'), play=vp.querySelector('.vp-play'),
+          prog=vp.querySelector('.vp-prog'), fill=vp.querySelector('.vp-prog-fill'), time=vp.querySelector('.vp-time'),
+          mute=vp.querySelector('.vp-mute'), full=vp.querySelector('.vp-full');
+    const sync = () => { vp.dataset.state = v.paused ? 'paused' : 'playing'; play.innerHTML = v.paused ? _ic.play : _ic.pause; };
+    const toggle = () => { v.paused ? v.play() : v.pause(); };
+    big.onclick = toggle; play.onclick = toggle; v.onclick = toggle;
+    v.onplay = sync; v.onpause = sync;
+    v.onloadedmetadata = () => { time.textContent = '0:00 / ' + _fmt(v.duration); };
+    v.ontimeupdate = () => { fill.style.width = (v.duration ? v.currentTime/v.duration*100 : 0) + '%'; time.textContent = _fmt(v.currentTime) + ' / ' + _fmt(v.duration); };
+    prog.onclick = e => { const r = prog.getBoundingClientRect(); v.currentTime = ((e.clientX-r.left)/r.width) * (v.duration||0); };
+    mute.onclick = () => { v.muted = !v.muted; mute.innerHTML = v.muted ? _ic.muted : _ic.vol; };
+    full.onclick = () => { if (vp.requestFullscreen) vp.requestFullscreen(); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); };
+  }
+
   document.addEventListener('keydown', e=>{
     const lb = document.getElementById('lightbox');
     if(!lb || !lb.classList.contains('open')) return;
     if(e.key==='Escape') closeLightbox();
     else if(e.key==='ArrowLeft') lbStep(-1);
     else if(e.key==='ArrowRight') lbStep(1);
+    else if(e.key===' ') { const v = document.querySelector('#lb-stage .vp-video'); if(v){ e.preventDefault(); v.paused ? v.play() : v.pause(); } }
   });
+
   (function injectLightbox(){
     const css = document.createElement('style');
     css.textContent = `
       .media-count{position:absolute;bottom:10px;right:10px;z-index:3;display:flex;gap:6px;}
-      .media-count span{background:rgba(6,10,8,.66);color:var(--text,#ECE4CF);font-size:11px;letter-spacing:.04em;padding:3px 8px;border:1px solid rgba(220,235,224,.14);}
-      .lb{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(4,8,6,.93);}
-      .lb.open{display:flex;}
-      .lb-stage{max-width:88vw;max-height:78vh;display:flex;align-items:center;justify-content:center;}
-      .lb-stage img,.lb-stage video{max-width:88vw;max-height:78vh;object-fit:contain;box-shadow:0 20px 70px rgba(0,0,0,.6);}
-      .lb-close{position:absolute;top:20px;right:22px;width:42px;height:42px;border:1px solid rgba(220,235,224,.2);background:transparent;color:var(--text,#ECE4CF);font-size:18px;cursor:pointer;transition:border-color .2s,background .2s;}
-      .lb-close:hover{border-color:var(--gold,#4FD09A);background:rgba(79,208,154,.1);}
-      .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;align-items:center;justify-content:center;border:1px solid rgba(220,235,224,.2);background:rgba(6,10,8,.4);color:var(--text,#ECE4CF);font-size:26px;cursor:pointer;transition:border-color .2s,background .2s;}
-      .lb-nav:hover{border-color:var(--gold,#4FD09A);background:rgba(79,208,154,.12);}
+      .media-count span{background:rgba(6,10,8,.62);color:#ECE4CF;font-size:11px;letter-spacing:.04em;padding:3px 8px;border:1px solid rgba(220,235,224,.14);backdrop-filter:blur(3px);}
+      .media-count .mc-vid{color:var(--gold-hi,#88E8B6);}
+      .lb{position:fixed;inset:0;z-index:9999;display:none;opacity:0;align-items:center;justify-content:center;background:rgba(5,9,7,.92);backdrop-filter:blur(10px);transition:opacity .28s ease;}
+      .lb.open{display:flex;opacity:1;}
+      .lb-stage{position:relative;display:flex;align-items:center;justify-content:center;}
+      .lb-img{max-width:min(1100px,90vw);max-height:82vh;object-fit:contain;border:1px solid rgba(220,235,224,.1);box-shadow:0 30px 90px rgba(0,0,0,.6);}
+      .lb-close{position:absolute;top:18px;right:20px;width:44px;height:44px;border:1px solid rgba(220,235,224,.18);background:rgba(6,10,8,.4);color:#ECE4CF;font-size:17px;cursor:pointer;transition:.2s;z-index:3;}
+      .lb-close:hover{border-color:var(--gold,#4FD09A);color:var(--gold-hi,#88E8B6);}
+      .lb-count{position:absolute;top:24px;left:24px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14px;color:rgba(236,228,207,.7);z-index:3;}
+      .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;display:none;align-items:center;justify-content:center;border:1px solid rgba(220,235,224,.18);background:rgba(6,10,8,.42);color:#ECE4CF;font-size:24px;cursor:pointer;transition:.2s;z-index:3;}
+      .lb-nav:hover{border-color:var(--gold,#4FD09A);color:var(--gold-hi,#88E8B6);background:rgba(79,208,154,.12);}
       .lb-prev{left:24px;} .lb-next{right:24px;}
-      .lb-thumbs{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;max-width:92vw;overflow-x:auto;padding:6px;}
-      .lb-thumb{width:54px;height:54px;flex:0 0 auto;border:1px solid rgba(220,235,224,.18);background:rgba(6,10,8,.5);padding:0;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--text,#ECE4CF);}
-      .lb-thumb img{width:100%;height:100%;object-fit:cover;}
+      .lb-thumbs{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;max-width:92vw;overflow-x:auto;padding:6px;z-index:3;}
+      .lb-thumb{position:relative;width:56px;height:56px;flex:0 0 auto;border:1px solid rgba(220,235,224,.16);background:rgba(6,10,8,.5);padding:0;cursor:pointer;overflow:hidden;}
+      .lb-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
       .lb-thumb.active{border-color:var(--gold,#4FD09A);}
-      .lb-th-vid{font-size:16px;}
-      @media(max-width:640px){.lb-nav{width:40px;height:40px;font-size:20px;}.lb-prev{left:8px;}.lb-next{right:8px;}}
+      .lb-thumb .lb-th-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;background:rgba(6,10,8,.28);}
+      .lb-th-vid{display:flex;align-items:center;justify-content:center;height:100%;color:#ECE4CF;}
+      .vp{position:relative;display:flex;background:#000;border:1px solid rgba(220,235,224,.1);box-shadow:0 30px 90px rgba(0,0,0,.6);}
+      .vp-video{max-width:min(1100px,90vw);max-height:82vh;display:block;}
+      .vp-big{position:absolute;inset:0;margin:auto;width:78px;height:78px;border-radius:50%;border:1px solid rgba(236,228,207,.5);background:rgba(6,10,8,.42);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;backdrop-filter:blur(3px);}
+      .vp-big:hover{border-color:var(--gold-hi,#88E8B6);color:var(--gold-hi,#88E8B6);transform:scale(1.06);}
+      .vp[data-state="playing"] .vp-big{opacity:0;pointer-events:none;}
+      .vp-bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(to top,rgba(4,8,6,.88),transparent);opacity:0;transition:opacity .25s;}
+      .vp:hover .vp-bar,.vp[data-state="paused"] .vp-bar{opacity:1;}
+      .vp-bar button{background:none;border:none;color:#ECE4CF;cursor:pointer;display:flex;align-items:center;padding:2px;}
+      .vp-bar button:hover{color:var(--gold-hi,#88E8B6);}
+      .vp-prog{flex:1;height:4px;background:rgba(236,228,207,.22);cursor:pointer;position:relative;}
+      .vp-prog-fill{height:100%;width:0;background:var(--gold,#4FD09A);}
+      .vp-time{font-size:12px;color:rgba(236,228,207,.82);font-variant-numeric:tabular-nums;white-space:nowrap;}
+      @media(max-width:640px){.lb-nav{width:42px;height:42px;font-size:20px;}.lb-prev{left:8px;}.lb-next{right:8px;}.lb-thumbs{bottom:8px;}}
     `;
     document.head.appendChild(css);
     const lb = document.createElement('div');
@@ -343,6 +410,7 @@
     lb.addEventListener('click', e=>{ if(e.target===lb) closeLightbox(); });
     lb.innerHTML = `
       <button class="lb-close" aria-label="Close" onclick="closeLightbox()">✕</button>
+      <span class="lb-count" id="lb-count"></span>
       <button class="lb-nav lb-prev" aria-label="Previous" onclick="lbStep(-1)">‹</button>
       <div class="lb-stage" id="lb-stage"></div>
       <button class="lb-nav lb-next" aria-label="Next" onclick="lbStep(1)">›</button>
