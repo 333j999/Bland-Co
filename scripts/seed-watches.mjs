@@ -79,6 +79,34 @@ const NAMES = {
 };
 const titleize = s => s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
+// Approximate UK secondary-market GUIDE prices (£), researched May 2026. Confirm/adjust
+// per piece in the admin — these don't account for the specific year/condition/papers.
+// Left out (null) where the exact spec swings the price too much to call: the yellow-gold
+// AP chronographs and the AP Openworked grail.
+const PRICES = {
+  'audemars-piguet-royal-oak-chrono-blue':            45000,
+  'rolex-datejust-36-everose-silver':                 11500,
+  'rolex-datejust-41-blue-roman':                     10500,
+  'rolex-datejust-41-everose-chocolate':              13500,
+  'rolex-datejust-41-everose-sundust':                13500,
+  'rolex-datejust-41-mint-green':                     12000,
+  'rolex-datejust-41-two-tone-wimbledon':             12000,
+  'rolex-datejust-41-wimbledon-steel':                10000,
+  'rolex-datejust-mint-green':                        10500,
+  'rolex-day-date-platinum-ice-blue':                 47500,
+  'rolex-daytona-everose-chocolate':                  37500,
+  'rolex-daytona-two-tone-black':                     16000,
+  'rolex-daytona-white-gold-black':                   40000,
+  'rolex-daytona-yellow-gold-blue':                   40000,
+  'rolex-gmt-master-ii-batman':                       13000,
+  'rolex-gmt-master-ii-black':                        13000,
+  'rolex-gmt-master-ii-root-beer':                    14000,
+  'rolex-sky-dweller-blue':                           17500,
+  'rolex-sky-dweller-mint-green':                     18000,
+  'rolex-sky-dweller-yellow-gold':                    34000,
+  'rolex-yacht-master-everose':                       23500,
+};
+
 const IMG_RE = /\.(jpe?g|png|webp|gif|avif)$/i;
 const VID_RE = /\.(mov|mp4|webm|m4v)$/i;
 const listFiles = (dir, re) => fs.existsSync(dir)
@@ -148,7 +176,8 @@ async function main() {
     if (!imgFiles.length && !vidFiles.length) { console.log(`· skip  ${slug} (no media)`); continue; }
     if (existing.has(name.toLowerCase())) { console.log(`· skip  ${name} (already in inventory)`); skipped++; continue; }
 
-    console.log(`→ ${name}\n    ${imgFiles.length} photo(s), ${vidFiles.length} video(s)`);
+    const priceLabel = (PRICES[slug] != null) ? `£${PRICES[slug].toLocaleString('en-GB')}` : '— (blank)';
+    console.log(`→ ${name}\n    ${imgFiles.length} photo(s), ${vidFiles.length} video(s) · ${priceLabel}`);
     if (DRY) { created++; continue; }
 
     const images = [];
@@ -159,7 +188,7 @@ async function main() {
     const recId = `inv_${crypto.randomBytes(4).toString('hex')}`;
     const data = {
       id: recId, name, category: 'watches', status: 'available',
-      price: null, reference: '', condition: 'Excellent', paperwork: 'Unknown',
+      price: (PRICES[slug] ?? null), reference: '', condition: 'Excellent', paperwork: 'Unknown',
       description: '', imageUrl: images[0] || '', images, videos,
       createdAt: new Date().toISOString(),
     };
