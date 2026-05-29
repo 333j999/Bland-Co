@@ -249,6 +249,21 @@
       markInvalid(field, bad);
       if (bad) valid = false;
     });
+
+    // Email must be a real address (something@domain.tld).
+    const emailEl = document.getElementById('email');
+    if (emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailEl.value.trim())) {
+      markInvalid(emailEl, true); valid = false;
+    }
+    // Phone is optional, but if given it must look like a phone number (7–15 digits,
+    // optional leading +, spaces/dashes/brackets allowed).
+    const phoneEl = document.getElementById('phone');
+    const pv = phoneEl.value.trim();
+    if (pv) {
+      const digits = pv.replace(/\D/g, '');
+      const ok = /^\+?[\d\s().-]+$/.test(pv) && digits.length >= 7 && digits.length <= 15;
+      markInvalid(phoneEl, !ok); if (!ok) valid = false;
+    }
     if (!valid) return;
 
     const btn = form.querySelector('button[type=submit]');
@@ -256,25 +271,34 @@
     btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Sending…';
 
     try {
-      await fetch('/api/enquiries', {
+      const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name:    document.getElementById('name').value.trim(),
-          email:   document.getElementById('email').value.trim(),
-          phone:   document.getElementById('phone').value.trim(),
+          email:   emailEl.value.trim(),
+          phone:   pv,
           subject: document.getElementById('subject').value,
           message: document.getElementById('message').value.trim(),
           status:  'new',
         }),
       });
+      if (!res.ok) throw new Error('Server responded ' + res.status);
+
+      // Success: clear the form so it's empty, then show the confirmation.
+      form.reset();
+      document.getElementById('subject').value = '';
+      const csBtn = form.querySelector('.cselect-btn');
+      if (csBtn) { csBtn.classList.add('placeholder'); csBtn.classList.remove('invalid'); const lbl = csBtn.querySelector('[data-label]'); if (lbl) lbl.textContent = 'What can we help you with?'; }
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+
       btn.style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
       document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
       console.error(err);
       btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = original;
-      alert('Something went wrong — please try again.');
+      alert('Something went wrong — your enquiry was not sent. Please try again or WhatsApp us.');
     }
   }
 </script>
