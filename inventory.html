@@ -55,6 +55,11 @@
     /* GRID + cards */
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
     .pcard .plate, .pcard .img-wrap { aspect-ratio: 4/3; }
+    /* Equal-height cards with the CTA pinned to the bottom, so "Ask the price" lines up
+       across the whole grid regardless of name/description length. */
+    .pcard { display: flex; flex-direction: column; }
+    .pcard .pcard-body { flex: 1 1 auto; display: flex; flex-direction: column; }
+    .pcard .pcard-body .btn-enquire { margin-top: auto; }
     .btn-enquire { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 13px; background: transparent; color: var(--text); font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--line-2); cursor: pointer; text-decoration: none; transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease); }
     .btn-enquire:hover { border-color: var(--gold); background: rgba(79,208,154,0.10); color: var(--gold-hi); transform: translateY(-2px); }
 
@@ -238,7 +243,7 @@
     el.dataset.cat = cat;
     el.innerHTML = `
       ${media}
-      <div style="padding:var(--sp-4) var(--sp-3);">
+      <div class="pcard-body" style="padding:var(--sp-4) var(--sp-3);">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <span class="badge">${esc(label)}</span><div class="gold-dot"></div>
         </div>
