@@ -61,7 +61,8 @@
     .group-h { font-size: var(--fs-eyebrow); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--sp-3); padding-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
     .group-h .kicker-num { font-size: var(--fs-base); color: var(--green-hi); }
     .stack { display: flex; flex-direction: column; gap: var(--sp-2); }
-    .cselect-btn.invalid, .input.invalid { border-color: rgba(79,208,154,0.6); }
+    .cselect-btn.invalid, .input.invalid { border-color: rgba(224,122,95,0.75); }
+    .form-error { display: none; margin-bottom: var(--sp-2); padding: 12px 15px; border: 1px solid rgba(224,122,95,0.5); background: rgba(224,122,95,0.10); color: #F0C7B8; font-size: var(--fs-xs); line-height: 1.6; }
     .side-card { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-5); }
     .trust-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--card-2); border: 1px solid var(--line); transition: border-color 0.3s var(--ease); }
     .trust-item:hover { border-color: var(--line-2); }
@@ -220,6 +221,7 @@
             </div>
           </div>
 
+          <div id="formError" class="form-error" role="alert"></div>
           <button type="submit" class="btn-primary" style="width:100%;">Send for valuation <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></button>
           <p class="meta center" style="margin-top:var(--sp-2);line-height:1.6;">By submitting you agree to our <a href="privacy.html" class="text-gold" style="text-decoration:none;">Privacy Policy</a>. We never share your details.</p>
 
@@ -332,13 +334,33 @@
   async function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    let valid = true;
+    const err = document.getElementById('formError');
+    let valid = true, firstBad = null;
     form.querySelectorAll('[required]').forEach(field => {
       const bad = !field.value.trim();
       markInvalid(field, bad);
-      if (bad) valid = false;
+      if (bad) { valid = false; if (!firstBad) firstBad = field; }
     });
-    if (!valid) return;
+    // Email must look like an address; phone must look like a phone (7–15 digits).
+    const emailEl = document.getElementById('email');
+    if (emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailEl.value.trim())) {
+      markInvalid(emailEl, true); valid = false; if (!firstBad) firstBad = emailEl;
+    }
+    const phoneEl = document.getElementById('phone');
+    const pv = phoneEl.value.trim();
+    if (pv) {
+      const digits = pv.replace(/\D/g, '');
+      const ok = /^\+?[\d\s().-]+$/.test(pv) && digits.length >= 7 && digits.length <= 15;
+      markInvalid(phoneEl, !ok); if (!ok) { valid = false; if (!firstBad) firstBad = phoneEl; }
+    }
+    if (!valid) {
+      err.textContent = 'Please fill out the required fields marked * (with a valid email and phone number) before sending.';
+      err.style.display = 'block';
+      (firstBad || err).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (firstBad && firstBad.focus) try { firstBad.focus({ preventScroll: true }); } catch {}
+      return;
+    }
+    err.style.display = 'none';
 
     const btn = form.querySelector('button[type=submit]');
     const original = btn.innerHTML;
@@ -348,7 +370,7 @@
       const imageFiles = Array.from(document.getElementById('images').files);
       const images = imageFiles.length ? await uploadImages(imageFiles) : [];
 
-      await fetch('/api/valuations', {
+      const res = await fetch('/api/valuations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -366,6 +388,7 @@
           images,
         }),
       });
+      if (!res.ok) throw new Error('Server responded ' + res.status);
 
       form.querySelector('button[type=submit]').style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
