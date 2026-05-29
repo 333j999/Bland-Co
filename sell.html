@@ -293,26 +293,15 @@
     }
   }
 
-  // Uploads are authorised by our own backend (/api/upload-signature), which holds all
-  // Cloudinary credentials. No key, secret, or preset is stored in the front-end.
+  // Uploads go straight to Cloudflare R2 via a short-lived presigned PUT URL issued by our
+  // backend (/api/upload-signature). No R2 key or secret is stored in the front-end.
   async function uploadOne(file, kind, headers) {
-    const sigRes = await fetch(`/api/upload-signature?kind=${kind}`, { headers: headers || {} });
+    const sigRes = await fetch(`/api/upload-signature?kind=${kind}&filename=${encodeURIComponent(file.name || '')}`, { headers: headers || {} });
     if (!sigRes.ok) throw new Error('Upload not authorised');
     const cfg = await sigRes.json();
-    const fd = new FormData();
-    fd.append('file', file);
-    if (cfg.mode === 'signed') {
-      fd.append('api_key', cfg.apiKey);
-      fd.append('timestamp', cfg.timestamp);
-      fd.append('signature', cfg.signature);
-      if (cfg.folder) fd.append('folder', cfg.folder);
-    } else {
-      fd.append('upload_preset', cfg.uploadPreset);
-    }
-    const r = await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/${cfg.resourceType}/upload`, { method: 'POST', body: fd });
-    const data = await r.json();
-    if (!data.secure_url) throw new Error((data.error && data.error.message) || 'Upload failed');
-    return data.secure_url;
+    const put = await fetch(cfg.uploadUrl, { method: 'PUT', headers: file.type ? { 'Content-Type': file.type } : {}, body: file });
+    if (!put.ok) throw new Error('Upload failed (' + put.status + ')');
+    return cfg.publicUrl;
   }
 
   async function uploadImages(files) {
@@ -396,7 +385,10 @@
     } catch (err) {
       console.error(err);
       btn.disabled = false; btn.innerHTML = original; btn.style.opacity = '1';
-      alert('Something went wrong — please try again.');
+      const eb = document.getElementById('formError');
+      eb.textContent = 'Something went wrong sending your valuation — please try again, or WhatsApp us and we’ll sort it.';
+      eb.style.display = 'block';
+      eb.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 </script>
