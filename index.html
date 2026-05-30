@@ -88,6 +88,19 @@
     .cat-num { position: absolute; top: 16px; right: 18px; z-index: 1; font-family: var(--serif); font-weight: 300;
       font-size: var(--fs-md); color: var(--gold-hi); opacity: 0.65; letter-spacing: 0; font-optical-sizing: auto; }
 
+    /* category cards bounce in on scroll (spring overshoot) — reuses the .fi observer.
+       Animation carries opacity + transform; no forwards fill so .card:hover stays free. */
+    .cat-card.fi { opacity: 0; transform: translateY(70px) scale(0.93); }
+    .cat-card.fi.v { animation: catBounceIn 0.85s var(--ease) both; }
+    .cat-grid .cat-card:nth-child(2).fi.v { animation-delay: 0.10s; }
+    .cat-grid .cat-card:nth-child(3).fi.v { animation-delay: 0.20s; }
+    @keyframes catBounceIn {
+      0%   { opacity: 0; transform: translateY(70px) scale(0.93); }
+      55%  { opacity: 1; transform: translateY(-12px) scale(1.015); }
+      75%  { transform: translateY(4px) scale(0.997); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     /* PROCESS — numbered editorial steps on a hairline grid */
     .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
     .proc-cell { background: var(--surface); padding: var(--sp-5) var(--sp-4); }
