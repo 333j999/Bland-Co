@@ -167,85 +167,295 @@
   <a href="consultation.html" class="btn-green" onclick="toggleMenu()">Book Consultation</a>
 </div>
 
-<!-- ===== HERO — asymmetric editorial split ===== -->
-<section class="hero">
-  <div class="hero-bg">
-    <video id="hero-video" class="hero-video" autoplay muted loop playsinline style="display:none;">
-      <source id="hero-video-src" src="" type="video/mp4">
-    </video>
-    <div class="hero-veil"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-vignette"></div>
-  </div>
+<!-- ===== HERO — cinematic scroll: the watch assembles, then the maison ===== -->
+<style>
+  /* Tall scroll track pins a 100vh stage; choreography is scroll-driven. */
+  .hero-scroll { position: relative; height: 380vh; background: var(--bg); }
+  .hero-stage {
+    position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden;
+    background: var(--bg); animation: hsIn 1.15s var(--ease) both;
+  }
+  @keyframes hsIn { from { opacity: 0; } to { opacity: 1; } }
 
-  <div class="wrap hero-inner">
-    <!-- LEFT: type column -->
-    <div class="hero-left">
-      <div class="fi eyebrow-row" style="margin-bottom:var(--sp-4);">
-        <div class="divider"></div>
-        <span class="eyebrow">Hatton Garden · London EC1</span>
-      </div>
+  /* atmosphere on top of the (optional) admin video background */
+  .hs-atmos { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 78% 68% at 50% 44%, rgba(47,90,69,0.34) 0%, transparent 58%),
+                radial-gradient(ellipse 52% 46% at 84% 16%, rgba(79,208,154,0.12) 0%, transparent 52%),
+                radial-gradient(ellipse 46% 46% at 14% 88%, rgba(16,34,25,0.55) 0%, transparent 56%); }
 
-      <h1 class="display h-hero fi fi-1 hero-h" style="max-width:13ch;">
-        Watches, gold,<br>
-        and jewellery —<br>
-        <span class="display-i" style="font-size:0.92em;color:var(--gold-hi);">bought, sold,</span><br>
-        and fairly valued.
-      </h1>
+  /* glow + watch */
+  .hs-glow { position: absolute; left: 50%; top: 50%; width: 760px; height: 760px;
+    transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle, rgba(79,208,154,0.30) 0%, rgba(47,90,69,0.12) 42%, transparent 66%);
+    filter: blur(10px); will-change: opacity, transform; }
+  .hs-watch { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    z-index: 2; will-change: transform, opacity; }
+  .hs-watch svg { display: block; width: min(78vw, 460px); height: auto; }
 
-      <p class="lede fi fi-2" style="max-width:46ch;margin-bottom:var(--sp-5);">
-        A working jeweller in Hatton Garden. Walk in, ring us, or send photos — and you'll get a straight answer, the same day.
-      </p>
+  .hs-jewel { position: absolute; pointer-events: none; z-index: 2; will-change: transform, opacity; }
 
-      <div class="fi fi-3 hero-btns" style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:var(--sp-5);">
+  /* ACT 1 — intro over the watch */
+  .hs-intro { position: absolute; left: 50%; top: 50%; width: 100%; padding: 0 24px;
+    transform: translate(-50%,-50%); text-align: center; z-index: 4; pointer-events: none;
+    will-change: transform, opacity; }
+  .hs-intro .lead { font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 600;
+    letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-hi); margin-bottom: 22px; }
+  .hs-intro h1 { font-family: var(--serif); font-weight: 300; font-optical-sizing: auto;
+    font-size: clamp(3.4rem, 11vw, 9.5rem); line-height: 0.94; letter-spacing: -0.025em; color: var(--text); }
+  .hs-intro h1 em { font-style: italic; color: var(--gold-hi); font-weight: 400; }
+
+  /* ACT 2 — resting maison */
+  .hs-main { position: absolute; left: 50%; top: 50%; width: 100%; max-width: 760px; padding: 0 32px;
+    text-align: center; z-index: 5; transform: translate(-50%,-50%); opacity: 0; will-change: transform, opacity; }
+  .hs-main .eyebrow-row { justify-content: center; margin-bottom: var(--sp-3); }
+  .hs-main h2 { font-family: var(--serif); font-weight: 400; font-optical-sizing: auto;
+    font-size: clamp(2.6rem, 6.2vw, 5rem); line-height: 1.02; letter-spacing: -0.022em; color: var(--text); }
+  .hs-main h2 .it { font-style: italic; font-weight: 300; color: var(--gold-hi); }
+  .hs-main .lede { max-width: 480px; margin: var(--sp-3) auto var(--sp-5); }
+  .hs-main .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .hs-facts { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--sp-5);
+    margin-top: var(--sp-6); padding-top: var(--sp-4); border-top: 1px solid var(--line); }
+  .hs-facts .fact-k { font-size: var(--fs-eyebrow); letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+  .hs-facts .fact-v { font-size: var(--fs-base); color: var(--text); text-decoration: none; }
+  .hs-facts a.fact-v:hover { color: var(--gold-hi); }
+
+  /* scroll cue + internal rail */
+  .hs-cue { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 6;
+    display: flex; flex-direction: column; align-items: center; gap: 9px; will-change: opacity; }
+  .hs-cue span { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(226,238,230,0.6); }
+  .hs-rail { position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
+    width: 2px; height: 132px; background: var(--line-2); border-radius: 2px; z-index: 6; }
+  .hs-rail-fill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; border-radius: 2px;
+    background: linear-gradient(var(--green-hi), var(--gold-hi)); }
+
+  @media (max-width: 900px) {
+    .hs-facts { gap: var(--sp-4); }
+    .hs-rail { display: none; }
+  }
+  @media (max-width: 560px) { .hs-main .hero-btns { flex-direction: column; align-items: stretch; } }
+</style>
+
+<section class="hero-scroll" id="heroScroll">
+  <div class="hero-stage">
+    <!-- preserved admin-video background (src injected by /api/site) -->
+    <div class="hero-bg">
+      <video id="hero-video" class="hero-video" autoplay muted loop playsinline style="display:none;">
+        <source id="hero-video-src" src="" type="video/mp4">
+      </video>
+      <div class="hero-veil"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-grid" id="heroGrid"></div>
+      <div class="hero-vignette"></div>
+    </div>
+    <div class="hs-atmos"></div>
+    <div class="noise"></div>
+
+    <!-- parallax jewels -->
+    <svg class="hs-jewel" id="jewel1" style="left:13%;top:24%;width:34px;" viewBox="0 0 40 48" fill="none">
+      <path d="M20 2 38 17 20 46 2 17Z" stroke="rgba(136,232,182,0.55)" stroke-width="1.2"/>
+      <path d="M2 17h36M20 2 12 17l8 29 8-29Z" stroke="rgba(136,232,182,0.32)" stroke-width="1"/>
+    </svg>
+    <svg class="hs-jewel" id="jewel2" style="right:12%;top:30%;width:26px;" viewBox="0 0 40 48" fill="none">
+      <path d="M20 2 38 17 20 46 2 17Z" stroke="rgba(226,238,230,0.40)" stroke-width="1.2"/>
+      <path d="M2 17h36M14 2 20 17M26 2 20 17" stroke="rgba(226,238,230,0.22)" stroke-width="1"/>
+    </svg>
+    <svg class="hs-jewel" id="jewel3" style="left:20%;bottom:18%;width:46px;" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="26" stroke="rgba(95,166,130,0.5)" stroke-width="1.2"/>
+      <circle cx="30" cy="30" r="18" stroke="rgba(95,166,130,0.28)" stroke-width="1"/>
+    </svg>
+    <svg class="hs-jewel" id="jewel4" style="right:18%;bottom:22%;width:22px;" viewBox="0 0 40 48" fill="none">
+      <path d="M20 2 38 17 20 46 2 17Z" stroke="rgba(136,232,182,0.42)" stroke-width="1.2"/>
+    </svg>
+
+    <!-- the watch -->
+    <div class="hs-glow" id="watchGlow"></div>
+    <div class="hs-watch" id="watchWrap">
+      <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="caseSteel" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#EDF2F2"/><stop offset="0.4" stop-color="#B8C2C4"/>
+            <stop offset="0.68" stop-color="#717C7E"/><stop offset="1" stop-color="#C9D2D3"/>
+          </linearGradient>
+          <radialGradient id="dialG" cx="0.42" cy="0.36" r="0.86">
+            <stop offset="0" stop-color="#163026"/><stop offset="0.6" stop-color="#0E1D16"/><stop offset="1" stop-color="#070D0A"/>
+          </radialGradient>
+          <linearGradient id="emerald" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#88E8B6"/><stop offset="1" stop-color="#3FA277"/>
+          </linearGradient>
+          <linearGradient id="ivory" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F2F7F3"/><stop offset="1" stop-color="#C3D0C7"/>
+          </linearGradient>
+        </defs>
+
+        <!-- crown -->
+        <rect x="344" y="168" width="14" height="24" rx="3" fill="url(#caseSteel)"/>
+        <rect x="340" y="172" width="8" height="16" rx="2" fill="#717C7E"/>
+        <!-- case -->
+        <circle cx="180" cy="180" r="175" fill="url(#caseSteel)"/>
+        <circle cx="180" cy="180" r="166" fill="#070D0A"/>
+        <g id="watchBezel"></g>
+        <circle cx="180" cy="180" r="150" fill="url(#dialG)" stroke="rgba(136,232,182,0.22)" stroke-width="1"/>
+        <g id="watchMinutes"></g>
+        <g id="watchMarkers"></g>
+        <!-- brand -->
+        <text x="180" y="128" text-anchor="middle" fill="#E2EEE6" font-family="Fraunces, Georgia, serif" font-size="22" letter-spacing="1.5">BLAND &amp; CO</text>
+        <text x="180" y="146" text-anchor="middle" fill="#8FA899" font-family="'Hanken Grotesk', sans-serif" font-size="8" letter-spacing="4">HATTON GARDEN</text>
+        <text x="180" y="250" text-anchor="middle" fill="#8FA899" font-family="'Hanken Grotesk', sans-serif" font-size="8" letter-spacing="3">AUTOMATIC</text>
+        <circle cx="180" cy="225" r="26" fill="none" stroke="rgba(226,238,230,0.10)" stroke-width="1"/>
+        <!-- hands -->
+        <g id="handHour"><rect x="175" y="92" width="10" height="98" rx="5" fill="url(#ivory)"/></g>
+        <g id="handMin"><rect x="177" y="56" width="6" height="132" rx="3" fill="#E2EEE6"/></g>
+        <g id="handSec"><rect x="178.6" y="62" width="2.8" height="148" rx="1.4" fill="url(#emerald)"/><circle cx="180" cy="225" r="4" fill="#4FD09A"/></g>
+        <circle cx="180" cy="180" r="9" fill="url(#caseSteel)"/>
+        <circle cx="180" cy="180" r="3.4" fill="#070D0A"/>
+      </svg>
+    </div>
+
+    <!-- ACT 1 -->
+    <div class="hs-intro" id="heroIntro">
+      <div class="lead">Hatton Garden · London EC1</div>
+      <h1>Watches, gold,<br><em>&amp; jewellery.</em></h1>
+    </div>
+
+    <!-- ACT 2 -->
+    <div class="hs-main" id="heroMain">
+      <div class="eyebrow-row"><div class="divider"></div><span class="eyebrow">A working jeweller</span><div class="divider"></div></div>
+      <h2>Bought, sold,<br><span class="it">&amp; fairly valued.</span></h2>
+      <p class="lede">A working jeweller in Hatton Garden. Walk in, ring us, or send photos — and you'll get a straight answer, the same day.</p>
+      <div class="hero-btns">
         <a href="inventory.html" class="btn-primary">See what's in
           <svg class="arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
         </a>
         <a href="sell.html" class="btn-outline">Free valuation</a>
       </div>
-
-      <div class="trust-strip fi fi-4">
-        <span style="display:inline-flex;align-items:center;gap:8px;"><span class="gold-dot"></span>Trusted across Hatton Garden</span>
-        <span class="sep"></span><span>Authenticated in-house</span>
-        <span class="sep"></span><span>Walk-ins welcome</span>
-      </div>
-
-      <div class="hero-facts fi fi-5">
-        <div>
-          <div class="fact-k">Showroom</div>
-          <div class="fact-v">Hatton Garden, EC1</div>
-        </div>
-        <div>
-          <div class="fact-k">Hours</div>
-          <div class="fact-v">Mon–Fri 9–6 · Sat 10–4</div>
-        </div>
-        <div>
-          <div class="fact-k">Direct line</div>
-          <a href="tel:+447399426893" class="fact-v">07399 426893</a>
-        </div>
+      <div class="hs-facts">
+        <div><div class="fact-k">Showroom</div><div class="fact-v">Hatton Garden, EC1</div></div>
+        <div><div class="fact-k">Hours</div><div class="fact-v">Mon–Fri 9–6 · Sat 10–4</div></div>
+        <div><div class="fact-k">Direct line</div><a href="tel:+447399426893" class="fact-v">07399 426893</a></div>
       </div>
     </div>
 
-    <!-- RIGHT: feature plate (the halo panel) -->
-    <div class="hero-plate fi fi-3">
-      <div class="hp-mono">B</div>
-      <div class="hp-top">
-        <span class="hp-tag">The Maison</span>
-        <span class="hp-est">Est. Hatton Garden</span>
-      </div>
-      <div class="hp-bot">
-        <div class="hp-line">Authenticated<br>at the bench,<br><span style="font-style:italic;color:var(--gold-hi);">priced in the open.</span></div>
-        <div class="hp-sub">Every piece tested, weighed and certified before it ever reaches the case.</div>
-      </div>
+    <!-- scroll cue -->
+    <div class="hs-cue" id="heroCue">
+      <span>Scroll to enter</span>
+      <svg width="14" height="20" fill="none" stroke="var(--text)" stroke-width="1" class="scroll-indicator"><rect x="1" y="1" width="12" height="18" rx="6"/><circle cx="7" cy="6" r="2" fill="var(--text)"/></svg>
     </div>
-  </div>
-
-  <div class="scroll-indicator" style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1;">
-    <span style="font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text);opacity:0.6;">Scroll</span>
-    <svg width="14" height="20" fill="none" stroke="var(--text)" stroke-width="1" opacity="0.5"><rect x="1" y="1" width="12" height="18" rx="6"/><circle cx="7" cy="6" r="2" fill="var(--text)"/></svg>
+    <div class="hs-rail"><div class="hs-rail-fill" id="heroRail"></div></div>
   </div>
 </section>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var bezel = document.getElementById('watchBezel');
+  var minutes = document.getElementById('watchMinutes');
+  var markers = document.getElementById('watchMarkers');
+  function rect(parent, attrs) {
+    var r = document.createElementNS(NS, 'rect');
+    for (var k in attrs) r.setAttribute(k, attrs[k]);
+    parent.appendChild(r);
+  }
+  for (var i = 0; i < 60; i++) {
+    var big = i % 5 === 0;
+    rect(minutes, { x: big ? 178.4 : 179.3, y: big ? 36 : 38, width: big ? 3.2 : 1.4,
+      height: big ? 11 : 6, rx: 0.7, fill: big ? 'rgba(136,232,182,0.8)' : 'rgba(226,238,230,0.26)',
+      transform: 'rotate(' + (i * 6) + ' 180 180)' });
+  }
+  for (var b = 0; b < 24; b++) {
+    rect(bezel, { x: 179.4, y: 18, width: 1.2, height: 7, rx: 0.6,
+      fill: 'rgba(136,232,182,0.45)', transform: 'rotate(' + (b * 15) + ' 180 180)' });
+  }
+  for (var m = 0; m < 12; m++) {
+    var mb = m % 3 === 0;
+    rect(markers, { x: mb ? 175.5 : 177.5, y: 50, width: mb ? 9 : 5, height: mb ? 18 : 13, rx: 1.5,
+      fill: 'url(#ivory)', transform: 'rotate(' + (m * 30) + ' 180 180)' });
+  }
+
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+  var map = function (v, i0, i1, o0, o1) { var t = clamp((v - i0) / (i1 - i0), 0, 1); return o0 + (o1 - o0) * t; };
+
+  var hero = document.getElementById('heroScroll');
+  var watch = document.getElementById('watchWrap');
+  var glow = document.getElementById('watchGlow');
+  var grid = document.getElementById('heroGrid');
+  var intro = document.getElementById('heroIntro');
+  var main = document.getElementById('heroMain');
+  var cue = document.getElementById('heroCue');
+  var rail = document.getElementById('heroRail');
+  var hHour = document.getElementById('handHour');
+  var hMin = document.getElementById('handMin');
+  var hSec = document.getElementById('handSec');
+  var bezelG = document.getElementById('watchBezel');
+  var jewels = [
+    { el: document.getElementById('jewel1'), sp: -90, rot: 40 },
+    { el: document.getElementById('jewel2'), sp: 120, rot: -60 },
+    { el: document.getElementById('jewel3'), sp: -160, rot: 30 },
+    { el: document.getElementById('jewel4'), sp: 70, rot: -50 }
+  ];
+
+  function render(p) {
+    var wScale = p < 0.5 ? map(p, 0, 0.5, 1.5, 0.96) : map(p, 0.5, 1, 0.96, 0.66);
+    var wY = map(p, 0.5, 1, 0, -120);
+    var wOpac = p < 0.5 ? 1 : map(p, 0.55, 0.92, 1, 0.16);
+    watch.style.transform = 'translate(-50%, calc(-50% + ' + wY.toFixed(1) + 'px)) scale(' + wScale.toFixed(3) + ')';
+    watch.style.opacity = wOpac.toFixed(3);
+
+    glow.style.opacity = (p < 0.5 ? map(p, 0, 0.35, 0.55, 1) : map(p, 0.5, 0.9, 1, 0.16)).toFixed(3);
+    glow.style.transform = 'translate(-50%, calc(-50% + ' + wY.toFixed(1) + 'px)) scale(' + (wScale * 1.05).toFixed(3) + ')';
+
+    hHour.style.transformOrigin = '180px 180px';
+    hMin.style.transformOrigin = '180px 180px';
+    hSec.style.transformOrigin = '180px 180px';
+    bezelG.style.transformOrigin = '180px 180px';
+    hHour.style.transform = 'rotate(' + (305 + p * 70).toFixed(1) + 'deg)';
+    hMin.style.transform = 'rotate(' + (60 + p * 260).toFixed(1) + 'deg)';
+    hSec.style.transform = 'rotate(' + (p * 1080).toFixed(1) + 'deg)';
+    bezelG.style.transform = 'rotate(' + (p * -140).toFixed(1) + 'deg)';
+
+    if (grid) grid.style.transform = 'translateY(' + (p * -60).toFixed(1) + 'px)';
+
+    var introY = map(p, 0.30, 0.46, 0, -90);
+    intro.style.transform = 'translate(-50%, calc(-50% + ' + introY.toFixed(1) + 'px))';
+    intro.style.opacity = clamp(map(p, 0.32, 0.46, 1, 0), 0, 1).toFixed(3);
+
+    var mainY = map(p, 0.52, 0.82, 60, 0);
+    var mainOpac = map(p, 0.55, 0.74, 0, 1);
+    main.style.transform = 'translate(-50%, calc(-50% + ' + mainY.toFixed(1) + 'px))';
+    main.style.opacity = mainOpac.toFixed(3);
+    main.style.pointerEvents = mainOpac > 0.5 ? 'auto' : 'none';
+
+    cue.style.opacity = map(p, 0, 0.06, 1, 0).toFixed(3);
+    rail.style.height = (p * 100).toFixed(1) + '%';
+
+    jewels.forEach(function (j) {
+      if (!j.el) return;
+      j.el.style.transform = 'translateY(' + (p * j.sp).toFixed(1) + 'px) rotate(' + (p * j.rot).toFixed(1) + 'deg)';
+      j.el.style.opacity = map(p, 0.55, 0.9, 0.9, 0.22).toFixed(3);
+    });
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var r = hero.getBoundingClientRect();
+      var total = hero.offsetHeight - window.innerHeight;
+      render(clamp(-r.top / total, 0, 1));
+      ticking = false;
+    });
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    hero.style.height = '100vh';
+    render(1);
+  } else {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    render(0);
+  }
+})();
+</script>
 
 <!-- ===== TRUST ACCORDION ===== -->
 <section class="tbar">

@@ -18,3 +18,8 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local screenshot / dev tooling (machine-specific, not shared)
+screenshot.mjs
+server.log
+temporary screenshots/
