@@ -101,6 +101,12 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* real product photo layer on the category plates (falls back to the
+       monogram plate beneath if the file is missing — see onerror) */
+    .cat-photo-wrap { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+    .cat-photo-wrap .cat-photo-veil { position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to top, rgba(7,13,10,0.90) 0%, rgba(7,13,10,0.14) 48%, rgba(7,13,10,0.34) 100%); }
+
     /* PROCESS — numbered editorial steps on a hairline grid */
     .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
     .proc-cell { background: var(--surface); padding: var(--sp-5) var(--sp-4); }
@@ -528,7 +534,7 @@
 
     <div class="cat-grid">
       <div class="card cat-card fi" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><span class="cat-num">01</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Buy &amp; sell</span></div>
+        <div class="plate cat-plate img-wrap"><span class="cat-num">01</span><div class="monogram">B</div><div class="cat-photo-wrap"><img class="img-fill" src="assets/img/categories/watches.jpg" alt="Luxury watches — Rolex Datejust" onerror="this.closest('.cat-photo-wrap').remove()"><div class="cat-photo-veil"></div></div><span class="plate-tag"><span class="gold-dot"></span>Buy &amp; sell</span></div>
         <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Watches</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Rolex, Patek, AP, Omega, JLC and the rest. Authenticated in-house before anything goes on the shelf.</p>
@@ -537,7 +543,7 @@
       </div>
 
       <div class="card cat-card fi fi-1" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><span class="cat-num">02</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Spot priced</span></div>
+        <div class="plate cat-plate img-wrap"><span class="cat-num">02</span><div class="monogram">B</div><div class="cat-photo-wrap"><img class="img-fill" src="assets/img/categories/gold-silver.jpg" alt="Gold and silver bullion bars" onerror="this.closest('.cat-photo-wrap').remove()"><div class="cat-photo-veil"></div></div><span class="plate-tag"><span class="gold-dot"></span>Spot priced</span></div>
         <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Gold &amp; silver</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Bars, coins, bullion. We post the day's spot and our spread; what you see is what we pay or charge.</p>
@@ -546,7 +552,7 @@
       </div>
 
       <div class="card cat-card fi fi-2" style="cursor:pointer;overflow:hidden;" onclick="location.href='inventory.html'">
-        <div class="plate cat-plate img-wrap"><span class="cat-num">03</span><div class="monogram">B</div><span class="plate-tag"><span class="gold-dot"></span>Made to order</span></div>
+        <div class="plate cat-plate img-wrap"><span class="cat-num">03</span><div class="monogram">B</div><div class="cat-photo-wrap"><img class="img-fill" src="assets/img/categories/jewellery.jpg" alt="Diamond cuban link chains" onerror="this.closest('.cat-photo-wrap').remove()"><div class="cat-photo-veil"></div></div><span class="plate-tag"><span class="gold-dot"></span>Made to order</span></div>
         <div style="padding:var(--sp-4);">
           <h3 class="display" style="font-size:var(--fs-xl);margin-bottom:10px;">Jewellery</h3>
           <p class="text-2" style="font-size:var(--fs-sm);line-height:1.75;margin-bottom:var(--sp-3);">Engagement rings, diamond pieces, gold chains. Pre-owned in stock, or made to order with a Hatton Garden bench.</p>
