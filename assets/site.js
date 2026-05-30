@@ -36,8 +36,23 @@
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
     : null;
 
+  // assign cascading delays to the .fi children of a .stagger container
+  function applyStagger(group) {
+    var i = 0;
+    Array.prototype.forEach.call(group.children, function (el) {
+      if (el.classList && el.classList.contains('fi')) {
+        el.style.setProperty('--fi-delay', Math.min(i * 80, 480) + 'ms');
+        i++;
+      }
+    });
+  }
+
   window.revealScan = function (root) {
     var scope = root || document;
+    // stagger groups within scope — plus scope itself if it is one
+    scope.querySelectorAll('.stagger').forEach(applyStagger);
+    if (scope !== document && scope.classList && scope.classList.contains('stagger')) applyStagger(scope);
+
     scope.querySelectorAll('.fi').forEach(function (el) {
       if (io) io.observe(el);
       else el.classList.add('v');

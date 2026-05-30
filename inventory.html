@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css?v=2">
+  <link rel="stylesheet" href="assets/theme.css?v=3">
   <style>
     /* ---- page-specific · Modern Maison ---- */
 
@@ -156,7 +156,7 @@
 <!-- GRID -->
 <section class="section-sm" style="padding-top:var(--sp-8);">
   <div class="wrap">
-    <div class="grid-3" id="inventoryGrid"><!-- populated by JS --></div>
+    <div class="grid-3 stagger" id="inventoryGrid"><!-- populated by JS --></div>
 
     <div id="noResults" style="display:none;text-align:center;padding:var(--sp-10) 0;">
       <p class="display-i" style="font-size:var(--fs-xl);color:var(--text-2);">Nothing in this category right now.</p>
@@ -195,7 +195,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js?v=2"></script>
+<script src="assets/site.js?v=3"></script>
 <script>
   let allItems = [];
   let activeFilter = 'all';
@@ -239,7 +239,7 @@
     const media = `<div class="plate img-wrap" style="position:relative;${clickable?'cursor:pointer;':''}"${clickable?` onclick="openLightbox('${esc(item.id)}')"`:''}><div class="monogram">B</div><span class="plate-tag" style="z-index:3;"><span class="gold-dot"></span>${esc(label)}</span>${photo}${counter}</div>`;
 
     const el = document.createElement('div');
-    el.className = 'pcard card fi';
+    el.className = 'pcard card fi pop';
     el.dataset.cat = cat;
     el.innerHTML = `
       ${media}

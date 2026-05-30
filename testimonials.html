@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/theme.css?v=2">
+  <link rel="stylesheet" href="assets/theme.css?v=3">
   <style>
     /* ---- page-specific · Modern Maison ---- */
     .page-head { padding: 140px 0 var(--sp-10); position: relative; overflow: hidden; }
@@ -72,16 +72,16 @@
     </div>
 
     <!-- Curated fallback cards. Replaced by backend entries (/api/testimonials) when present. -->
-    <div class="tgrid" id="tGrid">
-      <div class="tcard card fi">
+    <div class="tgrid stagger" id="tGrid">
+      <div class="tcard card fi pop">
         <p class="display-i t-quote">Sold a Tudor I'd stopped wearing. They told me the buy price and what they'd put it on the shelf for in the same breath — no dealer's ever done that for me. Paid the same day.</p>
         <div style="display:flex;align-items:center;gap:14px;"><div class="avatar">M</div><div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">Marcus, Farringdon</div><div class="meta">Sold a Tudor</div></div></div>
       </div>
-      <div class="tcard card fi fi-1">
+      <div class="tcard card fi pop">
         <p class="display-i t-quote">Spent months looking at rings online before coming in. Seeing it under the loupe with someone explaining the clarity grade was worth more than any listing photo. Left with the ring and the lab report.</p>
         <div style="display:flex;align-items:center;gap:14px;"><div class="avatar">T</div><div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">Tom, Walthamstow</div><div class="meta">Bought an eternity ring</div></div></div>
       </div>
-      <div class="tcard card fi fi-2">
+      <div class="tcard card fi pop">
         <p class="display-i t-quote">Brought in a tin of gold coins from my late uncle. Tested and weighed at the counter, paid well above the scrap figure another shop had quoted. One trip and it was done.</p>
         <div style="display:flex;align-items:center;gap:14px;"><div class="avatar">S</div><div><div style="font-size:var(--fs-sm);font-weight:500;color:var(--text);">Sandra, Highbury</div><div class="meta">Valued estate coins</div></div></div>
       </div>
@@ -116,12 +116,12 @@
   </div>
 </footer>
 
-<script src="assets/site.js?v=2"></script>
+<script src="assets/site.js?v=3"></script>
 <script>
   function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function tInitial(name){var p=String(name||'').trim().split(/\s+/)[0];return (p&&p[0]?p[0]:'·').toUpperCase();}
   function tCard(t){
-    return `<div class="tcard card fi">
+    return `<div class="tcard card fi pop">
       <p class="display-i t-quote">${escHtml(t.content || t.quote || '')}</p>
       <div style="display:flex;align-items:center;gap:14px;">
         <div class="avatar">${tInitial(t.name)}</div>
