@@ -189,12 +189,16 @@
 <!-- ===== HERO — cinematic scroll: the watch assembles, then the maison ===== -->
 <style>
   /* Tall scroll track pins a 100vh stage; choreography is scroll-driven. */
-  .hero-scroll { position: relative; height: 380vh; background: var(--bg); }
+  .hero-scroll { position: relative; height: 280vh; background: var(--bg); }
   .hero-stage {
     position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden;
     background: var(--bg); animation: hsIn 1.15s var(--ease) both;
   }
   @keyframes hsIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* top scrim — keeps the fixed nav legible over the watch */
+  .hs-topscrim { position: absolute; top: 0; left: 0; right: 0; height: 170px; z-index: 3;
+    pointer-events: none; background: linear-gradient(to bottom, rgba(7,13,10,0.72) 0%, rgba(7,13,10,0.32) 45%, transparent 100%); }
 
   /* atmosphere on top of the (optional) admin video background */
   .hs-atmos { position: absolute; inset: 0; pointer-events: none;
@@ -217,11 +221,17 @@
   .hs-intro { position: absolute; left: 50%; top: 50%; width: 100%; padding: 0 24px;
     transform: translate(-50%,-50%); text-align: center; z-index: 4; pointer-events: none;
     will-change: transform, opacity; }
+  /* soft scrim directly behind the words so they separate from the dial */
+  .hs-intro::before { content: ""; position: absolute; left: 50%; top: 50%; z-index: -1;
+    width: 130%; height: 150%; transform: translate(-50%, -50%); pointer-events: none;
+    background: radial-gradient(ellipse 52% 46% at 50% 50%, rgba(7,13,10,0.62) 0%, rgba(7,13,10,0.30) 45%, transparent 72%); }
   .hs-intro .lead { font-family: var(--sans); font-size: var(--fs-eyebrow); font-weight: 600;
-    letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-hi); margin-bottom: 22px; }
-  .hs-intro h1 { font-family: var(--serif); font-weight: 300; font-optical-sizing: auto;
-    font-size: clamp(3.4rem, 11vw, 9.5rem); line-height: 0.94; letter-spacing: -0.025em; color: var(--text); }
-  .hs-intro h1 em { font-style: italic; color: var(--gold-hi); font-weight: 400; }
+    letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-hi); margin-bottom: 22px;
+    text-shadow: 0 1px 12px rgba(7,13,10,0.7); }
+  .hs-intro h1 { font-family: var(--serif); font-weight: 500; font-optical-sizing: auto;
+    font-size: clamp(3.7rem, 12vw, 10.5rem); line-height: 0.94; letter-spacing: -0.025em; color: var(--text);
+    text-shadow: 0 2px 30px rgba(7,13,10,0.55), 0 1px 4px rgba(7,13,10,0.6); }
+  .hs-intro h1 em { font-style: italic; color: var(--gold-hi); font-weight: 600; }
 
   /* ACT 2 — resting maison */
   .hs-main { position: absolute; left: 50%; top: 50%; width: 100%; max-width: 760px; padding: 0 32px;
@@ -267,6 +277,7 @@
       <div class="hero-vignette"></div>
     </div>
     <div class="hs-atmos"></div>
+    <div class="hs-topscrim"></div>
     <div class="noise"></div>
 
     <!-- parallax jewels -->
