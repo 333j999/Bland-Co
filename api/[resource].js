@@ -32,7 +32,14 @@ module.exports = async (req, res) => {
     const item = { ...payload, id: recId, createdAt: new Date().toISOString() };
     await createRecord(resource, recId, item);
     if (PUBLIC_POST.includes(resource)) {
-      sendSubmissionEmails(resource, item).catch(() => {}); // fire-and-forget
+      // Await the send: a detached promise is dropped once the serverless
+      // function freezes after the response, so the email never goes out.
+      // Errors are logged (visible in Vercel logs) but never fail the form.
+      try {
+        await sendSubmissionEmails(resource, item);
+      } catch (err) {
+        console.error(`[email] ${resource} notification failed:`, err && err.message ? err.message : err);
+      }
     }
     return json(res, 201, item);
   }
