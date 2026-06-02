@@ -5,11 +5,30 @@ import { fileURLToPath }                                        from 'url';
 import { randomUUID, pbkdf2Sync, randomBytes,
          createHmac, createHash, timingSafeEqual }              from 'crypto';
 import r2lib                                                    from './api/_lib/r2.js';
+import emaillib                                                  from './api/_lib/email.js';
 
 const { presignR2Put, buildKey } = r2lib;
+const { sendSubmissionEmails }   = emaillib;
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PORT      = process.env.PORT || 3000;
 const DATA_DIR  = join(__dirname, 'data');
+
+// ── Load .env.local (minimal parser, no dependency) ────────────────────────────
+// Only sets vars not already present in the environment, so real shell env wins.
+try {
+  const envRaw = await readFile(join(__dirname, '.env.local'), 'utf8');
+  for (const line of envRaw.split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/);
+    if (!m || m[1] in process.env) continue;
+    let v = m[2].trim();
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+      v = v.slice(1, -1);                 // quoted: keep verbatim
+    } else {
+      v = v.replace(/\s+#.*$/, '').trim(); // unquoted: strip trailing inline comment
+    }
+    process.env[m[1]] = v;
+  }
+} catch { /* no .env.local — rely on shell env */ }
 
 await mkdir(DATA_DIR, { recursive: true });
 
@@ -275,6 +294,23 @@ const server = createServer(async (req, res) => {
     const key = buildKey(folder, params.get('filename') || params.get('name') || '');
     const uploadUrl = presignR2Put({ accountId: ACCOUNT, accessKeyId: ACCESS_KEY, secretAccessKey: SECRET_KEY, bucket: BUCKET, key, expires: 600 });
     return json(res, 200, { provider: 'r2', method: 'PUT', uploadUrl, publicUrl: `${PUBLIC_BASE}/${key}`, key, resourceType });
+  }
+
+  // ── Public form submissions (/api/{valuations,enquiries,consultations}) ────
+  // Mirrors api/[resource].js on Vercel: created without a session, then admin +
+  // customer confirmation emails are sent fire-and-forget via Resend.
+  const PUBLIC_POST = ['valuations', 'enquiries', 'consultations'];
+  if (urlPath.startsWith('/api/') && method === 'POST') {
+    const resource = urlPath.slice(5).split('/').filter(Boolean)[0];
+    if (PUBLIC_POST.includes(resource)) {
+      const payload = await bodyJSON(req);
+      const data = await readData(resource);
+      const item = { ...payload, id: `${resource.slice(0,3)}_${randomUUID().slice(0,8)}`, createdAt: new Date().toISOString() };
+      data.push(item);
+      await writeData(resource, data);
+      sendSubmissionEmails(resource, item).catch(err => console.error('Resend email failed:', err.message));
+      return json(res, 201, item);
+    }
   }
 
   // ── Protected API (/api/*) — session required ─────────────────────────────

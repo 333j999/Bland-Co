@@ -1,8 +1,10 @@
 const ADMIN_EMAIL = 'bland.jewellers@gmail.com';
-const FROM        = process.env.RESEND_FROM || 'Bland & Co <noreply@blandco.com>';
-const API_KEY     = process.env.RESEND_API_KEY;
 
+// Read env at call time, not module load — so it works regardless of when the
+// host loads its env (serve.mjs loads .env.local after importing this module).
 async function sendEmail({ to, subject, html }) {
+  const API_KEY = process.env.RESEND_API_KEY;
+  const FROM    = process.env.RESEND_FROM || 'Bland & Co <noreply@blandjewellers.store>';
   if (!API_KEY) throw new Error('RESEND_API_KEY is not set');
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
