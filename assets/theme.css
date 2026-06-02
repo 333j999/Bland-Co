@@ -451,6 +451,10 @@ footer.site-footer { background: var(--bg-2); border-top: 1px solid var(--line);
   #nav { padding: 0 var(--sp-3); }
   .dnav { display: none !important; }
   .mbtn { display: flex !important; }
+  /* when the hamburger takes over, the Book Consultation CTA lives in the
+     menu — hide the in-nav button so it can't crowd the logo / push the
+     hamburger off-screen */
+  .nav-right .btn-green { display: none; }
   .wrap { padding-left: var(--sp-3); padding-right: var(--sp-3); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-5); }
   footer.site-footer { padding-left: var(--sp-3); padding-right: var(--sp-3); }
