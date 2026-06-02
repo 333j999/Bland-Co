@@ -1,4 +1,6 @@
-const ADMIN_EMAIL = 'bland.jewellers@gmail.com';
+// Everyone who should receive admin alerts (new enquiries, valuations, consultations).
+// Resend's `to` accepts an array — add/remove inboxes here.
+const ADMIN_EMAIL = ['bland.jewellers@gmail.com', 'ghazi.almuzaffar@gmail.com'];
 
 // Read env at call time, not module load — so it works regardless of when the
 // host loads its env (serve.mjs loads .env.local after importing this module).
