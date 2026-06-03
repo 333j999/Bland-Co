@@ -25,6 +25,23 @@ function row(label, value) {
   return `<tr><td style="padding:6px 0;color:#888;font-size:13px;vertical-align:top;width:140px;">${label}</td><td style="padding:6px 0;font-size:13px;color:#1a1a1a;">${value}</td></tr>`;
 }
 
+// Renders uploaded photos as a linked thumbnail grid. `images` is an array of
+// public R2 URLs (or {url}/{src} objects). Returns '' when there are none.
+function photoGrid(images) {
+  const urls = (Array.isArray(images) ? images : [])
+    .map(i => (typeof i === 'string' ? i : (i && (i.url || i.src)) || ''))
+    .filter(Boolean);
+  if (!urls.length) return '';
+  const thumbs = urls.map(u =>
+    `<a href="${u}" style="text-decoration:none;"><img src="${u}" width="104" height="104" alt="" style="width:104px;height:104px;object-fit:cover;border-radius:6px;border:1px solid #e0e0e0;margin:0 8px 8px 0;display:inline-block;" /></a>`
+  ).join('');
+  return `<div style="margin-top:24px;">
+      <p style="margin:0 0 10px;color:#888;font-size:13px;">Photos (${urls.length})</p>
+      <div style="font-size:0;">${thumbs}</div>
+      <p style="margin:10px 0 0;font-size:12px;color:#aaa;">Click any photo to view full size.</p>
+    </div>`;
+}
+
 function baseTemplate(title, bodyHtml) {
   return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f5f5;font-family:'Helvetica Neue',Arial,sans-serif;">
 <div style="max-width:560px;margin:40px auto;background:#fff;border:1px solid #e0e0e0;">
@@ -64,13 +81,14 @@ function valuationAdminHtml(d) {
   return baseTemplate('New Valuation Request', `
     <p style="margin:0 0 20px;font-size:14px;color:#444;">A new sell/valuation request has been submitted.</p>
     <table style="width:100%;border-collapse:collapse;">
-      ${row('Name', d.fullName)}${row('Email', d.email)}${row('Phone', d.phone)}${row('Item Type', d.itemType)}${row('Brand', d.brand)}${row('Model', d.model)}${row('Year', d.year)}${row('Condition', d.condition)}${row('Accessories', d.accessories)}${row('Description', d.description)}${row('Submitted', new Date(d.createdAt).toLocaleString('en-GB',{timeZone:'Europe/London'}))}
-    </table>`);
+      ${row('Name', d.name || d.fullName)}${row('Email', d.email)}${row('Phone', d.phone)}${row('Item Type', d.itemType)}${row('Brand', d.brand)}${row('Model', d.model)}${row('Year', d.reference || d.year)}${row('Condition', d.condition)}${row('Paperwork', d.paperwork || d.accessories)}${row('Description', d.description)}${row('Submitted', new Date(d.createdAt).toLocaleString('en-GB',{timeZone:'Europe/London'}))}
+    </table>
+    ${photoGrid(d.images)}`);
 }
 
 function valuationConfirmHtml(d) {
   return baseTemplate('Valuation request received', `
-    <p style="margin:0 0 16px;font-size:14px;color:#444;">Thank you, ${(d.fullName||'').split(' ')[0]}. We've received your valuation request and will be in touch within 24 hours with an initial assessment.</p>
+    <p style="margin:0 0 16px;font-size:14px;color:#444;">Thank you, ${((d.name||d.fullName||'').split(' ')[0])}. We've received your valuation request and will be in touch within 24 hours with an initial assessment.</p>
     <table style="width:100%;border-collapse:collapse;">
       ${row('Item', [d.brand, d.model].filter(Boolean).join(' ') || d.itemType)}${row('Condition', d.condition)}
     </table>
@@ -108,7 +126,7 @@ async function sendSubmissionEmails(resource, item) {
     ]);
   } else if (resource === 'valuations') {
     await Promise.all([
-      sendEmail({ to: ADMIN_EMAIL, subject: `New valuation request — ${item.fullName}`, html: valuationAdminHtml(item) }),
+      sendEmail({ to: ADMIN_EMAIL, subject: `New valuation request — ${item.name || item.fullName || 'unknown'}`, html: valuationAdminHtml(item) }),
       item.email && sendEmail({ to: item.email, subject: 'Valuation request received — Bland & Co', html: valuationConfirmHtml(item) }),
     ]);
   } else if (resource === 'consultations') {
